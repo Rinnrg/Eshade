@@ -7,7 +7,7 @@
   translate: none !important;
   transform: none !important;
   box-shadow: none;
-  background-color: #000;
+  background-color: var(--primaryRed);
   padding: calc(var(--layout-columns-gap) * 3) var(--layout-margin) calc(var(--layout-columns-gap) * 2) var(--layout-margin);
 
   @include mobile {
@@ -39,7 +39,7 @@
 
       .brandLogo {
         display: block;
-        width: 160px;
+        width: 220px;
         height: auto;
       }
     }
@@ -258,7 +258,7 @@
 
           .brandLogo {
             display: block;
-            width: 140px; // slightly smaller on mobile
+            width: 180px; // slightly smaller than desktop but larger than before
             height: auto;
           }
         }

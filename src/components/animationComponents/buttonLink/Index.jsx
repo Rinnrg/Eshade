@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import gsap from 'gsap';
 import styles from '@src/components/animationComponents/buttonLink/buttonLink.module.scss';
 
-function ButtonLink({ href, label, target = false, onClick }) {
+function ButtonLink({ href, label, target = false, onClick, variant }) {
   const buttonRef = useRef(null);
   const spanRef = useRef(null);
   const relsRef = useRef({ relX: 0, relY: 0 });
@@ -45,7 +45,15 @@ function ButtonLink({ href, label, target = false, onClick }) {
   }, []);
 
   const buttonContent = (
-    <button type="button" aria-label={label} ref={buttonRef} className={clsx('p-xs', styles.btnPosnawr)} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={onClick}>
+    <button
+      type="button"
+      aria-label={label}
+      ref={buttonRef}
+      className={clsx('p-xs', styles.btnPosnawr, variant && styles[variant])}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={onClick}
+    >
       <span className={clsx('p-x', styles.labelClassic)}>{label}</span>
       <Arrow className={styles.arrowClassic} />
       <span className={styles.ball} ref={spanRef} />

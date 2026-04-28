@@ -427,7 +427,7 @@
 
 .submitButton {
   padding: 11px 18px;
-  background: #ff0000;
+  background: var(--primaryRed);
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -437,7 +437,10 @@
   transition: background 0.2s ease, transform 0.1s ease;
   margin-top: 10px;
   width: 100%;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 
   &:hover {
     background: #cc0000;
@@ -556,6 +559,26 @@
   
   .socialDivider {
     font-size: 0.75rem;
+  }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+.spinnerCircle {
+  stroke-dasharray: 50;
+  stroke-dashoffset: 25;
+  stroke-linecap: round;
+  opacity: 0.8;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 

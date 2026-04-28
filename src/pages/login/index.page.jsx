@@ -240,7 +240,16 @@ function LoginPage() {
                 </div>
 
                 <button type="submit" className={styles.submitButton} disabled={loading}>
-                  {loading ? 'Memproses...' : 'Masuk'}
+                  {loading ? (
+                    <>
+                      <svg className={styles.spinner} width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <circle className={styles.spinnerCircle} cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      </svg>
+                      <span>Memproses...</span>
+                    </>
+                  ) : (
+                    'Masuk'
+                  )}
                 </button>
 
                 <div className={styles.socialDivider}>Atau masuk dengan</div>
@@ -327,7 +336,16 @@ function LoginPage() {
                 </div>
 
                 <button type="submit" className={styles.submitButton} disabled={loading}>
-                  {loading ? 'Memproses...' : 'Daftar'}
+                  {loading ? (
+                    <>
+                      <svg className={styles.spinner} width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <circle className={styles.spinnerCircle} cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      </svg>
+                      <span>Memproses...</span>
+                    </>
+                  ) : (
+                    'Daftar'
+                  )}
                 </button>
 
                 <div className={styles.socialDivider}>Atau masuk dengan</div>

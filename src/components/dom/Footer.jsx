@@ -53,10 +53,10 @@ function Footer() {
             <div>
               <div className={styles.brandName}>
                 <Image
-                  src="/logo-eshade/logo%20eshade%201.svg"
+                  src="/logo-eshade/logo eshade 2.svg"
                   alt="ESHADE"
-                  width={160}
-                  height={40}
+                  width={220}
+                  height={70}
                   className={styles.brandLogo}
                 />
               </div>
@@ -67,7 +67,7 @@ function Footer() {
                   dambaaan. Kami menjadikan Anda sebagai pusatnya.
                 </p>
                 <p className={styles.tagline}>
-                  ESHADE | Stand Out Loud.
+                  ESHADE | Care Your Gym
                 </p>
               </div>
 
@@ -133,10 +133,10 @@ function Footer() {
             <AppearTitle isFooter>
               <div className={styles.brandName}>
                 <Image
-                  src="/logo-eshade/logo%20eshade%201.svg"
+                  src="/logo-eshade/logo eshade 2.svg"
                   alt="ESHADE"
-                  width={160}
-                  height={40}
+                  width={220}
+                  height={70}
                   className={styles.brandLogo}
                 />
               </div>
@@ -146,7 +146,7 @@ function Footer() {
                   dambaaan. Kami menjadikan Anda sebagai pusatnya.
                 </p>
                 <p className={styles.tagline}>
-                  ESHADE | Stand Out Loud.
+                  ESHADE | Care Your Gym
                 </p>
               </div>
               <div className={styles.contactInfo}>

@@ -32,6 +32,7 @@
 
     .labelClassic {
       transform: translate3d(calc(var(--layout-columns-gap) * -0.4), 0, 0);
+      color: var(--white);
       @include mobile {
         transform: translate3d(calc(var(--layout-columns-gap) * -0.3), 0, 0);
       }
@@ -40,8 +41,8 @@
     .arrowClassic {
       transform: translate3d(calc(var(--layout-columns-gap) * -1.3), 0, 0)
         rotate(-90deg);
-      fill: var(--black);
-      stroke: var(--black);
+      fill: var(--white);
+      stroke: var(--white);
       @include mobile {
         transform: translate3d(calc(var(--layout-columns-gap) * -1.2), 0, 0)
           rotate(-90deg);
@@ -90,5 +91,45 @@
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     z-index: 1;
+  }
+
+  &.red {
+    background-color: var(--primaryRed);
+    .labelClassic {
+      color: var(--white);
+    }
+    .arrowClassic {
+      fill: var(--white);
+      stroke: var(--white);
+    }
+    &:hover {
+      .arrowClassic {
+        fill: var(--black);
+        stroke: var(--black);
+      }
+    }
+  }
+
+  &.redHover {
+    background-color: var(--accentColor);
+    .labelClassic {
+      color: var(--black);
+    }
+    .arrowClassic {
+      fill: var(--black);
+      stroke: var(--black);
+    }
+    .ball {
+      background-color: var(--primaryRed);
+    }
+    &:hover {
+      .labelClassic {
+        color: var(--white);
+      }
+      .arrowClassic {
+        fill: var(--white);
+        stroke: var(--white);
+      }
+    }
   }
 }

@@ -105,7 +105,7 @@ export default function AdminLogin() {
         <div className={styles.card}>
           {/* Logo */}
           <div className={styles.logoContainer}>
-            <Image src="/logo-eshade/logo%20eshade%201.svg" alt="Eshade Admin" width={120} height={50} priority />
+            <Image src="/logo-eshade/logo eshade 2.svg" alt="Eshade Admin" width={120} height={50} priority />
           </div>
 
 
