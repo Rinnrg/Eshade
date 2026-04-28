@@ -156,7 +156,7 @@ export async function executePrismaQuery(queryFn) {
         if (isConnectionError(error) || error?.message?.includes('max clients') || error?.message?.includes('MaxClientsInSessionMode')) {
           // try the next client after short backoff
           const backoff = Math.min(1000, 100 * (2 ** (attempt - 1)));
-          await new Promise((r) => setTimeout(r, backoff));
+          await new Promise((r) => { setTimeout(r, backoff); });
           continue;
         }
         // Non-connection error - not retryable here
@@ -165,7 +165,7 @@ export async function executePrismaQuery(queryFn) {
     }
     // If we reach here, none of the clients succeeded in this attempt; wait a bit before next attempt
     const attemptBackoff = Math.min(1000, 100 * (2 ** (attempt - 1)));
-    await new Promise((r) => setTimeout(r, attemptBackoff));
+    await new Promise((r) => { setTimeout(r, attemptBackoff); });
   }
 
   // If we exit attempts loop, throw last error

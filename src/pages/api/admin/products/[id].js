@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '../../auth/[...nextauth]'
-import prisma from '@src/lib/prisma'
+import prisma, { executePrismaQuery, getActiveDbUrl } from '@src/lib/prisma'
 
 export default async function handler(req, res) {
   const session = await getServerSession(req, res, authOptions)
@@ -67,19 +67,17 @@ export default async function handler(req, res) {
       console.log('[Admin PUT product] id=', id, 'body=', req.body, 'updateData=', updateData)
 
       try {
-        const { getActiveDbUrl } = require('@src/lib/prisma');
         const active = getActiveDbUrl();
         console.log('[Admin PUT product] active DB url (before update):', active);
       } catch (e) {
         // ignore
       }
 
-      const product = await require('@src/lib/prisma').executePrismaQuery((client) =>
+      const product = await executePrismaQuery((client) =>
         client.produk.update({ where: { id: id }, data: updateData })
       )
 
       try {
-        const { getActiveDbUrl } = require('@src/lib/prisma');
         const active2 = getActiveDbUrl();
         console.log('[Admin PUT product] active DB url (after update):', active2);
       } catch (e) {

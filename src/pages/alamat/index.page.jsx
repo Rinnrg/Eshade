@@ -142,7 +142,7 @@ export default function AlamatPage() {
     }
 
     try {
-      const pos = await new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject));
+      const pos = await new Promise((resolve, reject) => { navigator.geolocation.getCurrentPosition(resolve, reject); });
       const lat = pos.coords.latitude;
       const lon = pos.coords.longitude;
       setForm((p) => ({ ...p, latitude: lat, longitude: lon }));
@@ -195,7 +195,7 @@ export default function AlamatPage() {
             <h2>Alamat Pengiriman</h2>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               <button onClick={() => { setEditingId(null); setForm({ label: '', recipientName: '', phone: '', addressLine1: '', addressLine2: '', city: '', province: '', district: '', postalCode: '', latitude: '', longitude: '', isDefault: false }); }} style={{ padding: '0.5rem 0.75rem', borderRadius: '0.375rem', border: '1px solid #e5e7eb', background: '#fff', cursor: 'pointer' }}>Reset</button>
-              <button onClick={() => setForm((p) => ({ ...p }))} style={{ padding: '0.5rem 0.75rem', background: '#000', color: '#fff', borderRadius: '0.375rem' }} onClick={handleSave} disabled={saving}>{saving ? 'Menyimpan...' : (editingId ? 'Simpan Perubahan' : 'Tambah Alamat')}</button>
+              <button onClick={handleSave} style={{ padding: '0.5rem 0.75rem', background: '#000', color: '#fff', borderRadius: '0.375rem' }} disabled={saving}>{saving ? 'Menyimpan...' : (editingId ? 'Simpan Perubahan' : 'Tambah Alamat')}</button>
             </div>
           </div>
 
