@@ -386,7 +386,7 @@ function CartPage() {
 
   return (
     <>
-      <CustomHead title="Keranjang - Kunam" description="Keranjang belanja Anda" />
+      <CustomHead title="Keranjang - Eshade" description="Keranjang belanja Anda" />
       <main className={styles.container}>
         <Breadcrumb items={[{ label: 'Cart', href: null }]} />
 

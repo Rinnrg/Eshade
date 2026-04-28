@@ -7,10 +7,10 @@ import CustomHead from '@src/components/dom/CustomHead';
 import Breadcrumb from '@src/components/dom/Breadcrumb';
 
 const seo = {
-  title: 'Kunam - About',
-  description: 'Learn about my journey, values, and commitment to quality web and app solutions.',
+  title: 'Eshade - About',
+  description: 'Learn about our journey, values, and commitment to quality fashion and clothing.',
   keywords: [
-    'Kunam',
+    'Eshade',
     'About me',
     'Frontend Developer Journey',
     'Web Developer Story',

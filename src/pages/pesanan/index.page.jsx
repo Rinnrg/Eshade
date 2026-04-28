@@ -265,7 +265,7 @@ function PesananPage() {
 
   return (
     <>
-      <CustomHead title="Pesanan Saya - Kunam" description="Lihat riwayat dan status pesanan Anda" />
+      <CustomHead title="Pesanan Saya - Eshade" description="Lihat riwayat dan status pesanan Anda" />
       <main className={styles.container}>
         <Breadcrumb items={[{ label: 'Pesanan', href: null }]} />
 

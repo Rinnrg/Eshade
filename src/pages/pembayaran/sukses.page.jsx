@@ -274,7 +274,7 @@ function SuksesPage() {
 
   // SEO
   const seo = {
-    title: 'Pembayaran Berhasil - Kunam',
+    title: 'Pembayaran Berhasil - Eshade',
     description: 'Terima kasih! Pembayaran Anda telah berhasil.',
   };
 

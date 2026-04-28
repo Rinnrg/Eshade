@@ -19,12 +19,12 @@ export const getMenuLinks = (categories = []) => {
       submenu: [
         {
           title: 'Shopee',
-          href: 'http://shopee.co.id/kunam.clo',
+          href: 'http://shopee.co.id/eshade.clo',
           external: true,
         },
         {
           title: 'Instagram',
-          href: 'https://www.instagram.com/kunam.officialshop/',
+          href: 'https://www.instagram.com/eshade.officialshop/',
           external: true,
         },
       ],
@@ -53,12 +53,12 @@ const menuLinks = [
     submenu: [
       {
         title: 'Shopee',
-        href: 'http://shopee.co.id/kunam.clo',
+        href: 'http://shopee.co.id/eshade.clo',
         external: true,
       },
       {
         title: 'Instagram',
-        href: 'https://www.instagram.com/kunam.officialshop/',
+        href: 'https://www.instagram.com/eshade.officialshop/',
         external: true,
       },
     ],

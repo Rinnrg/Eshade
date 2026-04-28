@@ -21,7 +21,7 @@ function PendingPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [order, setOrder] = useState(null);
   const [error, setError] = useState(null);
-  const [snapReady, setSnapReady] = useState(false);
+
 
   const fetchOrderStatus = useCallback(async (orderNumber) => {
     try {
@@ -90,36 +90,7 @@ function PendingPage() {
     };
   }, []);
 
-  // Handle continue payment
-  const handleContinuePayment = useCallback(() => {
-    if (window.snap && order?.snapToken) {
-      window.snap.pay(order.snapToken, {
-        onSuccess: (result) => {
-          console.log('Payment success:', result);
-          router.push(`/pembayaran/sukses?order=${order.orderNumber}`);
-        },
-        onPending: (result) => {
-          console.log('Payment pending:', result);
-          showAlert({
-            type: 'warning',
-            title: 'Pembayaran Tertunda',
-            message: 'Silakan selesaikan pembayaran Anda.',
-          });
-        },
-        onError: (result) => {
-          console.log('Payment error:', result);
-          showAlert({
-            type: 'error',
-            title: 'Pembayaran Gagal',
-            message: 'Terjadi kesalahan saat memproses pembayaran.',
-          });
-        },
-        onClose: () => {
-          console.log('Snap popup closed');
-        },
-      });
-    }
-  }, [order, router, showAlert]);
+
 
   // Handle cancel order
   const handleCancelOrder = useCallback(async () => {
@@ -177,7 +148,7 @@ function PendingPage() {
 
   // SEO
   const seo = {
-    title: 'Menunggu Pembayaran - Kunam',
+    title: 'Menunggu Pembayaran - Eshade',
     description: 'Silakan selesaikan pembayaran Anda.',
   };
 
@@ -210,12 +181,7 @@ function PendingPage() {
   return (
     <>
       <CustomHead {...seo} />
-      <Script
-        src="https://app.sandbox.midtrans.com/snap/snap.js"
-        data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || 'Mid-client-F_0FEDIhSYS_VwxM'}
-        onReady={() => setSnapReady(true)}
-        strategy="lazyOnload"
-      />
+
       
       <div className={styles.container}>
         <div className={styles.receipt}>
@@ -290,16 +256,7 @@ function PendingPage() {
 
           {/* Actions */}
           <div className={styles.actions}>
-            {order.snapToken && (
-              <button
-                type="button"
-                className={styles.primaryButton}
-                onClick={handleContinuePayment}
-                disabled={!snapReady}
-              >
-                Lanjutkan Pembayaran
-              </button>
-            )}
+
             <button
               type="button"
               className={styles.dangerButton}

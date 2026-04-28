@@ -22,7 +22,7 @@ function Footer() {
   const [isLoading] = useStore(useShallow((state) => [state.isLoading]));
   const windowSize = useWindowSize();
 
-  // Dynamically generate year/range for footer (e.g. "© 2025 - 2026 · Kunam")
+  // Dynamically generate year/range for footer (e.g. "© 2025 - 2026 · Eshade")
   const START_YEAR = 2025;
   const currentYear = new Date().getFullYear();
   const yearText = currentYear > START_YEAR ? `${START_YEAR} - ${currentYear}` : `${START_YEAR}`;
@@ -53,8 +53,8 @@ function Footer() {
             <div>
               <div className={styles.brandName}>
                 <Image
-                  src="/logo/logo%202%20white.svg"
-                  alt="KUNAM"
+                  src="/logo-eshade/logo%20eshade%201.svg"
+                  alt="ESHADE"
                   width={160}
                   height={40}
                   className={styles.brandLogo}
@@ -67,13 +67,13 @@ function Footer() {
                   dambaaan. Kami menjadikan Anda sebagai pusatnya.
                 </p>
                 <p className={styles.tagline}>
-                  KUNAM | Stand Out Loud.
+                  ESHADE | Stand Out Loud.
                 </p>
               </div>
 
               <div className={styles.contactInfo}>
-                <h6 className={styles.title}>Layanan Pengaduan Konsumen KUNAM</h6>
-                <p>E-mail: <a href="mailto:kunamcloth@gmail.com">kunamcloth@gmail.com</a></p>
+                <h6 className={styles.title}>Layanan Pengaduan Konsumen ESHADE</h6>
+                <p>E-mail: <a href="mailto:eshadecloth@gmail.com">eshadecloth@gmail.com</a></p>
                 <p>WhatsApp: <a href="https://wa.me/6285190650113" target="_blank" rel="noopener noreferrer">+62 851 9065 0113</a></p>
               </div>
 
@@ -133,8 +133,8 @@ function Footer() {
             <AppearTitle isFooter>
               <div className={styles.brandName}>
                 <Image
-                  src="/logo/logo%202%20white.svg"
-                  alt="KUNAM"
+                  src="/logo-eshade/logo%20eshade%201.svg"
+                  alt="ESHADE"
                   width={160}
                   height={40}
                   className={styles.brandLogo}
@@ -146,12 +146,12 @@ function Footer() {
                   dambaaan. Kami menjadikan Anda sebagai pusatnya.
                 </p>
                 <p className={styles.tagline}>
-                  KUNAM | Stand Out Loud.
+                  ESHADE | Stand Out Loud.
                 </p>
               </div>
               <div className={styles.contactInfo}>
-                <h6 className={styles.title}>Layanan Pengaduan Konsumen KUNAM</h6>
-                <p>E-mail: <a href="mailto:kunamcloth@gmail.com">kunamcloth@gmail.com</a></p>
+                <h6 className={styles.title}>Layanan Pengaduan Konsumen ESHADE</h6>
+                <p>E-mail: <a href="mailto:eshadecloth@gmail.com">eshadecloth@gmail.com</a></p>
                 <p>WhatsApp: <a href="https://wa.me/6285190650113" target="_blank" rel="noopener noreferrer">+62 851 9065 0113</a></p>
               </div>
             </AppearTitle>
@@ -216,7 +216,7 @@ function Footer() {
             <div className={clsx('p-x', styles.bottomText)}>
               Current Time: <Time />
             </div>
-            <div className="p-x">© {yearText} · Kunam</div>
+            <div className="p-x">© {yearText} · Eshade</div>
             <div className={clsx('p-x', styles.bottomText)}>All Rights Reserved</div>
           </div>
         </AppearTitle>

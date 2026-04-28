@@ -237,7 +237,7 @@ function OrderDetailPage() {
   return (
     <>
       <CustomHead 
-        title={`Pesanan ${order.orderNumber} - Kunam`} 
+        title={`Pesanan ${order.orderNumber} - Eshade`} 
         description="Detail pesanan Anda" 
       />
       <main className={styles.container}>

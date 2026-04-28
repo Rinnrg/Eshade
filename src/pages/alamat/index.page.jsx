@@ -176,7 +176,7 @@ export default function AlamatPage() {
   if (status === 'loading' || loading) {
     return (
       <>
-        <CustomHead title="Alamat - Kunam" />
+        <CustomHead title="Alamat - Eshade" />
         <LoadingSpinner fullscreen />
       </>
     )
@@ -186,7 +186,7 @@ export default function AlamatPage() {
 
   return (
     <>
-      <CustomHead title="Alamat Saya - Kunam" />
+      <CustomHead title="Alamat Saya - Eshade" />
       <main style={{ padding: '2rem' }}>
         <Breadcrumb items={[{ label: 'Alamat', href: null }]} />
 

@@ -3,7 +3,7 @@ import prisma from '@src/lib/prisma';
 /**
  * Manual stock update endpoint for testing
  * This endpoint processes stock updates for paid orders
- * Use this if Midtrans webhook notification fails to update stock
+ * Use this to manually trigger stock update if needed
  */
 export default async function handler(req, res) {
   if (req.method !== 'POST') {

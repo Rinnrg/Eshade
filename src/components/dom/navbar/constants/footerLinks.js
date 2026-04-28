@@ -7,7 +7,7 @@ const footerLinks = {
   ],
   social: [
     { title: 'Instagram', href: 'https://instagram.com', icon: 'instagram' },
-    { title: 'Shopee', href: 'http://shopee.co.id/kunam.clo', icon: 'shopee' },
+    { title: 'Shopee', href: 'http://shopee.co.id/eshade.clo', icon: 'shopee' },
   ],
 };
 

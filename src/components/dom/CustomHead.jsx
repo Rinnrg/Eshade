@@ -2,18 +2,18 @@ import NextHead from 'next/head';
 import { NextSeo } from 'next-seo';
 import PropTypes from 'prop-types';
 
-const SITE_URL = 'https://kunam-id.vercel.app';
+const SITE_URL = 'https://eshade-id.vercel.app';
 const OG_IMAGE = `${SITE_URL}/og.png`;
 
 const getSchema = () => ({
   '@context': 'http://schema.org',
   '@type': 'Organization',
-  name: 'Kunam',
-  description: 'Kunam - Fashion & Lifestyle Brand',
+  name: 'Eshade',
+  description: 'Eshade - Fashion & Lifestyle Brand',
   url: SITE_URL,
   image: OG_IMAGE,
-  email: 'mailto:info@kunam.com',
-  sameAs: ['https://www.instagram.com/kunam/', 'https://www.facebook.com/kunam', 'https://twitter.com/kunam'],
+  email: 'mailto:info@eshade.com',
+  sameAs: ['https://www.instagram.com/eshade/', 'https://www.facebook.com/eshade', 'https://twitter.com/eshade'],
 });
 
 function CustomHead({ title = '', description, keywords }) {
@@ -26,7 +26,7 @@ function CustomHead({ title = '', description, keywords }) {
         <meta name="robots" content={process.env.NODE_ENV !== 'development' ? 'index,follow' : 'noindex,nofollow'} />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <meta name="keywords" content={keywords && keywords.length ? keywords.join(',') : keywords} />
-        <meta name="author" content="Kunam" />
+        <meta name="author" content="Eshade" />
         <meta name="referrer" content="no-referrer" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="geo.region" content="US" />
@@ -48,13 +48,13 @@ function CustomHead({ title = '', description, keywords }) {
         <meta name="twitter:image" content={OG_IMAGE} />
 
         {/* Favicons */}
-        <link rel="icon" type="image/svg+xml" href="/logo/icon.svg" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/logo/icon.svg" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/logo/icon.svg" />
-        <link rel="shortcut icon" href="/logo/icon.svg" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/logo/icon.svg" />
+        <link rel="icon" type="image/svg+xml" href="/logo-eshade/logo%20eshade%201.svg" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/logo-eshade/logo%20eshade%201.svg" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/logo-eshade/logo%20eshade%201.svg" />
+        <link rel="shortcut icon" href="/logo-eshade/logo%20eshade%201.svg" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/logo-eshade/logo%20eshade%201.svg" />
         <link rel="manifest" href="/site.webmanifest" />
-        <link rel="mask-icon" href="/logo/icon.svg" color="#ffffff" />
+        <link rel="mask-icon" href="/logo-eshade/logo%20eshade%201.svg" color="#ffffff" />
         <meta name="msapplication-TileColor" content="#28282b" />
         <meta name="theme-color" content="#28282b" />
 

@@ -184,7 +184,7 @@ export function Sidebar({ isOpen, setIsOpen }) {
             fontSize: '1.25rem',
             fontWeight: '700',
             color: '#111827',
-          }}>Kunam</h1>
+          }}>Eshade</h1>
         </div>
 
         {/* Navigation */}

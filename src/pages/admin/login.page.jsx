@@ -97,7 +97,7 @@ export default function AdminLogin() {
   return (
     <>
       <Head>
-        <title>Admin Login - Kunam</title>
+        <title>Admin Login - Eshade</title>
         <meta name="robots" content="noindex, nofollow" />
       </Head>
 
@@ -105,7 +105,7 @@ export default function AdminLogin() {
         <div className={styles.card}>
           {/* Logo */}
           <div className={styles.logoContainer}>
-            <Image src="/logo/logo 2 black.svg" alt="Kunam Admin" width={120} height={50} priority />
+            <Image src="/logo-eshade/logo%20eshade%201.svg" alt="Eshade Admin" width={120} height={50} priority />
           </div>
 
 

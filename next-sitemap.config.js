@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: process.env.SITE_URL || 'https://kunam-id.vercel.app',
+  siteUrl: process.env.SITE_URL || 'https://eshade-id.vercel.app',
   generateRobotsTxt: true,
   robotsTxtOptions: {
     policies: [

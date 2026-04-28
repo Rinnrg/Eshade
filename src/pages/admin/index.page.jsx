@@ -34,7 +34,7 @@ export default function AdminDashboard() {
   return (
     <>
       <Head>
-        <title>Admin Dashboard - Kunam</title>
+        <title>Admin Dashboard - Eshade</title>
       </Head>
       <AdminLayout>
         <Dashboard />

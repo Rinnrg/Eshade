@@ -319,9 +319,9 @@ function ProdukDetailPage({ produk, error, maintenance }) {
   // SEO
   const seo = useMemo(
     () => ({
-      title: `${currentProduk?.nama || 'Produk'} - Kunam`,
-      description: currentProduk?.deskripsi || `Beli ${currentProduk?.nama} di Kunam`,
-      keywords: [currentProduk?.nama, currentProduk?.kategori, 'Kunam', 'Fashion', 'Clothing'],
+      title: `${currentProduk?.nama || 'Produk'} - Eshade`,
+      description: currentProduk?.deskripsi || `Beli ${currentProduk?.nama} di Eshade`,
+      keywords: [currentProduk?.nama, currentProduk?.kategori, 'Eshade', 'Fashion', 'Clothing'],
       image: allImages[0] || '/logo/logo 1 black.svg',
     }),
     [currentProduk, allImages]

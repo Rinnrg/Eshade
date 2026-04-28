@@ -20,7 +20,7 @@ function GagalPage() {
 
   // SEO
   const seo = {
-    title: 'Pembayaran Gagal - Kunam',
+    title: 'Pembayaran Gagal - Eshade',
     description: 'Terjadi kesalahan saat memproses pembayaran.',
   };
 

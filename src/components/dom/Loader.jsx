@@ -122,7 +122,7 @@ function Loader() {
       <div className={styles.innerContainer}>
         <div className={styles.fullNameContainer}>
           <div ref={logoRef} style={{ display: 'flex', justifyContent: 'center' }}>
-            <Image src="/logo/logo 1 black.svg" alt="Kunam" width={100} height={40} priority />
+            <Image src="/logo-eshade/logo%20eshade%201.svg" alt="Eshade" width={100} height={40} priority />
           </div>
         </div>
       </div>

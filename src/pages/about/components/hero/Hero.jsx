@@ -52,7 +52,7 @@ function Hero() {
       </header>
       <div className={styles.wrapper}>
         <div ref={heroImageRef} className={styles.imageContainer}>
-          <Image priority quality={100} src="/logo/logo 2 black.svg" sizes="100%" fill alt="Kunam Brand" />
+          <Image priority quality={100} src="/logo-eshade/logo%20eshade%201.svg" sizes="100%" fill alt="Eshade Brand" />
         </div>
       </div>
     </section>

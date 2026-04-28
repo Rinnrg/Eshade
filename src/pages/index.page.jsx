@@ -8,10 +8,10 @@ import { executePrismaQuery } from '@src/lib/prisma';
 import Maintenance from '@src/components/dom/Maintenance';
 
 const seo = {
-  title: 'Kunam - Clothing Store',
-  description: 'Kunam adalah toko clothing online yang menyediakan berbagai produk fashion berkualitas tinggi. Temukan koleksi pakaian terbaru dengan desain menarik dan harga terjangkau.',
+  title: 'Eshade - Clothing Store',
+  description: 'Eshade adalah toko clothing online yang menyediakan berbagai produk fashion berkualitas tinggi. Temukan koleksi pakaian terbaru dengan desain menarik dan harga terjangkau.',
   keywords: [
-    'Kunam',
+    'Eshade',
     'Clothing Store',
     'Fashion',
     'Online Shop',

@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@src/pages/api/auth/[...nextauth].page';
 import prisma from '@src/lib/prisma';
-import { snap, generateOrderId, createTransactionParams } from '@src/lib/midtrans';
+import { generateOrderId } from '@src/lib/utils';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -168,38 +168,6 @@ export default async function handler(req, res) {
       },
     });
 
-    // Create transaction params for Midtrans
-    const transactionParams = createTransactionParams(order, customerDetails, order.order_items);
-
-    console.log('Creating Midtrans transaction with params:', JSON.stringify(transactionParams, null, 2));
-    console.log('Server Key:', process.env.MIDTRANS_SERVER_KEY ? 'Set' : 'NOT SET');
-    console.log('Client Key:', process.env.MIDTRANS_CLIENT_KEY ? 'Set' : 'NOT SET');
-
-    // Create Snap token
-    let snapToken;
-    try {
-      snapToken = await snap.createTransaction(transactionParams);
-      console.log('Snap token created:', snapToken);
-    } catch (midtransError) {
-      console.error('Midtrans error:', midtransError);
-      console.error('Midtrans error message:', midtransError.message);
-      console.error('Midtrans API response:', midtransError.ApiResponse);
-      
-      // Delete the order if Midtrans fails
-      await prisma.orders.delete({ where: { id: order.id } });
-      
-      return res.status(500).json({ 
-        error: 'Failed to create Midtrans transaction',
-        details: midtransError.message || midtransError.ApiResponse?.error_messages?.join(', '),
-      });
-    }
-
-    // Update order with snap token
-    await prisma.orders.update({
-      where: { id: order.id },
-      data: { snapToken: snapToken.token },
-    });
-
     // Remove items from cart after creating order
     const cartDeletePromises = items.map((item) => 
       prisma.carts.deleteMany({
@@ -221,8 +189,6 @@ export default async function handler(req, res) {
         totalAmount: order.totalAmount,
         items: order.order_items,
       },
-      snapToken: snapToken.token,
-      redirectUrl: snapToken.redirect_url,
     });
   } catch (error) {
     console.error('Error creating transaction:', error);

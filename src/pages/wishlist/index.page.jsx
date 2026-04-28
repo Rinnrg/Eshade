@@ -128,7 +128,7 @@ function WishlistPage() {
 
   return (
     <>
-      <CustomHead title="Wishlist - Kunam" description="Produk yang Anda sukai" />
+      <CustomHead title="Wishlist - Eshade" description="Produk yang Anda sukai" />
       <main className={styles.container}>
         <Breadcrumb items={[{ label: 'Wishlist', href: null }]} />
 

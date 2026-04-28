@@ -53,11 +53,11 @@ function Overview() {
             <h6 className="h6">is selected with attention to detail and a commitment to excellence.</h6>
 
             <h6 className={clsx(styles.paddingTop, 'h6')}>We&apos;re excited to be part of your style journey!</h6>
-            <h6 className={clsx(styles.paddingTop, 'h6')}>Kunam Team.</h6>
+            <h6 className={clsx(styles.paddingTop, 'h6')}>Eshade Team.</h6>
           </AppearTitle>
         ) : (
           <AppearTitle key="mobile-overview">
-            <h6 className="h6">Welcome to Kunam! We are a brand dedicated to bringing you </h6>
+            <h6 className="h6">Welcome to Eshade! We are a brand dedicated to bringing you </h6>
             <h6 className="h6">quality products that blend style and functionality. Our collection </h6>
             <h6 className="h6">is carefully curated to meet the needs of modern living while </h6>
             <h6 className="h6">maintaining timeless appeal.</h6>
@@ -69,7 +69,7 @@ function Overview() {
             <h6 className="h6">From clothing to accessories, every item is chosen with care</h6>
             <h6 className="h6">and passion.</h6>
             <h6 className={clsx(styles.paddingTop, 'h6')}>We&apos;re looking forward to being part of your style journey!</h6>
-            <h6 className={clsx(styles.paddingTop, 'h6')}>Kunam Team.</h6>
+            <h6 className={clsx(styles.paddingTop, 'h6')}>Eshade Team.</h6>
           </AppearTitle>
         )}
       </div>

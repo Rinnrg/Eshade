@@ -487,7 +487,7 @@ function ProfilPage() {
 
   return (
     <>
-      <CustomHead title="Profil Saya - Kunam" description="Kelola profil dan akun Anda" />
+      <CustomHead title="Profil Saya - Eshade" description="Kelola profil dan akun Anda" />
       <main className={styles.container}>
         <Breadcrumb items={[{ label: 'Profil', href: null }]} />
 

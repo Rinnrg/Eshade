@@ -42,7 +42,7 @@ function About() {
 
   const renderImageContainer = () => (
     <div className={styles.imageContainer}>
-      <Image priority src="/logo/logo 1 black.svg" sizes="100%" fill alt="Kunam Brand" />
+      <Image priority src="/logo-eshade/logo%20eshade%201.svg" sizes="100%" fill alt="Eshade Brand" />
     </div>
   );
 
@@ -51,7 +51,7 @@ function About() {
       <div className={clsx(styles.nameContainer, 'layout-block-inner')}>
         <AppearTitle>
           <h1 className={clsx('h1', 'medium')}>Welcome to</h1>
-          <h1 className={clsx('h1', 'medium')}>Kunam!</h1>
+          <h1 className={clsx('h1', 'medium')}>Eshade!</h1>
         </AppearTitle>
       </div>
 

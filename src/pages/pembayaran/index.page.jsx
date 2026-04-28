@@ -24,7 +24,6 @@ function PembayaranPage() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [snapReady, setSnapReady] = useState(false);
   const [checkoutItems, setCheckoutItems] = useState([]);
   const [formData, setFormData] = useState({
     name: '',
@@ -368,48 +367,8 @@ function PembayaranPage() {
       // Clear checkout items from localStorage
       localStorage.removeItem('checkoutItems');
 
-      // Open Midtrans Snap popup
-      if (window.snap && data.snapToken) {
-        window.snap.pay(data.snapToken, {
-          onSuccess: (result) => {
-            console.log('Payment success:', result);
-            // mark that we just paid so the sukses page can animate once
-            try {
-              localStorage.setItem('justPaid', '1');
-            } catch (e) {
-              // ignore if storage not available
-            }
-            router.push(`/pembayaran/sukses?order=${data.order.orderNumber}&justPaid=1`);
-          },
-          onPending: (result) => {
-            console.log('Payment pending:', result);
-            router.push(`/pembayaran/pending?order=${data.order.orderNumber}`);
-          },
-          onError: (result) => {
-            console.log('Payment error:', result);
-            showAlert({
-              type: 'error',
-              title: 'Pembayaran Gagal',
-              message: 'Terjadi kesalahan saat memproses pembayaran.',
-            });
-            setIsProcessing(false);
-          },
-          onClose: () => {
-            console.log('Snap popup closed');
-            showAlert({
-              type: 'warning',
-              title: 'Pembayaran Dibatalkan',
-              message: 'Anda menutup popup pembayaran. Pesanan Anda masih tersimpan.',
-              confirmText: 'Lihat Pesanan',
-              showCancel: true,
-              onConfirm: () => {
-                router.push('/pesanan');
-              },
-            });
-            setIsProcessing(false);
-          },
-        });
-      }
+      // Redirect to success page
+      router.push(`/pembayaran/sukses?order=${data.order.orderNumber}&justPaid=1`);
     } catch (error) {
       console.error('Payment error:', error);
       showAlert({
@@ -423,7 +382,7 @@ function PembayaranPage() {
 
   // SEO
   const seo = {
-    title: 'Pembayaran - Kunam',
+    title: 'Pembayaran - Eshade',
     description: 'Selesaikan pembayaran Anda dengan aman dan mudah.',
   };
 
@@ -515,12 +474,7 @@ function PembayaranPage() {
   return (
     <>
       <CustomHead {...seo} />
-      <Script
-        src="https://app.sandbox.midtrans.com/snap/snap.js"
-        data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || 'Mid-client-F_0FEDIhSYS_VwxM'}
-        onReady={() => setSnapReady(true)}
-        strategy="lazyOnload"
-      />
+
       
       <div className={styles.container}>
         <Breadcrumb items={[
@@ -958,7 +912,7 @@ function PembayaranPage() {
                 type="button"
                 className={styles.payButton}
                 onClick={handlePayment}
-                disabled={isProcessing || !snapReady}
+                disabled={isProcessing}
               >
                 {isProcessing ? 'Memproses...' : 'Bayar Sekarang'}
               </button>

@@ -8,10 +8,10 @@ import prisma from '@src/lib/db';
 import Maintenance from '@src/components/dom/Maintenance';
 
 const seo = {
-  title: 'Kunam - Produk',
-  description: 'Jelajahi koleksi produk clothing Kunam. Temukan berbagai pilihan pakaian berkualitas dengan desain menarik dan harga terjangkau.',
+  title: 'Eshade - Produk',
+  description: 'Jelajahi koleksi produk clothing Eshade. Temukan berbagai pilihan pakaian berkualitas dengan desain menarik dan harga terjangkau.',
   keywords: [
-    'Kunam Produk',
+    'Eshade Produk',
     'Clothing Store',
     'Fashion Store',
     'Pakaian Pria',
@@ -29,10 +29,10 @@ const seo = {
 function Page({ produk = [], kategori = null, error = null, maintenance }) {
   if (maintenance && maintenance.active) return <Maintenance message={maintenance.message} />;
 
-  const title = kategori ? `Kunam - ${kategori}` : 'Kunam - Produk';
+  const title = kategori ? `Eshade - ${kategori}` : 'Eshade - Produk';
   const description = kategori
-    ? `Jelajahi koleksi ${kategori} Kunam. Temukan berbagai pilihan ${kategori} berkualitas dengan desain menarik dan harga terjangkau.`
-    : 'Jelajahi koleksi produk clothing Kunam. Temukan berbagai pilihan pakaian berkualitas dengan desain menarik dan harga terjangkau.';
+    ? `Jelajahi koleksi ${kategori} Eshade. Temukan berbagai pilihan ${kategori} berkualitas dengan desain menarik dan harga terjangkau.`
+    : 'Jelajahi koleksi produk clothing Eshade. Temukan berbagai pilihan pakaian berkualitas dengan desain menarik dan harga terjangkau.';
 
   return (
     <>
