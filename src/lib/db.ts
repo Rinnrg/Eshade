@@ -12,17 +12,34 @@ const prismaClientOptions = {
   },
 };
 
-// Create singleton instance
-export const prisma = (() => {
-  if (process.env.NODE_ENV === 'production') {
-    return new PrismaClient(prismaClientOptions);
+let _prisma: PrismaClient | null = null;
+
+// Create singleton instance with lazy initialization
+export const prisma = new Proxy({} as PrismaClient, {
+  get(target, prop) {
+    if (!_prisma) {
+      const url = process.env.DATABASE_URL;
+      
+      // If no URL and we're in build phase, return a dummy object for safe metadata extraction
+      if (!url && process.env.NEXT_PHASE === 'phase-production-build') {
+        return (target as any)[prop];
+      }
+      
+      // If we're in production and have no URL, it will fail, but at least we tried
+      _prisma = new PrismaClient({
+        ...prismaClientOptions,
+        datasources: {
+          db: {
+            url: url || 'postgresql://dummy:dummy@localhost:5432/dummy' // Fallback for build phase
+          }
+        }
+      });
+    }
+    
+    const value = (_prisma as any)[prop];
+    return typeof value === 'function' ? value.bind(_prisma) : value;
   }
-  // In development, use a global variable to preserve the client across hot reloads
-  if (!globalForPrisma.prisma) {
-    globalForPrisma.prisma = new PrismaClient(prismaClientOptions);
-  }
-  return globalForPrisma.prisma;
-})();
+});
 
 // Apply concurrency limiter to all Prisma operations via middleware
 try {

@@ -72,7 +72,7 @@ export default async function handler(req, res) {
           discountValue: parseFloat(discountValue),
           minPurchase: parseFloat(minPurchase) || 0,
           maxDiscount: maxDiscount ? parseFloat(maxDiscount) : null,
-          usageLimit: usageLimit ? parseInt(usageLimit) : null,
+          usageLimit: usageLimit ? parseInt(usageLimit, 10) : null,
           startDate: new Date(startDate),
           endDate: new Date(endDate),
           isActive: isActive !== false,

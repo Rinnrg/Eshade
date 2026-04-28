@@ -66,7 +66,7 @@ export default async function handler(req, res) {
           ...(discountValue !== undefined && { discountValue: parseFloat(discountValue) }),
           ...(minPurchase !== undefined && { minPurchase: parseFloat(minPurchase) }),
           ...(maxDiscount !== undefined && { maxDiscount: maxDiscount ? parseFloat(maxDiscount) : null }),
-          ...(usageLimit !== undefined && { usageLimit: usageLimit ? parseInt(usageLimit) : null }),
+          ...(usageLimit !== undefined && { usageLimit: usageLimit ? parseInt(usageLimit, 10) : null }),
           ...(startDate && { startDate: new Date(startDate) }),
           ...(endDate && { endDate: new Date(endDate) }),
           ...(isActive !== undefined && { isActive }),
