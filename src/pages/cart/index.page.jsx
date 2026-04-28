@@ -1,0 +1,598 @@
+import { useEffect, useCallback, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useShallow } from 'zustand/react/shallow';
+import { useStore } from '@src/store';
+import CustomHead from '@src/components/dom/CustomHead';
+import Breadcrumb from '@src/components/dom/Breadcrumb';
+import LoadingSpinner from '@src/components/dom/LoadingSpinner';
+import Maintenance from '@src/components/dom/Maintenance';
+import styles from './cart.module.scss';
+
+function CartPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [cart, setCart, , setCartTotal, setIsAuthModalOpen, showAlert, wishlist, setWishlist] = useStore(
+    useShallow((state) => [
+      state.cart, 
+      state.setCart, 
+      state.cartTotal, 
+      state.setCartTotal, 
+      state.setIsAuthModalOpen, 
+      state.showAlert,
+      state.wishlist,
+      state.setWishlist
+    ]),
+  );
+
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [isAllSelected, setIsAllSelected] = useState(false);
+  const [maintenance, setMaintenance] = useState(null);
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      setIsAuthModalOpen(true);
+      router.push('/');
+    }
+  }, [status, router, setIsAuthModalOpen]);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const checkMaintenanceAndLoad = async () => {
+      try {
+        const res = await fetch('/api/maintenance?page=cart');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.active) {
+            if (mounted) setMaintenance(data);
+            return; // skip loading cart data
+          }
+        }
+      } catch (err) {
+        console.error('Error checking maintenance:', err);
+      }
+
+      if (session?.user) {
+        fetch('/api/user/cart')
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.cart) {
+              setCart(data.cart);
+              setCartTotal(data.total || 0);
+              // Select all items by default
+              setSelectedItems(data.cart.map(item => item.id));
+              setIsAllSelected(true);
+            }
+          })
+          .catch(console.error);
+      }
+    };
+
+    checkMaintenanceAndLoad();
+
+    return () => { mounted = false; };
+  }, [session, setCart, setCartTotal]);
+
+  useEffect(() => {
+    // Check if all items are selected
+    if (cart.length > 0 && selectedItems.length === cart.length) {
+      setIsAllSelected(true);
+    } else {
+      setIsAllSelected(false);
+    }
+  }, [selectedItems, cart.length]);
+
+  const calculateTotal = useCallback((items) => {
+    return items.reduce((sum, item) => {
+      const price = item.produk.harga * (1 - item.produk.diskon / 100);
+      return sum + price * item.quantity;
+    }, 0);
+  }, []);
+
+  const calculateSelectedTotal = useCallback(() => {
+    const selectedCartItems = cart.filter(item => selectedItems.includes(item.id));
+    return calculateTotal(selectedCartItems);
+  }, [cart, selectedItems, calculateTotal]);
+
+  // Group cart items by product ID
+  const groupedCart = useCallback(() => {
+    const grouped = {};
+    cart.forEach(item => {
+      if (!grouped[item.produkId]) {
+        grouped[item.produkId] = {
+          produk: item.produk,
+          produkId: item.produkId,
+          variants: []
+        };
+      }
+      grouped[item.produkId].variants.push(item);
+    });
+    return Object.values(grouped);
+  }, [cart]);
+
+  const handleSelectAll = useCallback(() => {
+    if (isAllSelected) {
+      setSelectedItems([]);
+    } else {
+      setSelectedItems(cart.map(item => item.id));
+    }
+  }, [isAllSelected, cart]);
+
+  const handleSelectItem = useCallback((cartId) => {
+    setSelectedItems(prev => {
+      if (prev.includes(cartId)) {
+        return prev.filter(id => id !== cartId);
+      }
+      return [...prev, cartId];
+    });
+  }, []);
+
+  const handleToggleWishlist = useCallback(async (item) => {
+    const isInWishlist = wishlist.some(w => w.produkId === item.produkId);
+    
+    try {
+      if (isInWishlist) {
+        // Remove from wishlist
+        await fetch('/api/user/wishlist', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ produkId: item.produkId }),
+        });
+        setWishlist(wishlist.filter(w => w.produkId !== item.produkId));
+        showAlert({
+          type: 'success',
+          title: 'Dihapus dari Wishlist',
+          message: 'Produk berhasil dihapus dari wishlist.',
+        });
+      } else {
+        // Add to wishlist
+        const res = await fetch('/api/user/wishlist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            produkId: item.produkId,
+            ukuran: item.ukuran,
+            warna: item.warna 
+          }),
+        });
+        const data = await res.json();
+        if (data.wishlistItem) {
+          setWishlist([...wishlist, data.wishlistItem]);
+          showAlert({
+            type: 'success',
+            title: 'Ditambahkan ke Wishlist',
+            message: 'Produk berhasil ditambahkan ke wishlist.',
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error toggling wishlist:', error);
+      showAlert({
+        type: 'error',
+        title: 'Terjadi Kesalahan',
+        message: 'Gagal memperbarui wishlist. Silakan coba lagi.',
+      });
+    }
+  }, [wishlist, setWishlist, showAlert]);
+
+  const handleCheckout = useCallback(async () => {
+    if (selectedItems.length === 0) {
+      showAlert({
+        type: 'error',
+        title: 'Tidak Ada Item',
+        message: 'Silakan pilih item yang ingin di-checkout.',
+      });
+      return;
+    }
+
+    // Get selected cart items
+    let selectedCartItems = cart.filter(item => selectedItems.includes(item.id));
+
+    // Validate stock and adjust if needed
+    let hadAdjustments = false;
+
+    for (const item of selectedCartItems) {
+      if (item.produk?.stok <= 0) {
+        // remove from cart (both server and local)
+        try {
+          await fetch('/api/user/cart', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cartId: item.id }),
+          });
+        } catch (e) {
+          // ignore
+        }
+        hadAdjustments = true;
+      } else if (item.quantity > item.produk.stok) {
+        // adjust down to available stock
+        try {
+          const res = await fetch('/api/user/cart', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cartId: item.id, quantity: item.produk.stok }),
+          });
+          const data = await res.json();
+          if (data.cartItem) {
+            // update local cart
+            setCart(prev => prev.map(it => it.id === data.cartItem.id ? data.cartItem : it));
+            hadAdjustments = true;
+          }
+        } catch (e) {
+          // ignore per-item failure for now
+        }
+      }
+    }
+
+    // Refresh cart from server after adjustments
+    let freshCart = cart;
+    if (hadAdjustments) {
+      try {
+        const res = await fetch('/api/user/cart');
+        const d = await res.json();
+        if (d.cart) {
+          setCart(d.cart);
+          setCartTotal(d.total || 0);
+          freshCart = d.cart;
+        }
+      } catch (e) {
+        // ignore
+      }
+    }
+
+    // Refresh selected items and cart after adjustments
+    selectedCartItems = freshCart.filter(item => selectedItems.includes(item.id) && item.produk?.stok > 0);
+
+    if (hadAdjustments) {
+      showAlert({
+        type: 'warning',
+        title: 'Beberapa item disesuaikan',
+        message: 'Beberapa item telah disesuaikan atau dihapus karena stok terbatas. Silakan periksa kembali sebelum melanjutkan.',
+      });
+    }
+
+    if (selectedCartItems.length === 0) {
+      showAlert({
+        type: 'error',
+        title: 'Tidak Ada Item',
+        message: 'Tidak ada item yang tersedia untuk checkout.',
+      });
+      return;
+    }
+
+    // Store checkout items in localStorage for payment page
+    localStorage.setItem('checkoutItems', JSON.stringify(selectedCartItems));
+
+    // Navigate to payment page
+    router.push('/pembayaran');
+  }, [selectedItems, cart, showAlert, router, setCart, setCartTotal]);
+
+  const handleUpdateQuantity = useCallback(
+    async (cartId, newQuantity) => {
+      try {
+        if (newQuantity < 1) {
+          await fetch('/api/user/cart', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cartId }),
+          });
+          const newCart = cart.filter((item) => item.id !== cartId);
+          setCart(newCart);
+          setCartTotal(calculateTotal(newCart));
+          showAlert({
+            type: 'success',
+            title: 'Produk Dihapus',
+            message: 'Produk berhasil dihapus dari keranjang.',
+          });
+        } else {
+          const res = await fetch('/api/user/cart', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cartId, quantity: newQuantity }),
+          });
+          const data = await res.json();
+          if (!res.ok) {
+            if (data.available === 0) {
+              // Item was removed server-side due to stock
+              const newCart = cart.filter((item) => item.id !== cartId);
+              setCart(newCart);
+              setCartTotal(calculateTotal(newCart));
+              showAlert({
+                type: 'error',
+                title: 'Stok Habis',
+                message: 'Produk telah dihapus dari keranjang karena stok habis.',
+              });
+              return;
+            }
+            showAlert({ type: 'error', title: 'Gagal', message: data.message || 'Gagal memperbarui jumlah produk.' });
+            return;
+          }
+          if (data.cartItem) {
+            const newCart = cart.map((item) => (item.id === cartId ? data.cartItem : item));
+            setCart(newCart);
+            setCartTotal(calculateTotal(newCart));
+            if (data.adjusted) {
+              showAlert({
+                type: 'warning',
+                title: 'Jumlah disesuaikan',
+                message: `Jumlah produk disesuaikan ke ${data.cartItem.quantity} karena keterbatasan stok.`,
+              });
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error updating cart:', error);
+        showAlert({
+          type: 'error',
+          title: 'Terjadi Kesalahan',
+          message: 'Gagal memperbarui keranjang. Silakan coba lagi.',
+        });
+      }
+    },
+    [cart, setCart, setCartTotal, calculateTotal, showAlert],
+  );
+
+  const handleRemove = useCallback(
+    async (cartId) => {
+      showAlert({
+        type: 'confirm',
+        title: 'Hapus Produk',
+        message: 'Apakah Anda yakin ingin menghapus produk ini dari keranjang?',
+        confirmText: 'Hapus',
+        showCancel: true,
+        onConfirm: async () => {
+          try {
+            await fetch('/api/user/cart', {
+              method: 'DELETE',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ cartId }),
+            });
+            const newCart = cart.filter((item) => item.id !== cartId);
+            setCart(newCart);
+            setCartTotal(calculateTotal(newCart));
+            showAlert({
+              type: 'success',
+              title: 'Produk Dihapus',
+              message: 'Produk berhasil dihapus dari keranjang.',
+            });
+          } catch (error) {
+            console.error('Error removing from cart:', error);
+            showAlert({
+              type: 'error',
+              title: 'Terjadi Kesalahan',
+              message: 'Gagal menghapus produk. Silakan coba lagi.',
+            });
+          }
+        },
+      });
+    },
+    [cart, setCart, setCartTotal, calculateTotal, showAlert],
+  );
+
+  if (status === 'loading') {
+    return <LoadingSpinner fullscreen />;
+  }
+
+  if (!session?.user) {
+    return null;
+  }
+
+  if (maintenance && maintenance.active) {
+    return <Maintenance message={maintenance.message} />;
+  }
+
+  return (
+    <>
+      <CustomHead title="Keranjang - Kunam" description="Keranjang belanja Anda" />
+      <main className={styles.container}>
+        <Breadcrumb items={[{ label: 'Cart', href: null }]} />
+
+        {cart.length === 0 ? (
+          <div className={styles.empty}>
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 2L3 6V20C3 20.5304 3.21071 21.0391 3.58579 21.4142C3.96086 21.7893 4.46957 22 5 22H19C19.5304 22 20.0391 21.7893 20.4142 21.4142C20.7893 21.0391 21 20.5304 21 20V6L18 2H6Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M3 6H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <h2>Keranjang Anda kosong</h2>
+            <p>Tambahkan produk ke keranjang untuk melanjutkan belanja</p>
+            <Link href="/produk" className={styles.browseButton}>
+              Lihat Produk
+            </Link>
+          </div>
+        ) : (
+          <div className={styles.content}>
+            <div className={styles.items}>
+              <div className={styles.selectAllBar}>
+                <label className={styles.checkboxLabel}>
+                  <input 
+                    type="checkbox" 
+                    checked={isAllSelected}
+                    onChange={handleSelectAll}
+                    className={styles.checkbox}
+                  />
+                  <span>Pilih Semua ({cart.length} Item)</span>
+                </label>
+              </div>
+
+              {groupedCart().map((group) => {
+                const allVariantsSelected = group.variants.every(v => selectedItems.includes(v.id));
+                const someVariantsSelected = group.variants.some(v => selectedItems.includes(v.id));
+                const isInWishlist = wishlist.some(w => w.produkId === group.produkId);
+
+                const handleSelectGroup = () => {
+                  if (allVariantsSelected) {
+                    // Unselect all variants
+                    setSelectedItems(prev => prev.filter(id => !group.variants.some(v => v.id === id)));
+                  } else {
+                    // Select all variants
+                    setSelectedItems(prev => {
+                      const newSelected = [...prev];
+                      group.variants.forEach(v => {
+                        if (!newSelected.includes(v.id)) {
+                          newSelected.push(v.id);
+                        }
+                      });
+                      return newSelected;
+                    });
+                  }
+                };
+                
+                return (
+                  <div key={group.produkId} className={`${styles.card} ${allVariantsSelected ? styles.selected : ''}`}>
+                    <label className={styles.checkboxContainer}>
+                      <input 
+                        type="checkbox" 
+                        checked={allVariantsSelected}
+                        ref={input => {
+                          if (input) input.indeterminate = someVariantsSelected && !allVariantsSelected;
+                        }}
+                        onChange={handleSelectGroup}
+                        className={styles.checkbox}
+                      />
+                    </label>
+
+                    <Link href={`/produk/${group.produkId}`} className={styles.imageContainer}>
+                      {group.produk?.gambar && (
+                        <Image
+                          src={Array.isArray(group.produk.gambar) ? group.produk.gambar[0] : group.produk.gambar}
+                          alt={group.produk.nama}
+                          fill
+                          sizes="120px"
+                          className={styles.image}
+                        />
+                      )}
+                    </Link>
+
+                    <div className={styles.info}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Link href={`/produk/${group.produkId}`} className={styles.name}>
+                          {group.produk?.nama}
+                        </Link>
+                        <button type="button" className={`${styles.wishlistButton} ${isInWishlist ? 'active' : ''}`} onClick={() => handleToggleWishlist(group.variants[0])} aria-label="Wishlist">
+                          ♥
+                        </button>
+                      </div>
+                      
+                      <p className={styles.kategori}>{group.produk?.kategori}</p>
+
+                      {/* Display all variants */}
+                      {group.variants.map((item) => (
+                        <div key={item.id} className={styles.variantRow}>
+                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                           <input type="checkbox" checked={selectedItems.includes(item.id)} onChange={() => handleSelectItem(item.id)} className={styles.checkbox} />
+                         </div>
+                          <div className={styles.variantInfo}>
+                            {item.ukuran && <span className={styles.variant}>Size: {item.ukuran}</span>}
+                            {item.warna && <span className={styles.variant}>Color: {item.warna}</span>}
+                          </div>
+
+                          <div className={styles.priceAndQuantity}>
+                            <div className={styles.price}>
+                              {item.produk?.diskon > 0 ? (
+                                <>
+                                  <span className={styles.priceFinal}>
+                                    Rp {(item.produk.harga * (1 - item.produk.diskon / 100)).toLocaleString('id-ID')}
+                                  </span>
+                                  <span className={styles.priceOriginal}>Rp {item.produk.harga.toLocaleString('id-ID')}</span>
+                                  {item.produk.diskon > 0 && (
+                                    <span className={styles.saleLabel}>{item.produk.diskon}%</span>
+                                  )}
+                                </>
+                              ) : (
+                                <span className={styles.priceFinal}>Rp {item.produk?.harga?.toLocaleString('id-ID')}</span>
+                              )}
+                            </div>
+
+                            <div className={styles.quantityControl}>
+                              <button type="button" onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)} aria-label="Kurangi">
+                                −
+                              </button>
+                              <span>{item.quantity}</span>
+                              <button
+                                type="button"
+                                onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
+                                aria-label="Tambah"
+                                disabled={item.quantity >= (item.produk?.stok || 0)}
+                              >
+                                +
+                              </button>
+                            </div>
+                          </div>
+                          <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', alignItems: 'center' }}>
+                            <div className={styles.stockInfo}>
+                              {item.produk?.stok <= 0 ? (
+                                <span className={styles.outOfStock}>Habis</span>
+                              ) : (
+                                <span className={styles.inStock}>Sisa: {item.produk?.stok}</span>
+                              )}
+                            </div>
+                            <button type="button" className={styles.removeLink} onClick={() => handleRemove(item.id)}>Hapus</button>
+                          </div>
+                        </div>
+                      ))}
+
+                      <div className={styles.subtotalRow}>
+                        <span>Subtotal:</span>
+                        <span className={styles.subtotalPrice}>
+                          Rp {group.variants.reduce((sum, item) => {
+                            const price = item.produk.harga * (1 - item.produk.diskon / 100);
+                            return sum + (price * item.quantity);
+                          }, 0).toLocaleString('id-ID')}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Removed actions div with wishlist and delete buttons */}
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className={styles.summary}>
+              <h3>Ringkasan Pesanan</h3>
+              <div className={styles.summaryItems}>
+                <div className={styles.summaryRow}>
+                  <span>Subtotal Item ({selectedItems.length})</span>
+                  <span>Rp {calculateSelectedTotal().toLocaleString('id-ID')}</span>
+                </div>
+                <div className={styles.summaryRow}>
+                  <span>Ongkos Kirim</span>
+                  <span>TBD</span>
+                </div>
+                <div className={styles.summaryRow}>
+                  <span>Subtotal</span>
+                  <span>Rp {calculateSelectedTotal().toLocaleString('id-ID')}</span>
+                </div>
+                <div className={styles.summaryRow}>
+                  <span>Estimasi Pajak</span>
+                  <span>TBD</span>
+                </div>
+              </div>
+              <div className={`${styles.summaryRow} ${styles.total}`}>
+                <span>Total Pesanan</span>
+                <span>Rp {calculateSelectedTotal().toLocaleString('id-ID')}</span>
+              </div>
+
+              <button 
+                type="button" 
+                className={styles.checkoutButton}
+                onClick={handleCheckout}
+                disabled={selectedItems.length === 0}
+              >
+                Checkout ({selectedItems.length} Item)
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        )}
+      </main>
+    </>
+  );
+}
+
+export default CartPage;

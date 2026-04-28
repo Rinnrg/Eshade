@@ -1,0 +1,81 @@
+@import '@src/styles/functions';
+
+.sidebar {
+  width: 100%;
+  padding: 0;
+}
+
+.section {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 1.25rem 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.toggleIcon {
+  font-size: 0.75rem;
+  transition: transform 0.3s ease;
+  color: #666;
+
+  &.expanded {
+    transform: rotate(180deg);
+  }
+}
+
+.sectionContent {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+
+  &.expanded {
+    max-height: 500px;
+    padding-bottom: 1.25rem;
+  }
+}
+
+.categoryList,
+.priceList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.categoryItem,
+.priceItem {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 0.875rem;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #000;
+  }
+
+  &.active {
+    color: #000;
+    font-weight: 500;
+  }
+}

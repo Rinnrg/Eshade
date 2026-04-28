@@ -1,0 +1,329 @@
+@import '@src/styles/functions';
+
+.root {
+  position: relative;
+  height: auto;
+  width: 100%;
+  translate: none !important;
+  transform: none !important;
+  box-shadow: none;
+  background-color: #000;
+  padding: calc(var(--layout-columns-gap) * 3) var(--layout-margin) calc(var(--layout-columns-gap) * 2) var(--layout-margin);
+
+  @include mobile {
+    padding: calc(var(--layout-columns-gap) * 1.5) var(--layout-margin) calc(var(--layout-columns-gap) * 1) var(--layout-margin);
+  }
+
+  .companyInfo {
+    padding-bottom: calc(var(--layout-columns-gap) * 2);
+
+    @include mobile {
+      padding-bottom: calc(var(--layout-columns-gap) * 1.2);
+    }
+
+    .brandName {
+      font-size: 3vw;
+      line-height: 1.2;
+      margin-bottom: calc(var(--layout-columns-gap) * 1);
+      color: var(--white);
+
+      @include mobile {
+        font-size: 10vw;
+        margin-bottom: calc(var(--layout-columns-gap) * 0.6);
+      }
+
+      .kunamText {
+        font-family: 'Suncos', sans-serif;
+        letter-spacing: 0.02em;
+      }
+
+      .brandLogo {
+        display: block;
+        width: 160px;
+        height: auto;
+      }
+    }
+
+    .companyDescription {
+      color: rgba(255, 255, 255, 0.95); // slightly dimmed white for better hierarchy
+      font-size: 0.85vw;
+      font-weight: 400; // regular
+      line-height: 1.6;
+      margin-bottom: calc(var(--layout-columns-gap) * 1);
+      max-width: 90%;
+
+      @include mobile {
+        font-size: 3.5vw;
+        max-width: 100%;
+        line-height: 1.5;
+        margin-bottom: calc(var(--layout-columns-gap) * 0.8);
+      }
+
+      p {
+        margin-bottom: calc(var(--layout-columns-gap) * 0.5);
+        font-weight: 400; // ensure regular
+      }
+
+      .tagline {
+        font-weight: 400; // regular
+      }
+    }
+
+    .contactInfo {
+      color: rgba(255, 255, 255, 0.95);
+      font-size: 0.85vw; // match company description on desktop
+      font-weight: 400; // regular
+
+      .title {
+        font-size: 0.85vw !important; // ensure override
+        margin-bottom: calc(var(--layout-columns-gap) * 0.5);
+        color: var(--white);
+        font-weight: 400; // regular
+
+        @include mobile {
+          font-size: 3.1vw !important; // ensure override on mobile
+          margin-bottom: calc(var(--layout-columns-gap) * 0.35);
+        }
+      }
+
+      p {
+        font-size: 0.85vw !important;
+        margin: 0 0 calc(var(--layout-columns-gap) * 0.3) 0;
+
+        @include mobile {
+          font-size: 3.1vw !important; // ensure override on mobile
+          margin: 0 0 calc(var(--layout-columns-gap) * 0.6) 0; // add vertical spacing
+        }
+      }
+
+      a {
+        color: var(--white);
+        text-decoration: none;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: var(--fillColor);
+        }
+      }
+    }
+
+    .mobileSocial {
+      margin-top: calc(var(--layout-columns-gap) * 1.2); // more spacing above
+      margin-bottom: calc(var(--layout-columns-gap) * 0.6);
+
+      .title {
+        margin-bottom: calc(var(--layout-columns-gap) * 0.4);
+      }
+
+      .socialIcons {
+        margin-top: 0.25rem;
+        display: flex;
+        gap: calc(var(--layout-columns-gap) * 0.8); // larger gap between icons
+      }
+
+      @include mobile {
+        .socialIcons {
+          justify-content: flex-start; // keep icons under contact on the left
+        }
+      }
+    }
+  }
+
+  .linksContainer {
+    padding-top: calc(var(--layout-columns-gap) * 0.5);
+    width: 100%;
+
+    @include mobile {
+      text-align: right; // Align section titles & links to the right on mobile
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end; // push contents toward the right edge of the column
+    }
+
+    .title {
+      color: var(--white);
+      font-size: 1vw;
+      font-weight: 600;
+      padding-bottom: calc(var(--layout-columns-gap) * 0.75);
+
+      @include mobile {
+        font-size: 4vw;
+        white-space: nowrap; // keep 'LAYANAN' / 'TENTANG KAMI' on one line
+      }
+    }
+
+    .linkTextContainer {
+      white-space: nowrap; // prevent line breaks
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+    }
+
+    .linkText {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-block;
+      max-width: 100%;
+      color: var(--white); // ensure link text is white
+
+      // Ensure inner LinkText structure inherits this color
+      .linkContent {
+        color: inherit;
+
+        span {
+          div {
+            color: inherit;
+          }
+        }
+      }
+
+      &:hover {
+        color: var(--fillColor);
+      }
+    }
+
+    // Bagian Social Icons yang sudah diperbaiki
+    .socialIcons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: calc(var(--layout-columns-gap) * 0.5);
+      margin-top: calc(var(--layout-columns-gap) * 0.5);
+
+      @include mobile {
+        justify-content: flex-end; // Push icons to the right on mobile
+      }
+
+      .socialIconContainer {
+        overflow: visible; // Mencegah cropping
+
+        .socialLink {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 2.5vw;
+          height: 2.5vw;
+          background-color: transparent !important; // Hilangkan bundaran
+          border-radius: 0 !important; // Hilangkan bentuk lingkaran
+          overflow: visible !important; // Pastikan logo tidak terpotong
+          transition: all 0.3s ease;
+
+          @include mobile {
+            width: 11vw;
+            height: 11vw;
+          }
+
+          .socialIcon {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: contain !important; // Logo utuh & proporsional
+          }
+
+          &:hover {
+            transform: scale(1.1);
+          }
+        }
+      }
+    }
+  }
+
+  // Right column wrapper for mobile links (LAYANAN + TENTANG KAMI)
+  .linksGrid {
+    @include mobile {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end; // Place child sections to the right
+      gap: calc(var(--layout-columns-gap) * 0.8);
+      padding-right: calc(var(--layout-margin) * 0.6); // nudge column further to the right
+    }
+  }
+
+  @include mobile {
+    .mobileColumns {
+      display: flex;
+      gap: calc(var(--layout-columns-gap) * 0.8);
+      align-items: flex-start;
+      width: 100%;
+
+      .companyInfoMobile {
+        flex: 1;
+        padding-right: calc(var(--layout-columns-gap) * 0.6);
+
+        .brandName {
+          color: var(--white);
+
+          @include mobile {
+            margin-bottom: calc(var(--layout-columns-gap) * 0.6); // add spacing under logo on mobile
+          }
+
+          .brandLogo {
+            display: block;
+            width: 140px; // slightly smaller on mobile
+            height: auto;
+          }
+        }
+
+        .companyDescription {
+          color: rgba(255, 255, 255, 0.95); // force near-white on mobile
+          max-width: 100%;
+
+          @include mobile {
+            font-size: 3.1vw; // reduce to match menu size
+          }
+
+          p {
+            font-weight: 400 !important; // force regular on mobile
+          }
+
+          .tagline {
+            font-weight: 400 !important; // force regular
+          }
+        }
+
+        .contactInfo {
+          color: rgba(255, 255, 255, 0.95);
+          font-weight: 400 !important;
+
+          .title {
+            color: var(--white);
+            font-weight: 400 !important;
+          }
+
+          a {
+            color: var(--white);
+          }
+        }
+
+        .mobileSocial {
+          .title {
+            color: var(--white);
+          }
+        }
+      }
+
+      .linksGridMobile {
+        width: 120px; // fixed width for right column on mobile
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--layout-columns-gap) * 0.6);
+        align-items: flex-end;
+
+        .linksContainer {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .bottomContainer {
+    margin-top: calc(var(--layout-columns-gap) * 2);
+    padding-top: calc(var(--layout-columns-gap) * 1.5);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+
+    .bottomInfo {
+      color: var(--white);
+      font-size: 0.85vw;
+      opacity: 0.7;
+    }
+  }
+}

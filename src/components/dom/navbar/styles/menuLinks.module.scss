@@ -1,0 +1,285 @@
+@import '@src/styles/functions';
+
+.menu {
+  position: fixed;
+  right: 0;
+  top: 0;
+  opacity: 0;
+  visibility: hidden;
+  width: 40vw;
+  height: 100vh;
+  z-index: 1000;
+  overflow: hidden;
+  background-color: transparent;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  
+  @include mobile {
+    width: 100vw;
+    background-color: var(--black);
+  }
+  
+  // Active state when menu is open
+  &.menuOpen {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+
+.menuWrapper {
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  padding-top: calc(var(--layout-columns-gap) * 2);
+  padding-bottom: calc(var(--layout-columns-gap) * 2);
+  padding-left: var(--layout-margin);
+  padding-right: var(--layout-margin);
+
+  height: inherit;
+  width: 100%;
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: transparent;
+
+  .menuClose {
+    position: absolute;
+    top: var(--layout-columns-gap);
+    right: var(--layout-margin);
+
+    border: 1px solid var(--white);
+    background-color: transparent;
+    color: var(--white);
+    height: 2.5vw;
+    width: 2.5vw;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+    
+    &:hover {
+      background-color: var(--white);
+      color: var(--black);
+      transform: rotate(90deg);
+    }
+    
+    > p {
+      line-height: 0.4;
+      font-size: 1.2vw;
+    }
+    @include mobile {
+      height: 6vw;
+      width: 6vw;
+      > p {
+        line-height: 0.4;
+        font-size: 3.8vw;
+      }
+    }
+  }
+}
+
+.menuList {
+  counter-reset: menuList;
+  margin-bottom: calc(var(--layout-columns-gap) * 2);
+  overflow: hidden;
+  
+  &::before {
+    position: relative;
+    font-size: 2.3vw;
+    line-height: 130%;
+    font-weight: 550;
+    color: var(--white);
+    display: block;
+    margin-bottom: calc(var(--layout-columns-gap) * 0.5);
+    opacity: 0.6;
+    @include mobile {
+      font-size: 5.9vw;
+      line-height: 140%;
+    }
+  }
+
+  &:nth-child(1) {
+    &::before {
+      content: 'Sitemap';
+      font-weight: 700;
+    }
+  }
+
+  &:nth-child(2) {
+    display: none;
+    @include mobile {
+      display: block;
+    }
+  }
+  
+  &:nth-child(3) {
+    &::before {
+      font-weight: 700;
+      content: 'Follow Us';
+    }
+  }
+}
+
+.menuListItem {
+  font-weight: 450;
+  position: relative;
+  width: fit-content;
+  text-indent: 0;
+  cursor: pointer;
+  pointer-events: auto;
+  margin-bottom: calc(var(--layout-columns-gap) * 0.5);
+  z-index: 1;
+  will-change: transform;
+  
+  > a,
+  > span[role="button"] {
+    display: block;
+    text-decoration: none;
+    color: var(--white);
+    transition: color 0.3s ease;
+    
+    &:hover {
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 89%;
+    left: 0;
+    width: 100%;
+    height: 0.25vw;
+    background: var(--white);
+    z-index: -1;
+    transform: scale3d(0.001, 1, 1);
+    opacity: 0;
+    transform-origin: 0% 50%;
+    transition:
+      transform 0.3s cubic-bezier(0.2, 1, 0.3, 1),
+      opacity 0.1s 0.2s linear;
+      
+    @include mobile {
+      height: 0.5vw;
+    }
+  }
+
+  &:hover {
+    &::after {
+      opacity: 0.5;
+      transform: scale3d(1, 1, 1);
+      transform-origin: 0% 50%;
+      transition:
+        transform 0.7s cubic-bezier(0.2, 1, 0.3, 1),
+        opacity 0.1s linear;
+    }
+  }
+
+  span {
+    font-size: 1.9vw;
+    display: block;
+    color: var(--white);
+    text-decoration: none;
+    line-height: 1.3;
+    font-weight: 450;
+
+    @include mobile {
+      font-size: 3.7vw;
+      line-height: 140%;
+    }
+  }
+}
+
+.menuListItem.menuListItemActive {
+  &::after {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+    transform-origin: 0% 50%;
+    transition:
+      transform 0.7s cubic-bezier(0.2, 1, 0.3, 1),
+      opacity 0.1s linear;
+  }
+
+  &:hover {
+    &::after {
+      opacity: 1;
+      transform: scale3d(1, 1, 1);
+      transform-origin: 0% 50%;
+      transition:
+        transform 0.7s cubic-bezier(0.2, 1, 0.3, 1),
+        opacity 0.1s linear;
+    }
+  }
+}
+
+.menuItemWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.menuTitle {
+  font-size: 1.9vw;
+  display: block;
+  color: var(--white);
+  text-decoration: none;
+  line-height: 1.3;
+  font-weight: 450;
+  cursor: default;
+
+  @include mobile {
+    font-size: 3.7vw;
+    line-height: 140%;
+  }
+}
+
+.submenu {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-columns-gap) * 0.3);
+  margin-top: calc(var(--layout-columns-gap) * 0.4);
+  margin-left: 1.5vw;
+  padding-left: 1vw;
+  border-left: 2px solid rgba(255, 255, 255, 0.2);
+  
+  @include mobile {
+    margin-left: 3vw;
+    padding-left: 2vw;
+    gap: calc(var(--layout-columns-gap) * 0.25);
+  }
+}
+
+.submenuItem {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  width: fit-content;
+  
+  &:hover {
+    color: var(--white);
+    transform: translateX(0.5vw);
+    
+    @include mobile {
+      transform: translateX(1vw);
+    }
+  }
+  
+  span {
+    font-size: 1.4vw;
+    font-weight: 400;
+    line-height: 1.4;
+    
+    @include mobile {
+      font-size: 3vw;
+    }
+  }
+}

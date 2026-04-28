@@ -1,0 +1,11 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api
+
+# Host
+Host: https://kunam-id.vercel.app
+
+# Sitemaps
+Sitemap: https://kunam-id.vercel.app/sitemap.xml

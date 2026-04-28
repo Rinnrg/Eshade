@@ -1,0 +1,12 @@
+{
+  "name": "Kunam",
+  "short_name": "Kunam",
+  "description": "Kunam Clothing - Fashion store untuk pakaian berkualitas dengan desain menarik",
+  "icons": [],
+  "theme_color": "#28282b",
+  "background_color": "#f5f5f5",
+  "start_url": "/",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait"
+}

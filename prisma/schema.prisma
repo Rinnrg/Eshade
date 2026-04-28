@@ -1,0 +1,246 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+  relationMode = "prisma"
+}
+
+model Admin {
+  id        String   @id
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+}
+
+model carts {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  produkId  String
+  quantity  Int      @default(1)
+  ukuran    String?
+  warna     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  produk    produk   @relation(fields: [produkId], references: [id], onDelete: Cascade)
+  users     users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, produkId, ukuran, warna])
+  @@index([produkId])
+  @@index([userId])
+}
+
+model order_items {
+  id       Int     @id @default(autoincrement())
+  orderId  Int
+  produkId String
+  quantity Int
+  price    Float
+  ukuran   String?
+  warna    String?
+  orders   orders  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  produk   produk  @relation(fields: [produkId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([produkId])
+}
+
+model orders {
+  id              Int           @id @default(autoincrement())
+  userId          Int
+  orderNumber     String        @unique
+  status          String        @default("pending")
+  totalAmount     Float
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  // Payment related fields
+  snapToken       String?
+  paymentType     String?       // e.g. "gopay", "bank_transfer", "credit_card"
+  paymentStatus   String?       @default("pending") // pending, settlement, expire, cancel, deny
+  transactionId   String?       // Midtrans transaction ID
+  transactionTime DateTime?
+  paidAt          DateTime?
+  stockUpdated    Boolean       @default(false) // Track if stock has been updated
+  
+  // Customer info
+  customerName    String?
+  customerEmail   String?
+  customerPhone   String?
+  // Shipping address snapshot & optional reference to user's saved address
+  shippingAddress Json?
+  shippingAddressId Int?
+  
+  order_items order_items[]
+  users       users         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([orderNumber])
+  @@index([status])
+  @@index([userId])
+  @@index([transactionId])
+  @@index([shippingAddressId])
+}
+
+model produk {
+  id             String        @id
+  nama           String
+  kategori       String
+  harga          Float
+  diskon         Float         @default(0)
+  stok           Int           @default(0)
+  deskripsi      String?       // Deprecated, use sections instead
+  sections       Json[]        @default([]) // Array of {judul: string, deskripsi: string, gambar?: string}
+  ukuran         String[]
+  warna          String[]
+  gambar         String[]      // Main product images (gallery)
+  thumbnail      String?       // Primary thumbnail for product card
+  video          String[]
+  produkUnggulan Boolean       @default(false)
+  urutanTampilan Int           @default(0)
+  tanggalDibuat  DateTime      @default(now())
+  tanggalDiubah  DateTime      @updatedAt
+  jumlahTerjual  Int           @default(0)
+  rating         Float         @default(0)    // Average rating
+  totalReviews   Int           @default(0)    // Total number of reviews
+  carts          carts[]
+  order_items    order_items[]
+  reviews        reviews[]
+  wishlists      wishlists[]
+
+  @@index([diskon])
+  @@index([jumlahTerjual])
+  @@index([kategori])
+  @@index([produkUnggulan])
+  @@index([urutanTampilan])
+  @@index([rating])
+}
+
+model reviews {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  produkId  String
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  produk    produk   @relation(fields: [produkId], references: [id], onDelete: Cascade)
+  users     users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, produkId])
+  @@index([produkId])
+  @@index([userId])
+}
+
+model users {
+  id         Int         @id @default(autoincrement())
+  email      String      @unique
+  username   String?     @unique
+  password   String?
+  name       String?
+  phone      String?
+  image      String?
+  provider   String      @default("credentials")
+  providerId String?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  carts      carts[]
+  orders     orders[]
+  addresses  addresses[]
+  reviews    reviews[]
+  wishlists  wishlists[]
+
+  @@index([email])
+  @@index([username])
+}
+
+model wishlists {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  produkId  String
+  createdAt DateTime @default(now())
+  produk    produk   @relation(fields: [produkId], references: [id], onDelete: Cascade)
+  users     users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, produkId])
+  @@index([produkId])
+  @@index([userId])
+}
+
+model HomeSection {
+  id          String   @id @default(cuid())
+  title       String
+  page        String   @default("home") // home, produk, about, contact, etc.
+  images      String[] // Array of image URLs
+  layoutType  String   @default("slider") // slider, grid, masonry, carousel
+  columns     Int      @default(3) // For grid layout
+  autoplay    Boolean  @default(true) // For slider
+  interval    Int      @default(3000) // Slider interval in ms
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([order])
+  @@index([page])
+}
+
+model Voucher {
+  id            String   @id @default(cuid())
+  code          String   @unique
+  name          String
+  description   String?
+  discountType  String   // "percentage" or "fixed"
+  discountValue Float    // Percentage (0-100) or fixed amount
+  minPurchase   Float    @default(0) // Minimum purchase amount
+  maxDiscount   Float?   // Maximum discount for percentage type
+  usageLimit    Int?     // Null = unlimited
+  usageCount    Int      @default(0)
+  startDate     DateTime
+  endDate       DateTime
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([code])
+  @@index([isActive])
+}
+
+model addresses {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  label        String?
+  recipientName String
+  phone        String
+  addressLine1 String
+  addressLine2 String?
+  city         String
+  province     String
+  district     String?
+  postalCode   String
+  latitude     Float?
+  longitude    Float?
+  isDefault    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  users users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model MaintenanceSetting {
+  id        String   @id @default(cuid())
+  page      String   @unique
+  title     String?
+  message   String   @default("halaman ini sedang dalam perbaikan")
+  active    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([page])
+}

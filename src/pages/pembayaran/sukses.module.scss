@@ -1,0 +1,730 @@
+@import '@src/styles/variables.scss';
+
+/* Ensure the app layout uses native scrolling for the receipt page */
+:global(body.receipt-page) {
+  .layout .main {
+    position: relative !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    max-height: none !important;
+    height: auto !important;
+  }
+
+  .page-transition-overlay {
+    pointer-events: none !important;
+  }
+}
+
+// Animation container untuk animasi sukses
+.animationContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  gap: 2rem;
+  position: relative; // Changed from fixed to relative
+  width: 100%;
+  overflow: visible; // Allow overflow
+  
+  &.blackBackground {
+    background-color: #000;
+  }
+}
+
+/* Animation layers for crossfade */
+.animationWrap {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.animationLayer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 600ms ease;
+  will-change: opacity;
+}
+
+.animationLayer.show {
+  opacity: 1;
+}
+
+.animationText {
+  font-size: 1.25rem;
+  color: #333;
+  font-weight: 500;
+  animation: fadeIn 0.5s ease;
+  
+  .blackBackground & {
+    color: #fff;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// Page wrapper tanpa header/footer
+.pageWrapper {
+  min-height: 100vh;
+  padding: 2rem 5%;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* align to top so the page can scroll */
+  position: relative; // Ensure relative positioning
+  overflow: auto; /* allow scrolling when content is tall */
+  padding-top: 3rem;
+}
+
+// Old container kept for compatibility
+.container {
+  min-height: 100vh;
+  padding: 0 5% 3rem;
+  background-color: var(--white, #f0f4f1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.receipt {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2.5rem;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.successIcon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  font-size: 2.5rem;
+  animation: scaleIn 0.5s ease;
+  position: relative; // ensure we can absolutely position fallback check
+
+  @keyframes scaleIn {
+    0% {
+      transform: scale(0);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+}
+
+.pendingIcon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  font-size: 2.5rem;
+  position: relative; // ensure we can absolutely position fallback check
+}
+
+.fallbackCheck {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff; /* white check for contrast */
+  z-index: 2;
+  pointer-events: none;
+}
+
+.finalCheck {
+  width: 40px;
+  height: 40px;
+  color: #fff; /* white check for contrast */
+  z-index: 3;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #000;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.orderNumber {
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+
+  .label {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 0.25rem;
+  }
+
+  .value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #000;
+    font-family: monospace;
+    letter-spacing: 1px;
+  }
+}
+
+.divider {
+  height: 1px;
+  background: #eee;
+  margin: 1.5rem 0;
+}
+
+.detailsSection {
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #000;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .icon {
+    font-size: 1.1rem;
+  }
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  font-size: 0.95rem;
+
+  .label {
+    color: #666;
+  }
+
+  .value {
+    font-weight: 500;
+    color: #000;
+    text-align: right;
+  }
+}
+
+.items {
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+
+.item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.itemImage {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  background: #eee;
+}
+
+.itemDetails {
+  flex: 1;
+
+  h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem;
+  }
+
+  p {
+    font-size: 0.8rem;
+    color: #666;
+    margin: 0;
+  }
+}
+
+.itemPrice {
+  text-align: right;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.totalSection {
+  background: transparent; /* removed black background */
+  color: #000;
+  padding: 0.5rem 0; /* reduced padding */
+  border-radius: 0; /* remove rounded box feel */
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .totalLabel {
+    font-size: 1rem;
+    color: #666;
+    font-weight: 600;
+  }
+
+  .totalValue {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #000;
+  }
+}
+
+.paymentInfo {
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+
+.paymentBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #dcfce7;
+  color: #16a34a;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+
+  &.pending {
+    background: #fef3c7;
+    color: #d97706;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  margin-top: 2rem;
+}
+
+.printButton {
+  width: 100%;
+  padding: 1rem;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+
+  &:hover {
+    background: #333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.outlineButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1.25rem;
+  background: transparent;
+  color: #000;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  border: 2px solid #000;
+
+  &:hover {
+    background: #f5f5f5;
+  }
+}
+
+.primaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1.25rem;
+  background: #000;
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.secondaryButton {
+  width: 100%;
+  padding: 1rem;
+  background: transparent;
+  color: #000;
+  border: 2px solid #000;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+
+  &:hover {
+    background: #f5f5f5;
+  }
+}
+
+.dangerButton {
+  width: 100%;
+  padding: 1rem;
+  background: transparent;
+  color: #ef4444;
+  border: 2px solid #ef4444;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+
+  &:hover {
+    background: #ef4444;
+    color: #fff;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.timestamp {
+  font-size: 0.85rem;
+  color: #888;
+  margin-top: 1.5rem;
+}
+
+// Animation Overlay
+.animationOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  &.whiteBackground {
+    background: #ffffff;
+  }
+
+  &.blackBackground {
+    background: #000000;
+  }
+}
+
+.animationContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  animation: slideUp 0.4s ease;
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}
+
+// Success Animation - Bigger on desktop
+.successAnimation {
+  width: 400px !important;
+  height: 400px !important;
+  
+  @media (max-width: 768px) {
+    width: 280px !important;
+    height: 280px !important;
+  }
+  
+  @media (max-width: 480px) {
+    width: 220px !important;
+    height: 220px !important;
+  }
+}
+
+// Loading Animation
+.loadingAnimation {
+  width: 250px !important;
+  height: 250px !important;
+  
+  @media (max-width: 768px) {
+    width: 200px !important;
+    height: 200px !important;
+  }
+  
+  @media (max-width: 480px) {
+    width: 150px !important;
+    height: 150px !important;
+  }
+}
+
+.loadingText {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+  animation: pulse 1.5s ease-in-out infinite;
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }
+}
+
+// Loading
+.loading {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+
+  p {
+    font-size: 1.2rem;
+    color: #666;
+  }
+}
+
+.loadingContent {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.logoWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  animation: pulse 2s ease-in-out infinite;
+  
+  .logo {
+    display: block;
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(0.95);
+    opacity: 0.8;
+  }
+}
+
+.spinnerCircle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  animation: rotate 1.5s linear infinite;
+  
+  svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+    
+    circle {
+      fill: none;
+      stroke: #000000;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-dasharray: 251; /* Circumference of circle (2 * π * 40) */
+      stroke-dashoffset: 65;
+      animation: dash 1.5s ease-in-out infinite;
+    }
+  }
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 251;
+  }
+  50% {
+    stroke-dashoffset: 65;
+  }
+  100% {
+    stroke-dashoffset: 251;
+  }
+}
+
+// Error
+.error {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: #fff;
+  border-radius: 16px;
+  max-width: 500px;
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: #666;
+    margin-bottom: 2rem;
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .pageWrapper {
+    padding: 1rem;
+  }
+
+  .container {
+    padding: 1rem;
+  }
+
+  .receipt {
+    padding: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .totalSection {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+}
+
+// Print styles - Hide buttons and adjust layout
+@media print {
+  .pageWrapper {
+    background: #fff;
+    padding: 0;
+  }
+
+  .receipt {
+    box-shadow: none;
+    border-radius: 0;
+    max-width: 100%;
+  }
+
+  .noPrint {
+    display: none !important;
+  }
+
+  .actions {
+    display: none !important;
+  }
+
+  .timestamp {
+    page-break-after: avoid;
+  }
+}
+

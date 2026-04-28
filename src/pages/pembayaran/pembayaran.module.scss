@@ -1,0 +1,726 @@
+@import '@src/styles/variables.scss';
+
+.container {
+  min-height: 100vh;
+  padding: 0 5% 3rem;
+  background-color: var(--white, #f0f4f1);
+  overflow-x: hidden;
+}
+
+.loading {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white, #f0f4f1);
+  
+  p {
+    font-size: 1.2rem;
+    color: #666;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1rem 0;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+  }
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 2rem;
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Left Column - Form and Items
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .icon {
+    font-size: 1.5rem;
+  }
+}
+
+// Customer Form
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #333;
+  }
+
+  input {
+    padding: 0.875rem 1rem;
+    border: 2px solid #e5e5e5;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #000;
+    }
+
+    &::placeholder {
+      color: #aaa;
+    }
+
+    &.error {
+      border-color: #ef4444;
+    }
+  }
+
+  .errorText {
+    font-size: 0.8rem;
+    color: #ef4444;
+  }
+}
+
+// Order Items
+.orderItems {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.orderItem {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.itemImage {
+  width: 80px;
+  height: 80px;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #eee;
+}
+
+.itemDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.25rem;
+
+  h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #000;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  p {
+    font-size: 0.85rem;
+    color: #666;
+    margin: 0;
+  }
+}
+
+.itemPrice {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.25rem;
+
+  .price {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #000;
+  }
+
+  .qty {
+    font-size: 0.85rem;
+    color: #666;
+  }
+}
+
+// Right Column - Summary
+.rightColumn {
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+}
+
+.summaryCard {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.summaryTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #eee;
+}
+
+// Voucher Section
+.voucherSection {
+  margin-bottom: 1.5rem;
+  position: relative;
+
+  .voucherButton {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background: #f9fafb;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #f3f4f6;
+      border-color: #d1d5db;
+    }
+
+    span {
+      flex: 1;
+      text-align: left;
+      margin: 0 0.75rem;
+    }
+
+    svg {
+      flex-shrink: 0;
+    }
+  }
+
+  .voucherDropdown {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 100;
+    animation: slideDown 0.2s ease;
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+
+  .manualVoucherInput {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+
+    h4 {
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: #374151;
+    }
+
+    .voucherInputGroup {
+      display: flex;
+      gap: 0.5rem;
+
+      input {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-family: monospace;
+        text-transform: uppercase;
+        transition: all 0.2s ease;
+
+        &:focus {
+          outline: none;
+          border-color: #000;
+        }
+
+        &.error {
+          border-color: #ef4444;
+        }
+      }
+
+      .applyBtn {
+        padding: 0.75rem 1.25rem;
+        background: #000;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+
+        &:hover:not(:disabled) {
+          background: #333;
+        }
+
+        &:disabled {
+          background: #ccc;
+          cursor: not-allowed;
+        }
+      }
+    }
+
+    .errorText {
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: #ef4444;
+    }
+  }
+
+  .dividerText {
+    padding: 0.75rem 1rem;
+    text-align: center;
+    position: relative;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: calc(50% - 5rem);
+      height: 1px;
+      background: #e5e7eb;
+    }
+
+    &::before {
+      left: 0;
+    }
+
+    &::after {
+      right: 0;
+    }
+
+    span {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      background: #fff;
+      padding: 0 0.5rem;
+    }
+  }
+
+  .voucherList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    max-height: 250px;
+    overflow-y: auto;
+  }
+
+  .voucherItem {
+    padding: 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      border-color: #d1d5db;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .voucherItemHeader {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+
+      .voucherBadge {
+        padding: 0.25rem 0.75rem;
+        background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+        color: #fff;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 700;
+      }
+
+      .voucherCode {
+        font-family: monospace;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #111827;
+      }
+    }
+
+    .voucherName {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.25rem;
+    }
+
+    .voucherDesc {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-bottom: 0.5rem;
+    }
+
+    .voucherDetails {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      margin-bottom: 0.75rem;
+
+      span {
+        font-size: 0.75rem;
+        color: #9ca3af;
+      }
+    }
+
+    .useVoucherBtn {
+      width: 100%;
+      padding: 0.625rem;
+      background: #000;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover:not(:disabled) {
+        background: #333;
+      }
+
+      &:disabled {
+        background: #22c55e;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .removeVoucherBtn {
+    width: 100%;
+    padding: 0.875rem;
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fee2e2;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 1rem;
+    margin-top: 0;
+    width: calc(100% - 2rem);
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #fee2e2;
+    }
+  }
+}
+
+.summaryRows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+
+  .label {
+    color: #666;
+  }
+
+  .value {
+    font-weight: 500;
+    color: #000;
+  }
+
+  &.discount {
+    .value {
+      color: #22c55e;
+    }
+  }
+}
+
+.divider {
+  height: 1px;
+  background: #eee;
+  margin: 1rem 0;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+
+  .totalLabel {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #000;
+  }
+
+  .totalValue {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #000;
+  }
+}
+
+.payButton {
+  width: 100%;
+  padding: 1rem;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #333;
+  }
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+}
+
+.securityNote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: #888;
+
+  .lockIcon {
+    font-size: 1rem;
+  }
+}
+
+// Payment Methods Preview
+.paymentMethods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  justify-content: center;
+
+  .paymentIcon {
+    padding: 0.5rem 0.75rem;
+    background: #f5f5f5;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    color: #666;
+  }
+}
+
+// Empty State
+.emptyState {
+  text-align: center;
+  padding: 4rem 2rem;
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: #666;
+    margin-bottom: 2rem;
+  }
+
+  .backButton {
+    display: inline-block;
+    padding: 0.875rem 2rem;
+    background: #000;
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #333;
+    }
+  }
+}
+
+// Address Selection and Form
+.addressList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.emptyState {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.addAddressButton {
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  border: 1px dashed #d1d5db;
+  border-radius: 8px;
+  color: #374151;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.addressItem {
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.addressItem:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.addressItem.selected {
+  border-color: #000;
+  background: #f8fafc;
+}
+
+.addressDetails { flex: 1; }
+.addressInfo { display: flex; flex-direction: column; gap: 0.25rem; }
+.addressLabel { font-weight: 700; }
+.addressRecipient, .addressPhone, .addressLine, .addressCity, .addressPostalCode { color: #6b7280; font-size: 0.95rem; }
+
+.addAddressForm { margin-top: 0.75rem; background: #fff; padding: 1rem; border-radius: 8px; border: 1px solid #eef2f7; }
+.saveAddressButton { margin-top: 0.75rem; padding: 0.75rem 1rem; background: #000; color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+
+.useCurrentLocationButton {
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  border: 1px solid #e7e7eb;
+  border-radius: 8px;
+  color: #374151;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.formHint {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .container {
+    padding: 0 4% 2rem;
+  }
+
+  .header h1 {
+    font-size: 1.5rem;
+  }
+
+  .section {
+    padding: 1rem;
+  }
+
+  .orderItem {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .itemImage {
+    width: 60px;
+    height: 60px;
+  }
+
+  .itemPrice {
+    display: none;
+  }
+
+  .itemDetails {
+    .priceInline {
+      display: block;
+      font-weight: 600;
+      color: #000;
+      margin-top: 0.25rem;
+    }
+  }
+}

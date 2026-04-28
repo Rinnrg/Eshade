@@ -1,0 +1,199 @@
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
+import { useShallow } from 'zustand/react/shallow';
+import { useStore } from '@src/store';
+import MultipleImageUpload from '@src/components/admin/MultipleImageUpload';
+import Breadcrumb from '@src/components/dom/Breadcrumb';
+import styles from '../produk/form.module.scss';
+
+export default function CreateHomeSection() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [showAlert] = useStore(useShallow((state) => [state.showAlert]));
+  const [formData, setFormData] = useState({
+    page: 'home',
+    urutan: 0,
+  });
+  const [images, setImages] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/admin/login');
+    }
+  }, [status, router]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleImagesChange = (imageData) => {
+    setImages(imageData.allImages || []);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setIsSubmitting(true);
+
+    try {
+      if (images.length === 0) {
+        setError('Minimal satu gambar harus diupload');
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Build FormData for multipart upload
+      const fd = new FormData();
+      // We intentionally do not ask for a visible title in the UI
+      // but the DB requires a title string. Send an empty string so
+      // the section is created without a visible heading.
+      fd.append('title', '');
+      fd.append('page', formData.page || 'home');
+      fd.append('order', parseInt(formData.urutan, 10) || 0);
+      // Defaults for optional layout settings
+      fd.append('layoutType', 'slider');
+      fd.append('columns', '3');
+      fd.append('autoplay', 'true');
+      fd.append('interval', '3000');
+      fd.append('isActive', 'true');
+
+      // Append image files (MultipleImageUpload provides objects with file and url)
+      images.forEach((img) => {
+        if (img && img.file) {
+          fd.append('images', img.file, img.file.name);
+        }
+      });
+
+      const response = await fetch('/api/admin/home-sections', {
+        method: 'POST',
+        body: fd,
+      });
+
+      if (response.ok) {
+        router.push('/admin');
+      } else {
+        const data = await response.json();
+        setError(data.error || 'Gagal membuat section');
+      }
+    } catch (err) {
+      console.error(err);
+      setError('Terjadi kesalahan saat membuat section');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (status === 'loading') {
+    return <div className={styles.container}>Loading...</div>;
+  }
+
+  if (!session) {
+    return null;
+  }
+
+  return (
+    <div className={styles.container}>
+      <header className={styles.header}>
+        <Breadcrumb
+          items={[
+            { label: 'Admin', href: '/admin' },
+            { label: 'Home Sections', href: null },
+            { label: 'Tambah Section', href: null },
+          ]}
+        />
+      </header>
+
+      <main className={styles.main}>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          {error && <div className={styles.error}>{error}</div>}
+
+          {/* Remove title input - UI should not show a section title */}
+          {/* <div className={styles.formGroup}>
+            <label htmlFor="judul" className={styles.label}>
+              Judul Section *
+            </label>
+            <input
+              type="text"
+              id="judul"
+              name="judul"
+              value={formData.judul}
+              onChange={handleChange}
+              className={styles.input}
+              placeholder="Masukkan judul section"
+              required
+            />
+          </div> */}
+
+          <div className={styles.formGroup}>
+            <label htmlFor="page" className={styles.label}>
+              Halaman Tujuan *
+            </label>
+            <select
+              id="page"
+              name="page"
+              value={formData.page}
+              onChange={handleChange}
+              className={styles.input}
+              required
+            >
+              <option value="home">Beranda (Home)</option>
+              <option value="produk">Produk</option>
+              <option value="about">Tentang Kami</option>
+              <option value="contact">Kontak</option>
+              <option value="promo">Promo</option>
+            </select>
+            <small className={styles.hint}>Pilih halaman dimana section ini akan ditampilkan</small>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="urutan" className={styles.label}>
+              Urutan Tampilan
+            </label>
+            <input
+              type="number"
+              id="urutan"
+              name="urutan"
+              value={formData.urutan}
+              onChange={handleChange}
+              className={styles.input}
+              placeholder="0"
+              min="0"
+            />
+            <small className={styles.hint}>Urutan tampilan section (0 = paling atas)</small>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Gambar Section *</label>
+            <MultipleImageUpload
+              onChange={handleImagesChange}
+              maxImages={10}
+              label="Upload Gambar Section (Max 10)"
+            />
+            <small className={styles.hint}>Upload satu atau lebih gambar untuk section ini</small>
+          </div>
+
+          <div className={styles.formActions}>
+            <button
+              type="button"
+              onClick={() => showAlert({ type: 'confirm', title: 'Batal', message: 'Apakah Anda yakin ingin membatalkan? Semua perubahan belum disimpan akan hilang.', confirmText: 'Ya, Batal', cancelText: 'Kembali', showCancel: true, onConfirm: () => router.push('/admin') })}
+              className={styles.cancelButton}
+              disabled={isSubmitting}
+            >
+              Batal
+            </button>
+            <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
+              {isSubmitting ? 'Menyimpan...' : 'Simpan Section'}
+            </button>
+          </div>
+        </form>
+      </main>
+    </div>
+  );
+}
