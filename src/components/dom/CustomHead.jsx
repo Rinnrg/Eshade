@@ -2,7 +2,7 @@ import NextHead from 'next/head';
 import { NextSeo } from 'next-seo';
 import PropTypes from 'prop-types';
 
-const SITE_URL = 'https://eshade-id.vercel.app';
+const SITE_URL = 'https://eshade.vercel.app';
 const OG_IMAGE = `${SITE_URL}/og.png`;
 
 const getSchema = () => ({
