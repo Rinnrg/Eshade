@@ -8,7 +8,7 @@ import { executePrismaQuery } from '@src/lib/prisma';
 import Maintenance from '@src/components/dom/Maintenance';
 
 const seo = {
-  title: 'Eshade - Clothing Store',
+  title: 'eshade',
   description: 'Eshade adalah toko clothing online yang menyediakan berbagai produk fashion berkualitas tinggi. Temukan koleksi pakaian terbaru dengan desain menarik dan harga terjangkau.',
   keywords: [
     'Eshade',
