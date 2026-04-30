@@ -1,6 +1,6 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Head from 'next/head';
 import { AdminLayout } from '@src/components/admin/layout/admin-layout';
 import {
@@ -8,13 +8,10 @@ import {
   Calendar,
   ShoppingBag,
   Star,
-  Heart,
-  ShoppingCart,
   Mail,
   Phone,
   Trash2,
   User,
-  TrendingUp,
 } from 'lucide-react';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
@@ -42,11 +39,7 @@ export default function CustomersPage() {
     }
   }, [session, status, router]);
 
-  useEffect(() => {
-    fetchCustomers();
-  }, [searchQuery, sortBy, sortOrder, currentPage]);
-
-  const fetchCustomers = async () => {
+  const fetchCustomers = useCallback(async () => {
     try {
       setLoading(true);
       const params = new URLSearchParams({
@@ -74,7 +67,11 @@ export default function CustomersPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [searchQuery, sortBy, sortOrder, currentPage, showAlert]);
+
+  useEffect(() => {
+    fetchCustomers();
+  }, [fetchCustomers]);
 
   const handleDelete = async (userId) => {
     showAlert({

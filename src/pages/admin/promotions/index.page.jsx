@@ -73,7 +73,7 @@ export default function VouchersPage() {
     return 'active'
   }
 
-  const getStatusBadge = (status) => {
+  const getStatusBadge = (vStatus) => {
     const styles = {
       active: { bg: '#dcfce7', color: '#166534', text: 'Aktif' },
       expired: { bg: '#fee2e2', color: '#991b1b', text: 'Kadaluarsa' },
@@ -82,7 +82,7 @@ export default function VouchersPage() {
       'limit-reached': { bg: '#fef3c7', color: '#92400e', text: 'Limit Tercapai' },
     }
 
-    const style = styles[status] || styles.inactive
+    const style = styles[vStatus] || styles.inactive
 
     return (
       <span style={{
@@ -107,10 +107,10 @@ export default function VouchersPage() {
     
     if (!matchesSearch) return false
 
-    const status = getVoucherStatus(voucher)
+    const vStatus = getVoucherStatus(voucher)
     if (filterStatus === 'all') return true
-    if (filterStatus === 'active') return status === 'active'
-    if (filterStatus === 'expired') return status === 'expired' || status === 'limit-reached'
+    if (filterStatus === 'active') return vStatus === 'active'
+    if (filterStatus === 'expired') return vStatus === 'expired' || vStatus === 'limit-reached'
     
     return true
   })
@@ -239,7 +239,7 @@ export default function VouchersPage() {
             </div>
           ) : (
             filteredVouchers.map((voucher) => {
-              const status = getVoucherStatus(voucher)
+              const vStatus = getVoucherStatus(voucher)
               const usagePercentage = voucher.usageLimit 
                 ? (voucher.usageCount / voucher.usageLimit) * 100 
                 : 0
@@ -312,7 +312,7 @@ export default function VouchersPage() {
                         </div>
                       </div>
                     </div>
-                    {getStatusBadge(status)}
+                    {getStatusBadge(vStatus)}
                   </div>
 
                   {/* Discount Info */}

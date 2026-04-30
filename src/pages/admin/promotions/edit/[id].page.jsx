@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { AdminLayout } from '@src/components/admin/layout/admin-layout'
@@ -30,15 +30,7 @@ export default function EditVoucherPage() {
 
   const [showAlert] = useStore(useShallow((state) => [state.showAlert]));
 
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/admin/login')
-    } else if (status === 'authenticated' && id) {
-      fetchVoucher()
-    }
-  }, [status, id, router])
-
-  const fetchVoucher = async () => {
+  const fetchVoucher = useCallback(async () => {
     try {
       const response = await fetch(`/api/vouchers/${id}`)
       const data = await response.json()
@@ -65,7 +57,15 @@ export default function EditVoucherPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [id, showAlert])
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/admin/login')
+    } else if (status === 'authenticated' && id) {
+      fetchVoucher()
+    }
+  }, [status, id, router, fetchVoucher])
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
