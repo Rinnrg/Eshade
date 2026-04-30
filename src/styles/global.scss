@@ -37,30 +37,23 @@ main.lenis-stopped {
 }
 
 body {
-  // -webkit-touch-callout: none; /* iOS Safari */
-  // -webkit-user-select: none; /* Safari */
-  // -khtml-user-select: none; /* Konqueror HTML */
-  // -moz-user-select: none; /* Old versions of Firefox */
-  // -ms-user-select: none; /* Internet Explorer/Edge */
-  // user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
   max-height: 100%;
   pointer-events: auto; /* Ensure body is always interactive */
   background-color: var(--white); /* Prevent white flash */
   opacity: 1;
   
-  // Desktop: hide overflow for Lenis
+  // Desktop: allow window scroll for Lenis
   @media (min-width: 769px) {
-    overflow: hidden;
+    overflow: visible;
+    height: auto;
   }
   
-  // Mobile: use native scroll - no overflow hidden
+  // Mobile: use native scroll
   @media (max-width: 768px) {
     overflow-y: auto;
     overflow-x: hidden;
     touch-action: pan-y pinch-zoom;
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior: none; /* Fallback for older browsers */
-    overscroll-behavior-y: none;
   }
 
   > canvas {

@@ -2,7 +2,7 @@
 
 .background {
   height: 100%;
-  width: 100vw;
+  width: 100%;
   position: fixed;
   top: 0;
   left: 0;
@@ -21,8 +21,9 @@
 }
 .root {
   position: relative;
-  height: 100svh;
-  width: 100vw;
+  height: auto;
+  min-height: 100svh;
+  width: 100%;
   background-color: var(--white);
   opacity: 1;
   
@@ -42,12 +43,13 @@
 .layout {
   background-color: var(--white);
   opacity: 1;
-  height: 100svh;
+  height: auto;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   position: relative;
   width: 100%;
-  overflow: hidden;
+  overflow: visible;
   border-radius: 0;
   transition: border-radius 0.8s ease;
   will-change: transform, border-radius;
@@ -58,21 +60,22 @@
     opacity: 1;
     top: 0;
     left: 0;
-    position: fixed;
+    position: relative;
     transition: 0.35s ease-in-out color;
     color: var(--black);
     width: 100%;
     pointer-events: auto !important;
     background-color: var(--white);
     
-    // Desktop: use overflow hidden for Lenis smooth scroll
+    // Desktop: use normal flow for window smooth scroll
     @media (min-width: 769px) {
-      overflow: hidden;
-      max-height: 100svh;
-      height: 100svh !important;
+      position: relative;
+      overflow: visible;
+      height: auto !important;
+      max-height: none;
     }
     
-    // Mobile: use native scroll - no overflow hidden
+    // Mobile: use native scroll
     @media (max-width: 768px) {
       position: relative;
       overflow-y: auto;
@@ -97,6 +100,7 @@
     .mainContainer {
       height: auto;
       width: 100%;
+      padding-top: 5rem; /* Spacer for fixed header */
       pointer-events: auto; /* Ensure mainContainer is always interactive */
     }
   }

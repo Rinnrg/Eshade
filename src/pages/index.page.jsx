@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import Home from '@src/pages/components/home/Index';
+import AboutPreview from '@src/pages/components/aboutPreview/Index';
 import HomeSections from '@src/pages/components/homeSections/Index';
 import Quote from '@src/pages/components/quote/Index';
 import Produk from '@src/pages/components/produk/Index';
@@ -41,8 +42,9 @@ function Page({ produk, homeSections, maintenance }) {
     <>
       <CustomHead {...seo} />
       <Home />
-      <HomeSections sections={homeSections} />
+      <AboutPreview />
       <Quote />
+      <HomeSections sections={homeSections} />
       <Produk produk={produk} />
     </>
   );

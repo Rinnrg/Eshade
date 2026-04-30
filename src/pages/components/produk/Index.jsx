@@ -1,145 +1,51 @@
-import { useCallback } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useShallow } from 'zustand/react/shallow';
-import { useStore } from '@src/store';
-import AppearByWords from '@src/components/animationComponents/appearByWords/Index';
-import ButtonLink from '@src/components/animationComponents/buttonLink/Index';
+import { Check } from 'lucide-react';
 import clsx from 'clsx';
 import styles from '@src/pages/components/produk/styles/produk.module.scss';
 
 function Produk({ produk = [] }) {
-  const { data: session } = useSession();
   const router = useRouter();
-  const [wishlist, setWishlist, showAlert] = useStore(
-    useShallow((state) => [state.wishlist, state.setWishlist, state.showAlert]),
-  );
-
-  // Show only 4 newest products on homepage
-  // Data already sorted by tanggalDibuat DESC from database
-  const latestProduk = produk.slice(0, 4);
-
-  // Handle wishlist toggle
-  const handleWishlistToggle = useCallback(async (e, productId) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (!session?.user) {
-      showAlert({
-        type: 'warning',
-        title: 'Login Diperlukan',
-        message: 'Anda harus login terlebih dahulu untuk menambahkan produk ke wishlist.',
-        confirmText: 'Login Sekarang',
-        showCancel: true,
-        onConfirm: () => {
-          router.push('/login');
-        },
-      });
-      return;
-    }
-
-    const isLiked = wishlist.some((item) => item.produkId === productId);
-
-    try {
-      if (isLiked) {
-        await fetch('/api/user/wishlist', {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ produkId: productId }),
-        });
-        setWishlist(wishlist.filter((item) => item.produkId !== productId));
-      } else {
-        const res = await fetch('/api/user/wishlist', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ produkId: productId }),
-        });
-        const data = await res.json();
-        if (data.wishlistItem) {
-          setWishlist([...wishlist, data.wishlistItem]);
-        }
-      }
-    } catch (err) {
-      console.error('Error updating wishlist:', err);
-      showAlert({
-        type: 'error',
-        title: 'Terjadi Kesalahan',
-        message: 'Gagal memperbarui wishlist. Silakan coba lagi.',
-      });
-    }
-  }, [session, wishlist, setWishlist, router, showAlert]);
-
+  
+  // Create 3 placeholder packages for the Gym theme
+  const packages = [
+    { id: 'daily', name: 'Daily Package', price: 10, period: 'day' },
+    { id: 'monthly', name: 'Monthly Package', price: 100, period: 'month' },
+    { id: 'annual', name: 'Annual Package', price: 1000, period: 'year' }
+  ];
+  
   return (
-    <>
-      <section className={clsx(styles.titleContainer, 'layout-grid-inner')}>
-        <h1 className={clsx(styles.title, 'h1')}>
-          <AppearByWords>Koleksi Terbaru</AppearByWords>
-        </h1>
-      </section>
-      <section className={clsx(styles.root, 'layout-block-inner')}>
-        <div className={styles.productGrid}>
-          {latestProduk.map((item) => {
-            const isLiked = wishlist.some((w) => w.produkId === item.id);
-            const finalPrice = item.diskon > 0
-              ? item.harga * (1 - item.diskon / 100)
-              : item.harga;
-
-            return (
-              <Link
-                key={item.id}
-                href={`/produk/${item.id}`}
-                className={styles.productCard}
-              >
-                {/* Wishlist Button */}
-                <button
-                  type="button"
-                  className={clsx(styles.wishlistBtn, { [styles.active]: isLiked })}
-                  onClick={(e) => handleWishlistToggle(e, item.id)}
-                  aria-label={isLiked ? 'Hapus dari wishlist' : 'Tambah ke wishlist'}
-                >
-                  {isLiked ? '♥' : '♡'}
-                </button>
-
-                {/* Discount Badge */}
-                {item.diskon > 0 && (
-                  <span className={styles.discountBadge}>-{item.diskon}%</span>
-                )}
-
-                {/* Image */}
-                <div className={styles.imageContainer}>
-                  <Image
-                    src={item.gambar?.[0] || '/logo/logo 1 black.svg'}
-                    alt={item.nama}
-                    fill
-                    sizes="(max-width: 768px) 50vw, 25vw"
-                  />
-                </div>
-
-                {/* Content */}
-                <div className={styles.cardContent}>
-                  <h3 className={styles.productName}>{item.nama}</h3>
-                  <div className={styles.priceContainer}>
-                    <span className={styles.currentPrice}>
-                      Rp {finalPrice.toLocaleString('id-ID')}
-                    </span>
-                    {item.diskon > 0 && (
-                      <span className={styles.originalPrice}>
-                        Rp {item.harga.toLocaleString('id-ID')}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-        <div className={styles.buttonContainer}>
-          <ButtonLink href="/produk" label="LIHAT SEMUA PRODUK" />
-        </div>
-      </section>
-    </>
+    <section className={clsx(styles.root)}>
+      <h2 className={styles.sectionTitle}>Our Packages</h2>
+      <div className={styles.productGrid}>
+        {packages.map((pkg, idx) => (
+          <div key={pkg.id} className={styles.pricingCard}>
+            <div className={styles.cardHeader}>
+              <h3 className={styles.packageName}>{pkg.name}</h3>
+              <p className={styles.packageDesc}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.</p>
+            </div>
+            
+            <ul className={styles.featuresList}>
+              <li><div className={styles.iconBox}><Check size={14} /></div> All instrument access</li>
+              <li><div className={styles.iconBox}><Check size={14} /></div> Shower facility</li>
+              <li><div className={styles.iconBox}><Check size={14} /></div> Nutrition Plan</li>
+              <li><div className={styles.iconBox}><Check size={14} /></div> Personal locker</li>
+              <li><div className={styles.iconBox}><Check size={14} /></div> Personal trainer</li>
+            </ul>
+            
+            <div className={styles.priceContainer}>
+              <span className={styles.currency}>$</span>
+              <span className={styles.price}>{pkg.price}</span>
+              <span className={styles.period}>/{pkg.period}</span>
+            </div>
+            <p className={styles.priceNote}>Bill will be charged {pkg.period}ly, taxes incl.</p>
+            
+            <button className={styles.getStartedBtn} onClick={() => router.push('/produk')}>
+              GET STARTED
+            </button>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 

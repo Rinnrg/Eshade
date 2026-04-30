@@ -1,77 +1,47 @@
 import { useRef } from 'react';
-import Image from 'next/image';
 import clsx from 'clsx';
-import { gsap } from 'gsap';
+import { Instagram, Facebook, Twitter } from 'lucide-react';
 import styles from '@src/pages/components/homeSections/styles/homeSections.module.scss';
-import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
 
 function HomeSections({ sections }) {
   const rootRef = useRef();
-
-  useIsomorphicLayoutEffect(() => {
-    if (!rootRef.current) {
-      return undefined;
-    }
-    
-    const ctx = gsap.context(() => {
-      const cards = rootRef.current?.querySelectorAll(`.${styles.imageCard}`);
-      
-      if (!cards || cards.length === 0) return;
-      
-      cards.forEach((card, index) => {
-        gsap.fromTo(
-          card,
-          {
-            opacity: 0,
-            y: 50,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            delay: index * 0.1,
-            scrollTrigger: {
-              trigger: card,
-              start: 'top 85%',
-              end: 'top 60%',
-              toggleActions: 'play none none reverse',
-              scroller: document.querySelector('main'),
-            },
-          }
-        );
-      });
-    }, rootRef);
-
-    return () => {
-      ctx.kill();
-    };
-  }, [sections]);
 
   if (!sections || sections.length === 0) {
     return null;
   }
 
+  // Generate generic trainer placeholders for gym theme regardless of clothing images
+  const trainerImages = [
+    "https://images.unsplash.com/photo-1567013127596-3e8e19e7a7da?q=80&w=600&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=600&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop"
+  ];
+
   return (
     <div ref={rootRef} className={clsx(styles.root)}>
-      {sections.map((section) => (
-        <div key={section.id} className={styles.section}>
-          {/* Title intentionally hidden per design request */}
-          <div className={styles.imageGrid}>
-            {section.gambar.map((image, index) => (
-              <div key={index} className={styles.imageCard}>
-                <Image
-                  src={image}
-                  alt={`${section.judul} - Image ${index + 1}`}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  style={{ objectFit: 'cover' }}
-                  quality={85}
-                />
+      <h2 className={styles.sectionTitle}>Our Trainers</h2>
+      <div className={styles.imageGrid}>
+        {trainerImages.map((image, index) => (
+          <div key={index} className={styles.trainerCard}>
+            <div className={styles.imageWrapper}>
+              <img
+                src={image}
+                alt={`Trainer ${index + 1}`}
+                className={styles.trainerImage}
+              />
+            </div>
+            <div className={styles.infoBox}>
+              <h3 className={styles.trainerName}>Trainer {index + 1}</h3>
+              <p className={styles.trainerRole}>Fitness Coach</p>
+              <div className={styles.socialIcons}>
+                <Instagram size={18} />
+                <Facebook size={18} />
+                <Twitter size={18} />
               </div>
-            ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

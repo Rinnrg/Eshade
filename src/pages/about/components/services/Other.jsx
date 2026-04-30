@@ -45,7 +45,6 @@ const Other = memo(({ setPortals }) => {
           end: `bottom-=${vw(30)}`,
           pin: leftContainerRef.current,
           scrub: true,
-          scroller: document?.querySelector('main'),
           invalidateOnRefresh: true,
           pinSpacing: false,
         });
@@ -62,7 +61,7 @@ const Other = memo(({ setPortals }) => {
                 end: 'bottom center',
                 id: `services-${index}`,
 
-                scroller: document?.querySelector('main'),
+
                 onEnter: () => {
                   if (index === 0) {
                     gsap.set(shapeRef, {

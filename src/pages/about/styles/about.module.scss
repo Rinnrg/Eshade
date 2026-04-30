@@ -1,0 +1,82 @@
+@import '@src/styles/functions';
+
+.root {
+  min-height: 100vh;
+  background-color: #fafafa;
+  padding: 8rem var(--layout-margin) 6rem;
+
+  @include mobile {
+    padding: 6rem var(--layout-margin) 4rem;
+  }
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  padding: 4rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+
+  @include mobile {
+    padding: 2rem;
+    border-radius: 15px;
+  }
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--black);
+  margin: 0 0 1rem 0;
+
+  @include mobile {
+    font-size: 2.5rem;
+  }
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: var(--primaryRed);
+  font-weight: 600;
+  margin: 0;
+}
+
+.content {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #444;
+
+  @include mobile {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  p {
+    margin-bottom: 1.5rem;
+    
+    strong {
+      color: var(--black);
+    }
+  }
+}
+
+.signature {
+  margin-top: 4rem;
+  text-align: right;
+  border-top: 1px dashed #e0e0e0;
+  padding-top: 2rem;
+
+  p {
+    margin-bottom: 0.2rem;
+    font-size: 1.2rem;
+    color: var(--primaryRed);
+  }
+}

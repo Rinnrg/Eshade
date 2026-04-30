@@ -14,12 +14,26 @@ export const getMenuLinks = (categories = []) => {
       })),
     },
     {
+      title: 'About',
+      href: '/about',
+    },
+    {
       title: 'Platform',
       href: undefined,
       submenu: [
         {
           title: 'Shopee',
           href: 'http://shopee.co.id/eshade.clo',
+          external: true,
+        },
+        {
+          title: 'Tokopedia',
+          href: 'https://www.tokopedia.com',
+          external: true,
+        },
+        {
+          title: 'Facebook',
+          href: 'https://facebook.com',
           external: true,
         },
         {
@@ -32,6 +46,10 @@ export const getMenuLinks = (categories = []) => {
     {
       title: 'Contact',
       href: undefined,
+    },
+    {
+      title: 'S&K',
+      href: '/syarat-dan-ketentuan',
     },
   ];
 };
@@ -48,12 +66,26 @@ const menuLinks = [
     submenu: [],
   },
   {
+    title: 'About',
+    href: '/about',
+  },
+  {
     title: 'Platform',
     href: undefined,
     submenu: [
       {
         title: 'Shopee',
         href: 'http://shopee.co.id/eshade.clo',
+        external: true,
+      },
+      {
+        title: 'Tokopedia',
+        href: 'https://www.tokopedia.com',
+        external: true,
+      },
+      {
+        title: 'Facebook',
+        href: 'https://facebook.com',
         external: true,
       },
       {
@@ -66,6 +98,10 @@ const menuLinks = [
   {
     title: 'Contact',
     href: undefined,
+  },
+  {
+    title: 'S&K',
+    href: '/syarat-dan-ketentuan',
   },
 ];
 

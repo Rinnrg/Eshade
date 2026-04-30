@@ -29,7 +29,6 @@ function Clients() {
                 end: index === 0 ? `bottom-=${vw(35 + 5.5555556 * index)}` : `bottom+=${vw(25)}`,
                 toggleActions: 'play none reverse none',
                 scrub: true,
-                scroller: document?.querySelector('main'),
                 invalidateOnRefresh: true,
               },
             })

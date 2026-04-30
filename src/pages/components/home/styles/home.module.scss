@@ -2,214 +2,201 @@
 
 .root {
   z-index: 4;
-  height: 100vh;
-  height: calc(100 * var(--svh, 1vh));
-  height: 100svh;
+  min-height: 100vh;
   position: relative;
   display: flex;
-  flex-direction: column;
-  padding: 0 var(--layout-margin)
-    calc(var(--layout-columns-gap) * 2);
-  padding-top: 0px;
-
-  box-shadow:
-    inset 0 0 0 0 var(--white),
-    inset calc(var(--layout-margin) * -1.05) 0 0 0 var(--white),
-    inset 0 calc(var(--layout-columns-gap) * -1.0065 * 2) 0 0 var(--white),
-    inset calc(var(--layout-margin) * 1.05) 0 0 0 var(--white);
+  background: transparent;
+  padding: calc(var(--layout-columns-gap) * 4) var(--layout-margin) calc(var(--layout-columns-gap) * 2);
 
   @include mobile {
-    padding: 0 var(--layout-margin)
-      calc(var(--layout-columns-gap) * 2);
-    padding-top: 0px;
-    box-shadow:
-      inset 0 0 0 0 var(--white),
-      inset calc(var(--layout-margin) * -1.1001) 0 0 0 var(--white),
-      inset 0 calc(var(--layout-columns-gap) * -1.04 * 2) 0 0 var(--white),
-      inset calc(var(--layout-margin) * 1.1001) 0 0 0 var(--white);
+    padding: calc(var(--layout-columns-gap) * 6) var(--layout-margin) calc(var(--layout-columns-gap) * 2);
   }
-  .centerContainer {
+
+  .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    align-items: flex-start;
+
+    @include mobile {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+
+  .leftCol {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding-right: 2rem;
+
+    @include mobile {
+      padding-right: 0;
+      align-items: center;
+      text-align: center;
+    }
+  }
+
+  .title {
+    font-size: 4.5rem;
+    line-height: 1.1;
+    font-weight: 800;
+    color: var(--black);
+    margin: 0;
+    letter-spacing: -1px;
+
+    @include mobile {
+      font-size: 3rem;
+    }
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    max-width: 80%;
+    line-height: 1.6;
+    font-weight: 450;
+
+    @include mobile {
+      max-width: 100%;
+    }
+  }
+
+  .primaryButton {
+    background-color: var(--primaryRed);
+    color: white;
+    padding: 1rem 2.5rem;
+    border-radius: 5px; // the dribbble design has slightly rounded rect buttons, not full pill
+    font-weight: bold;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(227, 30, 36, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 1rem;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(227, 30, 36, 0.3);
+    }
+  }
+
+  .sponsors {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    margin-top: 3rem;
+    opacity: 0.5;
+    flex-wrap: wrap;
+
+    @include mobile {
+      justify-content: center;
+      gap: 1.5rem;
+    }
+  }
+
+  .sponsorItem {
+    font-weight: 800;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    color: #333;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .rightCol {
+    display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
-    flex: 1 1 auto;
-    width: 100%;
-    padding: 4rem 2rem;
-    background-color: var(--white);
-    box-shadow: 0 0 0 1vw var(--white);
-    border-radius: var(--layout-columns-gap);
     position: relative;
+    padding-top: 0;
+  }
+
+  .imageArchWrapper {
+    position: relative;
+    width: 75%;
+    aspect-ratio: 0.8;
+    background-color: #ffa3a3; // pinkish arch
+    border-radius: 200px 200px 20px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+
+    @include mobile {
+      width: 90%;
+      aspect-ratio: 0.9;
+      border-radius: 150px 150px 20px 20px;
+    }
+  }
+
+  .heroImage {
+    width: 130%;
+    height: 120%;
+    object-fit: cover;
+    position: absolute;
+    bottom: 0;
+    left: -15%;
     z-index: 2;
-    gap: 1.5rem;
-
-    @include mobile {
-      box-shadow: 0 0 0 2vw var(--white);
-      border-radius: calc(var(--layout-columns-gap) * 0.5);
-      padding: 4rem 1.5rem;
-      gap: 1rem;
-    }
-
-    h2 {
-      width: 100%;
-      max-width: 80%;
-      margin: 0;
-      line-height: 1.1;
-      
-      @include mobile {
-        max-width: 100%;
-      }
-    }
-
-    .subtitle {
-      font-size: 1.2rem;
-      color: #666;
-      max-width: 600px;
-      margin: 0;
-      font-weight: 300;
-      letter-spacing: 0.5px;
-      
-      @include mobile {
-        font-size: 1rem;
-      }
-    }
-
-    .ctaContainer {
-      display: flex;
-      gap: 1rem;
-      margin-top: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-
-      @include mobile {
-        flex-direction: column;
-        width: 100%;
-        gap: 0.8rem;
-      }
-    }
-
-    .primaryButton,
-    .secondaryButton {
-      padding: 1rem 2.5rem;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      letter-spacing: 0.5px;
-      border: 2px solid var(--black);
-
-      @include mobile {
-        padding: 0.9rem 2rem;
-        width: 100%;
-      }
-    }
-
-    .primaryButton {
-      background-color: var(--black);
-      color: var(--white);
-
-      &:hover {
-        background-color: #333;
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-      }
-    }
-
-    .secondaryButton {
-      background-color: transparent;
-      color: var(--black);
-
-      &:hover {
-        background-color: var(--black);
-        color: var(--white);
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-      }
-    }
   }
 
-  .topContainer {
-    padding: var(--layout-columns-gap) 0px;
-    flex: 0 1 auto;
-    background-color: var(--white);
+  .playButtonWrapper {
+    position: absolute;
+    top: 10%;
+    right: -10%;
+    z-index: 3;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    box-shadow: 0 0 0 calc(var(--layout-columns-gap) * 0.04) var(--white);
+
     @include mobile {
-      box-shadow: 0 0 0 calc(var(--layout-columns-gap) * 0.04) var(--white);
-    }
-    .leftContainer {
-      grid-column: 1 / 9;
-      height: auto;
-      display: flex;
-      flex-direction: column;
-      @include mobile {
-        width: 100%;
-      }
-    }
-    .rightContainer {
-      height: auto;
-      grid-column: 11 / 17;
+      right: -5%;
+      width: 80px;
+      height: 80px;
     }
   }
 
-  .bottomContainer {
-    position: relative;
-    flex: 1 1 auto;
-    height: 1px;
-    width: 100%;
-    box-shadow: 0 0 0 1vw var(--white);
+  .playButton {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: var(--primaryRed);
+    color: white;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(227, 30, 36, 0.4);
+    z-index: 2;
 
-    border-radius: var(--layout-columns-gap);
-
-    @include mobile {
-      width: 100%;
-      flex: 1 1 auto;
-      min-height: 0;
-      height: auto;
-      box-shadow: 0 0 0 2vw var(--white);
-      border-radius: calc(var(--layout-columns-gap) * 0.5);
-    }
-    .svgWrapper {
-      width: 100.1%;
-      height: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-
-      > svg {
-        display: block;
-      }
-      .mask1 {
-        fill: white;
-      }
-      .mask2 {
-        fill: var(--white);
-
-        -webkit-mask: url(#mask);
-        mask: url(#mask);
-      }
+    .playIcon {
+      font-size: 1.5rem;
+      margin-left: 5px;
     }
   }
 
-  .rightContainerMobile {
-    background-color: var(--white);
-    @include mobile {
-      height: auto;
-      padding-top: var(--layout-columns-gap);
-      box-shadow: 0 0 0 calc(var(--layout-columns-gap) * 0.04) var(--white);
-    }
-  }
-  .infiniteContainer {
+  .circularText {
     position: absolute;
     width: 100%;
-    left: 0;
-    bottom: 0;
-    background-color: var(--white);
-    overflow: hidden;
-    height: calc(var(--layout-columns-gap) * 2);
-    left: var(--layout-margin);
-    width: calc(100% - 2 * var(--layout-margin));
+    height: 100%;
+    animation: rotate 10s linear infinite;
+    border: 1px dashed rgba(227, 30, 36, 0.5);
+    border-radius: 50%;
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
   }
 }

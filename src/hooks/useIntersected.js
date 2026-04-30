@@ -9,9 +9,9 @@ const useIntersected = (ref, threshold = 0) => {
   const intersection = useIntersection(ref, intersectionOptions);
 
   useIsomorphicLayoutEffect(() => {
-    if (intersection?.isIntersecting && intersection?.boundingClientRect.top > 0) {
+    if (intersection?.isIntersecting && intersection?.boundingClientRect.top >= 0) {
       setIntersected(true);
-    } else if (!intersection?.isIntersecting && intersection?.boundingClientRect.top > 0) {
+    } else if (!intersection?.isIntersecting && intersection?.boundingClientRect.top >= 0) {
       setIntersected(false);
     }
   }, [intersection]);

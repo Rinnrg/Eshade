@@ -14,12 +14,7 @@ function Hero() {
   const isMobile = useIsMobile();
   const heroImageRef = useRef();
 
-  const mainScroller = useMemo(() => {
-    if (typeof window !== 'undefined') {
-      return document.querySelector('main');
-    }
-    return null;
-  }, []);
+
 
   const setupHeroAnimation = () => {
     const ctx = gsap.context(() => {
@@ -31,7 +26,6 @@ function Hero() {
           start: 'top top',
           end: `bottom+=${windowSize.height * 0.35}`,
           scrub: true,
-          scroller: mainScroller,
           invalidateOnRefresh: true,
         },
       });

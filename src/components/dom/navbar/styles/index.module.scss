@@ -1,9 +1,11 @@
 @import '@src/styles/functions';
 
 .root {
-  position: sticky;
+  position: fixed;
   z-index: 999;
   top: 0;
+  left: 0;
+  width: 100%;
   left: 0;
   right: 0;
   padding: 0.8rem var(--layout-margin);

@@ -25,7 +25,6 @@ function About() {
             start: 'top bottom',
             end: 'bottom top',
             scrub: true,
-            scroller: document?.querySelector('main'),
             invalidateOnRefresh: true,
           },
         });

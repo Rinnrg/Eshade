@@ -34,7 +34,6 @@ function TextOpacity({ children, trigger }) {
           start: 'top top',
           end: 'bottom bottom',
           scrub: true,
-          scroller: document?.querySelector('main'),
           invalidateOnRefresh: true,
         },
         stagger: {

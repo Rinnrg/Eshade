@@ -1,51 +1,49 @@
 import { useRef } from 'react';
-
 import clsx from 'clsx';
-import { gsap } from 'gsap';
+import { useRouter } from 'next/router';
 import styles from '@src/pages/components/home/styles/home.module.scss';
 import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
-import { useRouter } from 'next/router';
 
 function Home() {
   const rootRef = useRef();
-  const infiniteTextRef = useRef();
   const router = useRouter();
-
-  useIsomorphicLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap
-        .timeline({
-          scrollTrigger: {
-            trigger: rootRef.current,
-            start: 'top+=3%',
-            end: 'top+=5%',
-            toggleActions: 'play none reverse none',
-            scroller: document.querySelector('main'),
-            invalidateOnRefresh: true,
-          },
-        })
-        .to(infiniteTextRef.current, {
-          opacity: 0,
-          duration: 0.6,
-        });
-    });
-
-    return () => ctx.kill();
-  }, []);
 
   return (
     <section ref={rootRef} className={clsx(styles.root)}>
-      <div className={clsx(styles.centerContainer)}>
-        <h2 className="h2">Elevate Your</h2>
-        <h2 className={clsx('h2', 'bold')}>Style Statement</h2>
-        <p className={styles.subtitle}>Discover premium clothing that defines your unique identity</p>
-        <div className={styles.ctaContainer}>
+      <div className={styles.container}>
+        <div className={styles.leftCol}>
+          <h1 className={styles.title}>
+            Train Harder To Gain A Healthy And Fit Body
+          </h1>
+          <p className={styles.subtitle}>
+            Koleksi fashion premium yang dirancang untuk mendukung gaya hidup modern Anda dengan kenyamanan maksimal.
+          </p>
           <button type="button" className={styles.primaryButton} onClick={() => router.push('/produk')}>
-            Product Collection
+            SHOP NOW
           </button>
-          {/* <button type="button" className={styles.secondaryButton}>
-            View Lookbook
-          </button> */}
+
+          {/* <div className={styles.sponsors}>
+            <div className={styles.sponsorItem}>ULTRA<br/>★★★★★</div>
+            <div className={styles.sponsorItem}>POWER<br/>MODULE</div>
+            <div className={styles.sponsorItem}>LOGO</div>
+            <div className={styles.sponsorItem}>logoIpsum</div>
+          </div> */}
+        </div>
+
+        <div className={styles.rightCol}>
+          <div className={styles.imageArchWrapper}>
+            <img
+              src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=1000&auto=format&fit=crop"
+              alt="Gym Man"
+              className={styles.heroImage}
+            />
+            {/* <div className={styles.playButtonWrapper}>
+              <div className={styles.circularText}></div>
+              <button className={styles.playButton} aria-label="Play Intro">
+                <span className={styles.playIcon}>▶</span>
+              </button>
+            </div> */}
+          </div>
         </div>
       </div>
     </section>

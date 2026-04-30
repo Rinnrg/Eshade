@@ -187,11 +187,12 @@
     .socialIcons {
       display: flex;
       flex-wrap: wrap;
-      gap: calc(var(--layout-columns-gap) * 0.5);
+      gap: 1.5rem; /* Consistent gap between icons */
       margin-top: calc(var(--layout-columns-gap) * 0.5);
 
       @include mobile {
         justify-content: flex-end; // Push icons to the right on mobile
+        gap: 1rem;
       }
 
       .socialIconContainer {
@@ -201,16 +202,18 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 2.5vw;
-          height: 2.5vw;
-          background-color: transparent !important; // Hilangkan bundaran
-          border-radius: 0 !important; // Hilangkan bentuk lingkaran
-          overflow: visible !important; // Pastikan logo tidak terpotong
+          width: 2.2vw; /* Standardized size */
+          height: 2.2vw;
+          min-width: 32px;
+          min-height: 32px;
+          background-color: transparent !important;
+          border-radius: 0 !important;
+          overflow: visible !important;
           transition: all 0.3s ease;
 
           @include mobile {
-            width: 11vw;
-            height: 11vw;
+            width: 10vw;
+            height: 10vw;
           }
 
           .socialIcon {
@@ -324,6 +327,88 @@
       color: var(--white);
       font-size: 0.85vw;
       opacity: 0.7;
+
+      .pulseDot {
+        width: 8px;
+        height: 8px;
+        background-color: #00ff00;
+        border-radius: 50%;
+        display: inline-block;
+        box-shadow: 0 0 0 rgba(0, 255, 0, 0.4);
+        animation: pulse 2s infinite;
+      }
     }
+  }
+}
+
+.waInfoText {
+  color: var(--white);
+  font-size: 0.9vw;
+  margin-bottom: 0.5rem;
+  opacity: 0.9;
+
+  @include mobile {
+    font-size: 3.5vw;
+  }
+}
+
+.waList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+
+  @include mobile {
+    align-items: flex-end;
+  }
+}
+
+.waItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--white);
+  text-decoration: none;
+  font-size: 0.95vw;
+  font-weight: 500;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  @include mobile {
+    font-size: 3.2vw;
+  }
+}
+
+.waIconBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background-color: #25d366;
+  border-radius: 6px;
+  color: white;
+
+  @include mobile {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(0, 255, 0, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 255, 0, 0);
   }
 }

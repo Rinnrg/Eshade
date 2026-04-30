@@ -88,6 +88,8 @@ function MyApp({ Component, pageProps, router }) {
   useEffect(() => {
     document.documentElement.style.backgroundColor = '#ffffff';
     document.body.style.backgroundColor = '#ffffff';
+    document.body.style.minHeight = '100vh';
+    document.body.style.display = 'block';
   }, []);
 
   useFoucFix();
@@ -116,17 +118,13 @@ function MyApp({ Component, pageProps, router }) {
     // eslint-disable-next-line no-shadow
     const lenis = new Lenis({
       smoothWheel: true,
-      smoothTouch: false,  // Disable smooth touch
-      syncTouch: false,    // Disable sync touch
       lerp: 0.1,
       duration: 1.2,
-      wrapper: mainRef.current || undefined,
-      content: mainContainerRef.current || undefined,
       wheelMultiplier: 1,
       touchMultiplier: 2,
       infinite: false,
       normalizeWheel: true,
-      autoResize: true,  // Enable auto resize
+      autoResize: true,
     });
 
     setLenis(lenis);
@@ -138,8 +136,8 @@ function MyApp({ Component, pageProps, router }) {
       }
     });
     
-    if (mainContainerRef.current) {
-      resizeObserver.observe(mainContainerRef.current);
+    if (document.body) {
+      resizeObserver.observe(document.body);
     }
     
     // Safeguard: Ensure lenis starts
@@ -381,11 +379,11 @@ function MyApp({ Component, pageProps, router }) {
       
       <div className={styles.root}>
         {domElements}
+        {!isAdminPage && <Navbar />}
         <div ref={layoutRef} id="layout" className={styles.layout}>
           {canvasElements}
           <main ref={mainRef} className={styles.main}>
             <div ref={mainContainerRef} id="mainContainer" className={styles.mainContainer}>
-              {!isAdminPage && <Navbar />}
               <Layout layoutRef={layoutRef} mainRef={mainRef} router={router}>
                 <Component {...pageProps} />
               </Layout>

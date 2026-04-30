@@ -31,14 +31,14 @@ function Loader() {
 
         gsap.delayedCall(introDelay, () => {
           console.log('Loader animation starting...');
-          
+
           // Immediately disable loader pointer events and lower z-index
           if (root.current) {
             root.current.style.pointerEvents = 'none';
             root.current.style.zIndex = '-1';
             console.log('Loader pointer-events disabled and z-index lowered immediately');
           }
-          
+
           // Check if lenis exists before calling methods
           if (lenis && typeof lenis.scrollTo === 'function') {
             lenis.scrollTo(0, { force: true });
@@ -46,20 +46,20 @@ function Loader() {
           } else {
             console.warn('Lenis not available in Loader');
           }
-          
+
           // Set initial states - ensure page is interactive IMMEDIATELY
           gsap.set('main', {
             opacity: 1,
             pointerEvents: 'auto',
             zIndex: 1,
           });
-          
+
           // Set body to be interactive
           gsap.set('body', {
             pointerEvents: 'auto',
             overflow: 'auto',
           });
-          
+
           console.log('Main and body set to interactive');
 
           // Immediately disable loader pointer events before animation
@@ -67,7 +67,7 @@ function Loader() {
             root.current.style.pointerEvents = 'none';
             console.log('Loader pointer-events disabled immediately');
           }
-          
+
           // Faster fade out loader
           gsap.to(root.current, {
             opacity: 0,
@@ -81,7 +81,7 @@ function Loader() {
             },
             onComplete: () => {
               console.log('Loader animation complete!');
-              
+
               // Start lenis BEFORE setting introOut
               if (lenis && typeof lenis.start === 'function') {
                 lenis.start();
@@ -89,19 +89,24 @@ function Loader() {
               } else {
                 console.warn('Lenis not available to start');
               }
-              
+
               // Ensure everything is interactive
               gsap.set(['main', 'body', '#mainContainer'], {
                 pointerEvents: 'auto',
               });
-              
+
               console.log('All elements set to interactive');
-              
+
               // Now set state to remove loader from DOM
               setIntroOut(true);
               setIsLoading(false);
-              
-              console.log('Loader removed from DOM');
+
+              // Refresh ScrollTrigger to ensure all triggers are correctly positioned
+              import('gsap/dist/ScrollTrigger').then(({ ScrollTrigger }) => {
+                ScrollTrigger.refresh();
+              });
+
+              console.log('Loader removed from DOM and ScrollTrigger refreshed');
             },
           });
         });
