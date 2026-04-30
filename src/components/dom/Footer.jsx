@@ -56,75 +56,71 @@ function Footer() {
       {isMobile ? (
         <div className={styles.mobileColumns} style={{ gridColumn: '1 / 7' }}>
           <div className={styles.companyInfoMobile}>
-            <div>
-              <div className={styles.brandName}>
-                <Image
-                  src="/logo-eshade/logo eshade 2 white.svg"
-                  alt="ESHADE"
-                  width={180}
-                  height={55}
-                  className={styles.brandLogo}
-                />
-              </div>
+            <div className={styles.brandName}>
+              <Image
+                src="/logo-eshade/logo eshade 2 white.svg"
+                alt="ESHADE"
+                width={180}
+                height={55}
+                className={styles.brandLogo}
+              />
+            </div>
 
-              <div className={styles.companyDescription}>
-                <p>
-                  Pusat Alat Fitness Terpercaya di Indonesia. Kami menyediakan alat fitness berkualitas tinggi untuk kebutuhan fitness center atau personal.
-                </p>
-                <p className={styles.tagline}>
-                  ESHADE | Mitra Alat Fitness Anda
-                </p>
-              </div>
+            <div className={styles.companyDescription}>
+              <p>
+                Pusat Alat Fitness Terpercaya di Indonesia. Kami menyediakan alat fitness berkualitas tinggi untuk kebutuhan fitness center atau personal.
+              </p>
+              <p className={styles.tagline}>
+                ESHADE | Mitra Alat Fitness Anda
+              </p>
+            </div>
 
-              <div className={styles.contactInfo}>
-                <p>E-mail: <a href="mailto:globalfitsby@gmail.com">globalfitsby@gmail.com</a></p>
-              </div>
+            <div className={styles.contactInfo}>
+              <p>E-mail: <a href="mailto:globalfitsby@gmail.com">globalfitsby@gmail.com</a></p>
             </div>
           </div>
 
-          <div className={styles.linksGridMobile}>
-            <div className={styles.linksContainer}>
-              <h6 className={clsx(styles.title, 'h6')}>CUSTOMER SERVICE</h6>
-              <p className={styles.waInfoText}>{footerLinks.customerService.onlineUsers}</p>
-              <p className={styles.waInfoText}>{footerLinks.customerService.visitors}</p>
-              <div className={styles.waList}>
-                {footerLinks.customerService.whatsapp.map((wa) => (
-                  <a key={wa.number} href={wa.href} className={styles.waItem} target="_blank" rel="noopener noreferrer">
-                    <div className={styles.waIconBox}><WhatsAppIcon /></div>
-                    <span>{wa.number}</span>
-                  </a>
-                ))}
-              </div>
+          <div className={styles.linksContainer}>
+            <h6 className={clsx(styles.title, 'h6')}>CUSTOMER SERVICE</h6>
+            <p className={styles.waInfoText}>{footerLinks.customerService.onlineUsers}</p>
+            <p className={styles.waInfoText}>{footerLinks.customerService.visitors}</p>
+            <div className={styles.waList}>
+              {footerLinks.customerService.whatsapp.map((wa) => (
+                <a key={wa.number} href={wa.href} className={styles.waItem} target="_blank" rel="noopener noreferrer">
+                  <div className={styles.waIconBox}><WhatsAppIcon /></div>
+                  <span>{wa.number}</span>
+                </a>
+              ))}
             </div>
+          </div>
 
-            <div className={styles.linksContainer}>
-              <h6 className={clsx(styles.title, 'h6')}>INFORMATION</h6>
-              {footerLinks.information.map((link) => (
-                <div key={link.title} className={styles.linkTextContainer}>
-                  <LinkText className={styles.linkText} title={link.title} href={link.href}>
-                    <span className="footer">{link.title}</span>
+          <div className={styles.linksContainer}>
+            <h6 className={clsx(styles.title, 'h6')}>INFORMATION</h6>
+            {footerLinks.information.map((link) => (
+              <div key={link.title} className={styles.linkTextContainer}>
+                <LinkText className={styles.linkText} title={link.title} href={link.href}>
+                  <span className="footer">{link.title}</span>
+                </LinkText>
+              </div>
+            ))}
+          </div>
+
+          <div className={styles.linksContainer}>
+            <h6 className={clsx(styles.title, 'h6')}>TEMUKAN KAMI</h6>
+            <div className={styles.socialIcons}>
+              {footerLinks.social.map((link) => (
+                <div key={link.title} className={styles.socialIconContainer}>
+                  <LinkText target className={styles.socialLink} title={link.title} href={link.href}>
+                    <Image
+                      src={`/logo/${link.icon}-white.svg`}
+                      alt={link.title}
+                      width={24}
+                      height={24}
+                      className={styles.socialIcon}
+                    />
                   </LinkText>
                 </div>
               ))}
-            </div>
-
-            <div className={styles.linksContainer}>
-              <h6 className={clsx(styles.title, 'h6')}>TEMUKAN KAMI</h6>
-              <div className={styles.socialIcons}>
-                {footerLinks.social.map((link) => (
-                  <div key={link.title} className={styles.socialIconContainer}>
-                    <LinkText target className={styles.socialLink} title={link.title} href={link.href}>
-                      <Image
-                        src={`/logo/${link.icon}-white.svg`}
-                        alt={link.title}
-                        width={24}
-                        height={24}
-                        className={styles.socialIcon}
-                      />
-                    </LinkText>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </div>

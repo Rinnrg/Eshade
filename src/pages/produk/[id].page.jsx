@@ -24,8 +24,6 @@ function ProdukDetailPage({ produk, error, maintenance }) {
   );
 
   // State management
-  const [selectedSize, setSelectedSize] = useState('');
-  const [selectedColor, setSelectedColor] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [expandedSections, setExpandedSections] = useState({});
 
@@ -76,18 +74,7 @@ function ProdukDetailPage({ produk, error, maintenance }) {
 
   // Set default size and color
   useEffect(() => {
-    if (currentProduk) {
-      if (currentProduk.ukuran?.length > 0 && !selectedSize) {
-        // Always clean the first size - remove stock number if present
-        const firstSize = currentProduk.ukuran[0];
-        const cleanSize = firstSize.includes(':') ? firstSize.split(':')[0] : firstSize;
-        setSelectedSize(cleanSize);
-      }
-      if (currentProduk.warna?.length > 0 && !selectedColor) {
-        setSelectedColor(currentProduk.warna[0]);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // No size/color selection needed
   }, [currentProduk]);
 
   // Cleanup scroll on modal close or unmount
@@ -112,18 +99,13 @@ function ProdukDetailPage({ produk, error, maintenance }) {
   }, [currentProduk]);
 
   // Stock status
-  const stockStatus = useMemo(() => {
-    if (!currentProduk) return 'out';
-    if (currentProduk.stok === 0) return 'out';
-    if (currentProduk.stok <= 5) return 'low';
-    return 'available';
-  }, [currentProduk]);
+  const stockStatus = 'available';
 
   // Handlers
   const handleQuantityChange = useCallback((delta) => {
     setQuantity((prev) => {
       const newQty = prev + delta;
-      return Math.max(1, Math.min(newQty, currentProduk?.stok || 1));
+      return Math.max(1, newQty);
     });
   }, [currentProduk]);
 
@@ -196,8 +178,8 @@ function ProdukDetailPage({ produk, error, maintenance }) {
         body: JSON.stringify({
           produkId: currentProduk.id,
           quantity,
-          ukuran: selectedSize,
-          warna: selectedColor,
+          ukuran: null,
+          warna: null,
         }),
       });
       const data = await res.json();
@@ -211,7 +193,7 @@ function ProdukDetailPage({ produk, error, maintenance }) {
       }
       if (data.cartItem) {
         const existingIndex = cart.findIndex(
-          (item) => item.produkId === currentProduk.id && item.ukuran === selectedSize && item.warna === selectedColor
+          (item) => item.produkId === currentProduk.id
         );
         if (existingIndex >= 0) {
           const newCart = [...cart];
@@ -242,7 +224,7 @@ function ProdukDetailPage({ produk, error, maintenance }) {
         message: 'Gagal menambahkan produk ke keranjang. Silakan coba lagi.',
       });
     }
-  }, [currentProduk, quantity, selectedSize, selectedColor, cart, setCart, showAlert]);
+  }, [currentProduk, quantity, cart, setCart, showAlert]);
 
   const handleAddToCart = useCallback(async () => {
     if (!session?.user) {
@@ -259,18 +241,9 @@ function ProdukDetailPage({ produk, error, maintenance }) {
       return;
     }
 
-    if (!selectedSize || !selectedColor) {
-      showAlert({
-        type: 'warning',
-        title: 'Pilihan Belum Lengkap',
-        message: 'Mohon pilih ukuran dan warna terlebih dahulu.',
-      });
-      return;
-    }
-
-    // Proceed to add to cart (API will handle duplicates by updating quantity)
+    // Proceed to add to cart
     await addToCartAction();
-  }, [session, selectedSize, selectedColor, addToCartAction, router, showAlert]);
+  }, [session, addToCartAction, router, showAlert]);
 
   const handleBuyNow = useCallback(async () => {
     if (!session?.user) {
@@ -287,21 +260,12 @@ function ProdukDetailPage({ produk, error, maintenance }) {
       return;
     }
 
-    if (!selectedSize || !selectedColor) {
-      showAlert({
-        type: 'warning',
-        title: 'Pilihan Belum Lengkap',
-        message: 'Mohon pilih ukuran dan warna terlebih dahulu.',
-      });
-      return;
-    }
-
     // Create checkout item for direct purchase
     const checkoutItem = {
       produkId: currentProduk.id,
       quantity,
-      ukuran: selectedSize,
-      warna: selectedColor,
+      ukuran: null,
+      warna: null,
       produk: {
         id: currentProduk.id,
         nama: currentProduk.nama,
@@ -314,7 +278,7 @@ function ProdukDetailPage({ produk, error, maintenance }) {
     // Store in localStorage and navigate to payment
     localStorage.setItem('checkoutItems', JSON.stringify([checkoutItem]));
     router.push('/pembayaran');
-  }, [session, selectedSize, selectedColor, currentProduk, quantity, router, showAlert]);
+  }, [session, currentProduk, quantity, router, showAlert]);
 
   // SEO
   const seo = useMemo(
@@ -413,61 +377,11 @@ function ProdukDetailPage({ produk, error, maintenance }) {
                 <h1 className={styles.productName}>{currentProduk.nama}</h1>
               </div>
 
-              {/* Color Selector */}
-              {currentProduk.warna && currentProduk.warna.length > 0 && (
-                <div className={styles.colorSection}>
-                  <div className={styles.sectionLabel}>
-                    Warna: <span>{selectedColor}</span>
-                  </div>
-                  <div className={styles.colorGrid}>
-                    {currentProduk.warna.map((color) => (
-                      <div
-                        key={color}
-                        className={clsx(styles.colorOption, { [styles.selected]: selectedColor === color })}
-                        onClick={() => setSelectedColor(color)}
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') setSelectedColor(color);
-                        }}
-                        title={color}
-                      >
-                        <div
-                          className={styles.colorSwatch}
-                          style={{
-                            backgroundColor: color.toLowerCase(),
-                            border: ['white', 'putih', '#fff', '#ffffff'].includes(color.toLowerCase())
-                              ? '1px solid #e0e0e0'
-                              : 'none',
-                          }}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Size Selector */}
-              {currentProduk.ukuran && currentProduk.ukuran.length > 0 && (
-                <div className={styles.sizeSection}>
-                  <div className={styles.sectionLabel}>
-                    Ukuran: <span>{selectedSize}</span>
-                  </div>
-                  <div className={styles.sizeGrid}>
-                    {currentProduk.ukuran.map((size) => {
-                      const sizeLabel = size.includes(':') ? size.split(':')[0] : size;
-                      return (
-                        <button
-                          key={size}
-                          type="button"
-                          className={clsx(styles.sizeOption, { [styles.selected]: selectedSize === sizeLabel })}
-                          onClick={() => setSelectedSize(sizeLabel)}
-                        >
-                          {sizeLabel}
-                        </button>
-                      );
-                    })}
-                  </div>
+              {/* Product Weight Info */}
+              {currentProduk.berat > 0 && (
+                <div className={styles.weightInfo}>
+                  <span className={styles.weightLabel}>Berat:</span>
+                  <span className={styles.weightValue}>{currentProduk.berat} kg</span>
                 </div>
               )}
 
@@ -518,7 +432,6 @@ function ProdukDetailPage({ produk, error, maintenance }) {
                     type="button"
                     className={styles.quantityButton}
                     onClick={() => handleQuantityChange(1)}
-                    disabled={quantity >= currentProduk.stok}
                   >
                     +
                   </button>

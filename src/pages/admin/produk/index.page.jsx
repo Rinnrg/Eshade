@@ -142,247 +142,260 @@ export default function ProductsPage() {
           />
         </div>
 
-        {/* Products Table */}
-        <div style={{
-          backgroundColor: '#ffffff',
-          border: '1px solid #e5e7eb',
-          borderRadius: '0.5rem',
-          overflow: 'hidden',
-        }}>
-          {filteredProducts.length === 0 ? (
+        {/* Products Table Grouped by Category */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+          {Object.entries(
+            filteredProducts.reduce((acc, product) => {
+              const cat = product.category || 'Uncategorized';
+              if (!acc[cat]) acc[cat] = [];
+              acc[cat].push(product);
+              return acc;
+            }, {})
+          ).sort(([a], [b]) => a.localeCompare(b)).map(([category, categoryProducts]) => (
+            <div key={category} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '1rem',
+                padding: '0 0.5rem',
+              }}>
+                <h3 style={{
+                  fontSize: '1.125rem',
+                  fontWeight: '600',
+                  color: '#111827',
+                  textTransform: 'capitalize',
+                }}>
+                  {category}
+                </h3>
+                <span style={{
+                  fontSize: '0.875rem',
+                  color: '#6b7280',
+                  backgroundColor: '#f3f4f6',
+                  padding: '0.125rem 0.625rem',
+                  borderRadius: '1rem',
+                }}>
+                  {categoryProducts.length} items
+                </span>
+                <div style={{ flex: 1, height: '1px', backgroundColor: '#e5e7eb' }} />
+              </div>
+
+              <div style={{
+                backgroundColor: '#ffffff',
+                border: '1px solid #e5e7eb',
+                borderRadius: '0.5rem',
+                overflow: 'hidden',
+              }}>
+                <div style={{ overflowX: 'auto' }}>
+                  <table style={{
+                    width: '100%',
+                    borderCollapse: 'collapse',
+                  }}>
+                    <thead style={{
+                      backgroundColor: '#f9fafb',
+                      borderBottom: '1px solid #e5e7eb',
+                    }}>
+                      <tr>
+                        <th style={{
+                          padding: '0.75rem 1rem',
+                          textAlign: 'left',
+                          fontSize: '0.75rem',
+                          fontWeight: '600',
+                          color: '#6b7280',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.05em',
+                        }}>
+                          Product
+                        </th>
+                        <th style={{
+                          padding: '0.75rem 1rem',
+                          textAlign: 'left',
+                          fontSize: '0.75rem',
+                          fontWeight: '600',
+                          color: '#6b7280',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.05em',
+                        }}>
+                          Price
+                        </th>
+                        <th style={{
+                          padding: '0.75rem 1rem',
+                          textAlign: 'left',
+                          fontSize: '0.75rem',
+                          fontWeight: '600',
+                          color: '#6b7280',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.05em',
+                        }}>
+                          Stock
+                        </th>
+                        <th style={{
+                          padding: '0.75rem 1rem',
+                          textAlign: 'right',
+                          fontSize: '0.75rem',
+                          fontWeight: '600',
+                          color: '#6b7280',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.05em',
+                          whiteSpace: 'nowrap',
+                        }}>
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {categoryProducts.map((product) => (
+                        <tr
+                          key={product.id}
+                          style={{
+                            borderBottom: '1px solid #e5e7eb',
+                          }}
+                        >
+                          <td style={{ padding: '0.75rem 1rem' }}>
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '0.75rem',
+                            }}>
+                              {product.images?.[0] && (
+                                <Image
+                                  src={product.images[0]}
+                                  alt={product.name}
+                                  width={40}
+                                  height={40}
+                                  style={{
+                                    objectFit: 'cover',
+                                    borderRadius: '0.375rem',
+                                    backgroundColor: '#f3f4f6',
+                                  }}
+                                />
+                              )}
+                              <div>
+                                <div style={{
+                                  fontWeight: '500',
+                                  color: '#111827',
+                                  fontSize: '0.875rem',
+                                }}>
+                                  {product.name}
+                                </div>
+                                {product.sku && (
+                                  <div style={{
+                                    fontSize: '0.75rem',
+                                    color: '#6b7280',
+                                    marginTop: '0.125rem',
+                                  }}>
+                                    SKU: {product.sku}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </td>
+                          <td style={{
+                            padding: '0.75rem 1rem',
+                            fontSize: '0.875rem',
+                            color: '#374151',
+                            fontWeight: '500',
+                          }}>
+                            Rp {product.price?.toLocaleString('id-ID') || '0'}
+                          </td>
+                          <td style={{
+                            padding: '0.75rem 1rem',
+                            fontSize: '0.875rem',
+                            color: '#374151',
+                          }}>
+                            {product.stock || 0}
+                          </td>
+                          <td style={{
+                            padding: '0.75rem 1rem',
+                            whiteSpace: 'nowrap',
+                          }}>
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'flex-end',
+                              gap: '0.25rem',
+                            }}>
+                              <Link
+                                href={`/produk/${product.slug || product.id}`}
+                                target="_blank"
+                                style={{
+                                  padding: '0.375rem',
+                                  color: '#6b7280',
+                                  borderRadius: '0.375rem',
+                                  transition: 'all 0.2s',
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.backgroundColor = '#f3f4f6'
+                                  e.currentTarget.style.color = '#111827'
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.backgroundColor = 'transparent'
+                                  e.currentTarget.style.color = '#6b7280'
+                                }}
+                              >
+                                <Eye style={{ width: '1rem', height: '1rem' }} />
+                              </Link>
+                              <Link
+                                href={`/admin/produk/edit/${product.id}`}
+                                style={{
+                                  padding: '0.375rem',
+                                  color: '#6b7280',
+                                  borderRadius: '0.375rem',
+                                  transition: 'all 0.2s',
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.backgroundColor = '#f3f4f6'
+                                  e.currentTarget.style.color = '#2563eb'
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.backgroundColor = 'transparent'
+                                  e.currentTarget.style.color = '#6b7280'
+                                }}
+                              >
+                                <Edit style={{ width: '1rem', height: '1rem' }} />
+                              </Link>
+                              <button
+                                onClick={() => handleDelete(product.id)}
+                                style={{
+                                  padding: '0.375rem',
+                                  color: '#6b7280',
+                                  backgroundColor: 'transparent',
+                                  border: 'none',
+                                  borderRadius: '0.375rem',
+                                  cursor: 'pointer',
+                                  transition: 'all 0.2s',
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.backgroundColor = '#fee2e2'
+                                  e.currentTarget.style.color = '#dc2626'
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.backgroundColor = 'transparent'
+                                  e.currentTarget.style.color = '#6b7280'
+                                }}
+                              >
+                                <Trash2 style={{ width: '1rem', height: '1rem' }} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {filteredProducts.length === 0 && (
             <div style={{
               padding: '3rem',
               textAlign: 'center',
               color: '#6b7280',
+              backgroundColor: '#ffffff',
+              border: '1px solid #e5e7eb',
+              borderRadius: '0.5rem',
             }}>
               {searchQuery ? 'No products found matching your search.' : 'No products yet. Add your first product!'}
-            </div>
-          ) : (
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{
-                width: '100%',
-                borderCollapse: 'collapse',
-              }}>
-                <thead style={{
-                  backgroundColor: '#f9fafb',
-                  borderBottom: '1px solid #e5e7eb',
-                }}>
-                  <tr>
-                    <th style={{
-                      padding: '0.75rem 1rem',
-                      textAlign: 'left',
-                      fontSize: '0.75rem',
-                      fontWeight: '600',
-                      color: '#6b7280',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.05em',
-                    }}>
-                      Product
-                    </th>
-                    <th style={{
-                      padding: '0.75rem 1rem',
-                      textAlign: 'left',
-                      fontSize: '0.75rem',
-                      fontWeight: '600',
-                      color: '#6b7280',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.05em',
-                    }}>
-                      Category
-                    </th>
-                    <th style={{
-                      padding: '0.75rem 1rem',
-                      textAlign: 'left',
-                      fontSize: '0.75rem',
-                      fontWeight: '600',
-                      color: '#6b7280',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.05em',
-                    }}>
-                      Price
-                    </th>
-                    <th style={{
-                      padding: '0.75rem 1rem',
-                      textAlign: 'left',
-                      fontSize: '0.75rem',
-                      fontWeight: '600',
-                      color: '#6b7280',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.05em',
-                    }}>
-                      Stock
-                    </th>
-                    <th style={{
-                      padding: '0.75rem 0',
-                      textAlign: 'right',
-                      fontSize: '0.75rem',
-                      fontWeight: '600',
-                      color: '#6b7280',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.05em',
-                      whiteSpace: 'nowrap',
-                    }}>
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredProducts.map((product) => (
-                    <tr
-                      key={product.id}
-                      style={{
-                        borderBottom: '1px solid #e5e7eb',
-                      }}
-                    >
-                      <td style={{ padding: '1rem' }}>
-                        <div style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '0.75rem',
-                        }}>
-                          {product.images?.[0] && (
-                            <Image
-                              src={product.images[0]}
-                              alt={product.name}
-                              width={48}
-                              height={48}
-                              style={{
-                                objectFit: 'cover',
-                                borderRadius: '0.375rem',
-                                backgroundColor: '#f3f4f6',
-                              }}
-                            />
-                          )}
-                          <div>
-                            <div style={{
-                              fontWeight: '500',
-                              color: '#111827',
-                              fontSize: '0.875rem',
-                            }}>
-                              {product.name}
-                            </div>
-                            {product.sku && (
-                              <div style={{
-                                fontSize: '0.75rem',
-                                color: '#6b7280',
-                                marginTop: '0.125rem',
-                              }}>
-                                SKU: {product.sku}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </td>
-                      <td style={{
-                        padding: '1rem',
-                        fontSize: '0.875rem',
-                        color: '#374151',
-                      }}>
-                        {product.category || '-'}
-                      </td>
-                      <td style={{
-                        padding: '1rem',
-                        fontSize: '0.875rem',
-                        color: '#374151',
-                        fontWeight: '500',
-                      }}>
-                        Rp {product.price?.toLocaleString('id-ID') || '0'}
-                      </td>
-                      <td style={{
-                        padding: '1rem',
-                        fontSize: '0.875rem',
-                        color: '#374151',
-                      }}>
-                        {product.stock || 0}
-                      </td>
-                      <td style={{ padding: '1rem' }}>
-                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-                                  <span style={{ fontSize: '0.875rem', fontWeight: '500', color: '#6b7280' }}>—</span>
-                               </div>
-                            </td>
-                      <td style={{
-                        padding: '1rem',
-                        whiteSpace: 'nowrap',
-                      }}>
-                        <div style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'flex-end',
-                          gap: '0.5rem',
-                        }}>
-                          <Link
-                            href={`/produk/${product.slug || product.id}`}
-                            target="_blank"
-                            style={{
-                              padding: '0.5rem',
-                              color: '#6b7280',
-                              backgroundColor: 'transparent',
-                              border: 'none',
-                              borderRadius: '0.375rem',
-                              cursor: 'pointer',
-                              transition: 'all 0.2s',
-                            }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.backgroundColor = '#f3f4f6'
-                              e.currentTarget.style.color = '#111827'
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.backgroundColor = 'transparent'
-                              e.currentTarget.style.color = '#6b7280'
-                            }}
-                          >
-                            <Eye style={{ width: '1rem', height: '1rem' }} />
-                          </Link>
-                          <Link
-                            href={`/admin/produk/edit/${product.id}`}
-                            style={{
-                              padding: '0.5rem',
-                              color: '#6b7280',
-                              backgroundColor: 'transparent',
-                              border: 'none',
-                              borderRadius: '0.375rem',
-                              cursor: 'pointer',
-                              transition: 'all 0.2s',
-                            }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.backgroundColor = '#f3f4f6'
-                              e.currentTarget.style.color = '#2563eb'
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.backgroundColor = 'transparent'
-                              e.currentTarget.style.color = '#6b7280'
-                            }}
-                          >
-                            <Edit style={{ width: '1rem', height: '1rem' }} />
-                          </Link>
-                          <button
-                            onClick={() => handleDelete(product.id)}
-                            style={{
-                              padding: '0.5rem',
-                              color: '#6b7280',
-                              backgroundColor: 'transparent',
-                              border: 'none',
-                              borderRadius: '0.375rem',
-                              cursor: 'pointer',
-                              transition: 'all 0.2s',
-                            }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.backgroundColor = '#fee2e2'
-                              e.currentTarget.style.color = '#dc2626'
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.backgroundColor = 'transparent'
-                              e.currentTarget.style.color = '#6b7280'
-                            }}
-                          >
-                            <Trash2 style={{ width: '1rem', height: '1rem' }} />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
             </div>
           )}
         </div>

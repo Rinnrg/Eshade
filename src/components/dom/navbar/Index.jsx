@@ -107,7 +107,7 @@ function Navbar() {
       <header id="default-header" className={`${styles.root} ${isScrolled ? styles.scrolled : ''}`} role="banner">
         <div className={styles.innerHeader}>
           <Link onClick={goToTop} aria-label="Go home" scroll={false} href="/" className={styles.logoLink}>
-            <Image src="/logo-eshade/logo eshade 1.svg" alt="Eshade" width={getLogoWidth()} height={getLogoHeight()} priority />
+            <Image src={isMobile ? "/logo-eshade/logo eshade 2.svg" : "/logo-eshade/logo eshade 1.svg"} alt="Eshade" width={getLogoWidth()} height={getLogoHeight()} priority />
           </Link>
 
           {/* Search Bar - Desktop */}

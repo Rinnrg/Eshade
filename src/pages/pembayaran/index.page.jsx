@@ -743,11 +743,6 @@ function PembayaranPage() {
                       </div>
                       <div className={styles.itemDetails}>
                         <h4>{item.produk?.nama || 'Produk'}</h4>
-                        <p>
-                          {item.ukuran && `Ukuran: ${item.ukuran}`}
-                          {item.ukuran && item.warna && ' | '}
-                          {item.warna && `Warna: ${item.warna}`}
-                        </p>
                         <p>Qty: {item.quantity}</p>
                         <span className={styles.priceInline}>
                           Rp {itemTotal.toLocaleString('id-ID')}

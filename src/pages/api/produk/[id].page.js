@@ -20,7 +20,7 @@ async function getProduk(req, res, id) {
 
 async function updateProduk(req, res, id) {
   try {
-    const { nama, deskripsi, sections, kategori, harga, diskon, stok, ukuran, warna, thumbnail, images, videos } = req.body;
+    const { nama, deskripsi, sections, kategori, harga, diskon, stok, berat, ukuran, warna, thumbnail, images, videos } = req.body;
 
     // Validasi sections jika ada
     if (sections && !Array.isArray(sections)) {
@@ -49,6 +49,7 @@ async function updateProduk(req, res, id) {
         harga: parseFloat(harga),
         diskon: diskon ? parseFloat(diskon) : 0,
         stok: parseInt(stok, 10),
+        berat: parseFloat(berat) || 0,
         ukuran,
         warna,
         thumbnail: thumbnail || null,

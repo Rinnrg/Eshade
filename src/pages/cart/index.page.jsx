@@ -485,8 +485,6 @@ function CartPage() {
                            <input type="checkbox" checked={selectedItems.includes(item.id)} onChange={() => handleSelectItem(item.id)} className={styles.checkbox} />
                          </div>
                           <div className={styles.variantInfo}>
-                            {item.ukuran && <span className={styles.variant}>Size: {item.ukuran}</span>}
-                            {item.warna && <span className={styles.variant}>Color: {item.warna}</span>}
                           </div>
 
                           <div className={styles.priceAndQuantity}>

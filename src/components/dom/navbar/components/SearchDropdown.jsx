@@ -122,11 +122,11 @@ function SearchDropdown({ onClose }) {
 
   // Popular searches (static for now)
   const popularSearches = [
-    'T-Shirt',
-    'Hoodie',
-    'Jacket',
-    'Pants',
-    'Accessories',
+    'kardio',
+    'vol.1',
+    'phase-1',
+    'pilates',
+    'multi rain',
   ];
 
   return (

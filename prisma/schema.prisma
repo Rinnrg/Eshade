@@ -100,6 +100,7 @@ model produk {
   gambar         String[]      // Main product images (gallery)
   thumbnail      String?       // Primary thumbnail for product card
   video          String[]
+  berat          Float?        @default(0)
   produkUnggulan Boolean       @default(false)
   urutanTampilan Int           @default(0)
   tanggalDibuat  DateTime      @default(now())

@@ -5,7 +5,6 @@ import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
 // eslint-disable-next-line import/extensions
 import MultipleImageUpload from '@src/components/admin/MultipleImageUpload';
-import ColorSelector from '@src/components/admin/ColorSelector';
 import SectionsEditor from '@src/components/admin/SectionsEditor';
 import Breadcrumb from '@src/components/dom/Breadcrumb';
 import styles from '../form.module.scss';
@@ -23,9 +22,8 @@ export default function EditProduk() {
     kategori: '',
     harga: '',
     diskon: '0',
-    stok: '0',
-    ukuran: [],
-    warna: [],
+    stok: '999999',
+    berat: '0',
     thumbnail: '',
     images: [],
     videos: [],
@@ -42,7 +40,6 @@ export default function EditProduk() {
   const [videoPreviews, setVideoPreviews] = useState([]);
   const [existingVideos, setExistingVideos] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
-  const [ukuranInputs, setUkuranInputs] = useState([{ id: Date.now(), size: '', qty: '' }]);
 
   const fetchProduk = async () => {
     try {
@@ -57,9 +54,8 @@ export default function EditProduk() {
           kategori: data.kategori,
           harga: data.harga.toString(),
           diskon: data.diskon ? data.diskon.toString() : '0',
-          stok: data.stok.toString(),
-          ukuran: data.ukuran || [],
-          warna: data.warna || [],
+          stok: (data.stok || 999999).toString(),
+          berat: (data.berat || 0).toString(),
           thumbnail: data.thumbnail || '',
           images: data.gambar || data.images || [],
           videos: data.video || data.videos || [],
@@ -84,15 +80,6 @@ export default function EditProduk() {
         });
         
         setExistingVideos(videosArray);
-
-        // Parse existing ukuran data (format: "S:3", "M:4")
-        if (data.ukuran && data.ukuran.length > 0) {
-          const parsedUkuran = data.ukuran.map((item, idx) => {
-            const [size, qty] = item.split(':');
-            return { id: Date.now() + idx, size: size || '', qty: qty || '' };
-          });
-          setUkuranInputs(parsedUkuran);
-        }
       } else {
         setError('Produk tidak ditemukan');
       }
@@ -124,53 +111,8 @@ export default function EditProduk() {
     }));
   };
 
-  const handleUkuranChange = (index, field, value) => {
-    const newUkuran = [...ukuranInputs];
-    newUkuran[index][field] = value;
-    setUkuranInputs(newUkuran);
-
-    // Update formData with size format: "S:3, M:4, L:5"
-    const ukuranArray = newUkuran.filter((item) => item.size && item.qty).map((item) => `${item.size}:${item.qty}`);
-
-    setFormData((prev) => ({
-      ...prev,
-      ukuran: ukuranArray,
-    }));
-  };
-
-  const addUkuranInput = () => {
-    setUkuranInputs([...ukuranInputs, { id: Date.now() + Math.random(), size: '', qty: '' }]);
-  };
-
-  const removeUkuranInput = (index) => {
-    showAlert({
-      type: 'confirm',
-      title: 'Hapus Ukuran',
-      message: 'Apakah Anda yakin ingin menghapus ukuran ini? Perubahan ini belum disimpan.',
-      confirmText: 'Hapus',
-      cancelText: 'Batal',
-      showCancel: true,
-      onConfirm: () => {
-        const newUkuran = ukuranInputs.filter((_, i) => i !== index);
-        setUkuranInputs(newUkuran);
-
-        // Update formData
-        const ukuranArray = newUkuran.filter((item) => item.size && item.qty).map((item) => `${item.size}:${item.qty}`);
-
-        setFormData((prev) => ({
-          ...prev,
-          ukuran: ukuranArray,
-        }));
-      }
-    });
-  };
-
-  const getTotalUkuran = () => ukuranInputs.reduce((total, item) => total + (parseInt(item.qty, 10) || 0), 0);
-
   const getRemainingStock = () => {
-    const stok = parseInt(formData.stok, 10) || 0;
-    const totalUkuran = getTotalUkuran();
-    return stok - totalUkuran;
+    return 999999;
   };
 
   const handleImagesChange = (imageData) => {
@@ -295,17 +237,6 @@ export default function EditProduk() {
     e.preventDefault();
     setError('');
 
-    // Validate total ukuran
-    if (getTotalUkuran() > parseInt(formData.stok, 10)) {
-      setError('Total ukuran melebihi stok yang tersedia!');
-      return;
-    }
-
-    if (getTotalUkuran() < parseInt(formData.stok, 10)) {
-      setError('Total ukuran harus sama dengan stok!');
-      return;
-    }
-
     setIsSubmitting(true);
 
     // Validate sections: each section must have a title
@@ -397,6 +328,10 @@ export default function EditProduk() {
         thumbnail: thumbnailUrl,
         images: allImages,
         videos: allVideos,
+        stok: parseInt(formData.stok, 10),
+        berat: parseFloat(formData.berat),
+        ukuran: [],
+        warna: [],
       };
 
       const response = await fetch(`/api/produk/${id}`, {
@@ -457,39 +392,31 @@ export default function EditProduk() {
             Kategori *
             <select id="kategori" name="kategori" value={formData.kategori} onChange={handleChange} className={styles.input} required>
               <option value="">Pilih Kategori</option>
-              <option value="T-Shirt">T-Shirt</option>
-              <option value="Hoodie">Hoodie</option>
-              <option value="Jacket">Jacket</option>
-              <option value="Pants">Pants</option>
-              <option value="Shorts">Shorts</option>
-              <option value="Accessories">Accessories</option>
+              <option value="kardio">kardio</option>
+              <option value="vol.1">vol.1</option>
+              <option value="vol.2">vol.2</option>
+              <option value="vol.3">vol.3</option>
+              <option value="vol.4">vol.4</option>
+              <option value="vol.5">vol.5</option>
+              <option value="vol.6">vol.6</option>
+              <option value="vol.7">vol.7</option>
+              <option value="phase-1">phase-1</option>
+              <option value="phase-2">phase-2</option>
+              <option value="phase-3">phase-3</option>
+              <option value="phase-4">phase-4</option>
+              <option value="phase-5">phase-5</option>
+              <option value="pilates">pilates</option>
+              <option value="multi rain">multi rain</option>
             </select>
           </label>
         </div>
 
-        {/* Pricing Section */}
-        <div className={styles.formRow}>
           <div className={styles.formGroup}>
-            <h3 className={styles.sectionHeader}>💰 Harga & Stok</h3>
-            <label htmlFor="harga" className={styles.label}>
-              Harga (Rp) *
-              <input id="harga" name="harga" type="number" step="1" value={formData.harga} onChange={handleChange} className={styles.input} placeholder="Contoh: 200000" required />
+            <label htmlFor="berat" className={styles.label}>
+              Berat (kg)
+              <input id="berat" name="berat" type="number" step="0.1" value={formData.berat} onChange={handleChange} className={styles.input} placeholder="Contoh: 0.5" />
             </label>
           </div>
-          <div className={styles.formGroup}>
-            <label htmlFor="diskon" className={styles.label}>
-              Diskon (%)
-              <input id="diskon" name="diskon" type="number" step="1" min="0" max="100" value={formData.diskon} onChange={handleChange} className={styles.input} placeholder="Contoh: 20" />
-            </label>
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="stok" className={styles.label}>
-              Stok *
-              <input id="stok" name="stok" type="number" value={formData.stok} onChange={handleChange} className={styles.input} placeholder="Jumlah stok" required />
-            </label>
-          </div>
-        </div>
 
         {/* Description Section */}
         <div className={styles.formGroup}>
@@ -506,67 +433,21 @@ export default function EditProduk() {
           />
         </div>
 
-        {/* Size Section */}
-        <div className={styles.formGroup}>
-          <h3 className={styles.sectionHeader}>📏 Ukuran Produk</h3>
-          <label htmlFor="ukuran-select-0" className={styles.label}>
-            Ukuran & Jumlah per Ukuran *
-            <span className={styles.stockInfo}>
-              Total: {getTotalUkuran()} / {formData.stok || 0} | Sisa: {getRemainingStock()}
-            </span>
-          </label>
-
-          {ukuranInputs.map((ukuran, index) => (
-            <div key={ukuran.id} className={styles.ukuranRow}>
-              <select id={`ukuran-select-${index}`} value={ukuran.size} onChange={(e) => handleUkuranChange(index, 'size', e.target.value)} className={styles.ukuranSelect}>
-                <option value="">Pilih Ukuran</option>
-                <option value="XXS">XXS</option>
-                <option value="XS">XS</option>
-                <option value="S">S</option>
-                <option value="M">M</option>
-                <option value="L">L</option>
-                <option value="XL">XL</option>
-                <option value="XXL">XXL</option>
-                <option value="XXXL">XXXL</option>
-              </select>
-
-              <input
-                type="number"
-                min="1"
-                max={getRemainingStock() + (parseInt(ukuran.qty, 10) || 0)}
-                value={ukuran.qty}
-                onChange={(e) => handleUkuranChange(index, 'qty', e.target.value)}
-                className={styles.ukuranQty}
-                placeholder="Jumlah"
-              />
-
-              {ukuranInputs.length > 1 && (
-                <button type="button" onClick={() => removeUkuranInput(index)} className={styles.removeUkuranButton}>
-                  ×
-                </button>
-              )}
-            </div>
-          ))}
-
-          {getTotalUkuran() < parseInt(formData.stok, 10) && (
-            <button type="button" onClick={addUkuranInput} className={styles.addUkuranButton}>
-              Tambah Ukuran
-            </button>
-          )}
-
-          {getTotalUkuran() > parseInt(formData.stok, 10) && <p className={styles.errorText}>Total ukuran melebihi stok yang tersedia!</p>}
-        </div>
-
-        {/* Color Section */}
-        <div className={styles.formGroup}>
-          <h3 className={styles.sectionHeader}>🎨 Warna Produk</h3>
-          <label className={styles.label}>
-            Pilih Warna yang Tersedia
-          </label>
-          <ColorSelector
-            selectedColors={formData.warna}
-            onChange={(colors) => setFormData({ ...formData, warna: colors })}
-          />
+        {/* Pricing Section - Moved and modified */}
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}>
+            <h3 className={styles.sectionHeader}>💰 Harga</h3>
+            <label htmlFor="harga" className={styles.label}>
+              Harga (Rp) *
+              <input id="harga" name="harga" type="number" step="1" value={formData.harga} onChange={handleChange} className={styles.input} placeholder="Contoh: 200000" required />
+            </label>
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="diskon" className={styles.label}>
+              Diskon (%)
+              <input id="diskon" name="diskon" type="number" step="1" min="0" max="100" value={formData.diskon} onChange={handleChange} className={styles.input} placeholder="Contoh: 20" />
+            </label>
+          </div>
         </div>
 
         {/* Images Section */}

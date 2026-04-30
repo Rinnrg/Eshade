@@ -74,7 +74,7 @@
   align-items: center;
   justify-content: center;
   padding: 1rem 2rem;
-  background: #000;
+  background: var(--primaryRed);
   color: #fff;
   font-size: 0.9rem;
   font-weight: 600;
@@ -83,7 +83,7 @@
   transition: all 0.3s ease;
 
   &:hover {
-    background: #333;
+    background: #cc0000;
   }
 }
 
@@ -212,7 +212,7 @@
   padding: 0;
   width: 32px;
   height: 32px;
-  background: #000;
+  background: var(--primaryRed);
   color: #fff;
   font-size: 0.78rem;
   font-weight: 600;
@@ -222,7 +222,7 @@
   transition: all 0.15s ease;
 
   &:hover {
-    background: #222;
+    background: #cc0000;
   }
 }
 
@@ -230,8 +230,8 @@
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid #eee;
+  background: var(--primaryRed);
+  border: 1px solid var(--primaryRed);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -240,7 +240,7 @@
   transition: all 0.15s ease;
 
   &:hover {
-    background: #fff;
+    background: #cc0000;
     transform: scale(1.05);
   }
 

@@ -205,7 +205,7 @@
   transition: all 0.2s ease;
 
   .uploadButton:hover & {
-    background-color: #000;
+    background-color: var(--primaryRed);
     color: #fff;
   }
 }

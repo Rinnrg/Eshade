@@ -134,10 +134,10 @@
     width: 100%;
 
     @include mobile {
-      text-align: right; // Align section titles & links to the right on mobile
+      text-align: left; 
       display: flex;
       flex-direction: column;
-      align-items: flex-end; // push contents toward the right edge of the column
+      align-items: flex-start; 
     }
 
     .title {
@@ -191,7 +191,7 @@
       margin-top: calc(var(--layout-columns-gap) * 0.5);
 
       @include mobile {
-        justify-content: flex-end; // Push icons to the right on mobile
+        justify-content: flex-start; 
         gap: 1rem;
       }
 
@@ -235,22 +235,24 @@
     @include mobile {
       display: flex;
       flex-direction: column;
-      align-items: flex-end; // Place child sections to the right
+      align-items: flex-start; 
       gap: calc(var(--layout-columns-gap) * 0.8);
-      padding-right: calc(var(--layout-margin) * 0.6); // nudge column further to the right
+      padding-right: 0; 
     }
   }
 
   @include mobile {
     .mobileColumns {
-      display: flex;
-      gap: calc(var(--layout-columns-gap) * 0.8);
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: calc(var(--layout-columns-gap) * 1);
       align-items: flex-start;
       width: 100%;
 
       .companyInfoMobile {
-        flex: 1;
-        padding-right: calc(var(--layout-columns-gap) * 0.6);
+        grid-column: span 2; // Keep company info full width at top for better balance
+        padding-right: 0;
+        margin-bottom: calc(var(--layout-columns-gap) * 0.5);
 
         .brandName {
           color: var(--white);
@@ -261,7 +263,7 @@
 
           .brandLogo {
             display: block;
-            width: 180px; // slightly smaller than desktop but larger than before
+            width: 150px; 
             height: auto;
           }
         }
@@ -304,16 +306,9 @@
         }
       }
 
-      .linksGridMobile {
-        width: 120px; // fixed width for right column on mobile
-        display: flex;
-        flex-direction: column;
-        gap: calc(var(--layout-columns-gap) * 0.6);
-        align-items: flex-end;
-
-        .linksContainer {
-          width: 100%;
-        }
+      .linksContainer {
+        width: 100%;
+        margin-bottom: calc(var(--layout-columns-gap) * 0.5);
       }
     }
   }
@@ -359,7 +354,7 @@
   margin-top: 1rem;
 
   @include mobile {
-    align-items: flex-end;
+    align-items: flex-start;
   }
 }
 

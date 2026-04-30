@@ -67,6 +67,7 @@ export default async function handler(req, res) {
         thumbnail = null,
         sections = [],
         video = [],
+        berat = 0,
         produkUnggulan = false,
       } = req.body;
 
@@ -94,8 +95,8 @@ export default async function handler(req, res) {
             thumbnail: thumbnail || (gambar && gambar[0]) || null,
             sections,
             video,
+            berat: parseFloat(berat) || 0,
             produkUnggulan,
-            isActive: false,
             urutanTampilan: 0,
             jumlahTerjual: 0,
           },

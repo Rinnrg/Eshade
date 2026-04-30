@@ -117,7 +117,7 @@
   }
 
   &.active {
-    color: #000;
+    color: var(--primaryRed);
 
     &::after {
       content: '';
@@ -126,7 +126,7 @@
       left: 0;
       right: 0;
       height: 2px;
-      background: #000;
+      background: var(--primaryRed);
     }
   }
   
@@ -234,8 +234,8 @@
 
   &:focus {
     outline: none;
-    border-color: #000;
-    box-shadow: 0 0 0 1px #000;
+    border-color: var(--primaryRed);
+    box-shadow: 0 0 0 1px var(--primaryRed);
   }
 
   &::placeholder {
@@ -333,8 +333,8 @@
     }
 
     &:checked {
-      background: #000;
-      border-color: #000;
+      background: var(--primaryRed);
+      border-color: var(--primaryRed);
 
       &::after {
         content: '';

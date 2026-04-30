@@ -20,7 +20,7 @@ import AlertDialog from '@src/components/dom/AlertDialog';
 import GlobalLoader from '@src/components/dom/GlobalLoader';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import Scrollbar from '@src/components/dom/Scrollbar';
-import { SessionProvider } from 'next-auth/react';
+import { SessionProvider, useSession } from 'next-auth/react';
 import Tempus from '@darkroom.engineering/tempus';
 import { View } from '@react-three/drei';
 import { gsap } from 'gsap';
@@ -61,6 +61,24 @@ if (typeof window !== 'undefined') {
     }
     originalConsoleError.apply(console, args);
   };
+}
+
+function AdminRedirect({ router }) {
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (status === 'authenticated' && session?.user?.role === 'admin') {
+      const isAccessingAdmin = router.pathname.startsWith('/admin');
+      const isLoginPage = router.pathname === '/login';
+      const isAuthApi = router.pathname.startsWith('/api/auth');
+
+      if (!isAccessingAdmin && !isLoginPage && !isAuthApi) {
+        router.push('/admin');
+      }
+    }
+  }, [session, status, router]);
+
+  return null;
 }
 
 function MyApp({ Component, pageProps, router }) {
@@ -316,6 +334,7 @@ function MyApp({ Component, pageProps, router }) {
   if (isAdminPage) {
     return (
       <SessionProvider session={pageProps.session}>
+        <AdminRedirect router={router} />
         {/* Global Page Loader */}
         <GlobalLoader />
         
@@ -344,6 +363,7 @@ function MyApp({ Component, pageProps, router }) {
   if (isLoginPage) {
     return (
       <SessionProvider session={pageProps.session}>
+        <AdminRedirect router={router} />
         {/* Global Page Loader */}
         <GlobalLoader />
         
@@ -358,6 +378,7 @@ function MyApp({ Component, pageProps, router }) {
   if (useCustomLayout) {
     return (
       <SessionProvider session={pageProps.session}>
+        <AdminRedirect router={router} />
         {/* Global Page Loader */}
         <GlobalLoader />
         
@@ -371,6 +392,7 @@ function MyApp({ Component, pageProps, router }) {
 
   return (
     <SessionProvider session={pageProps.session}>
+      <AdminRedirect router={router} />
       {/* Global Page Loader */}
       <GlobalLoader />
       

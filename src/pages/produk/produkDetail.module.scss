@@ -184,7 +184,7 @@
 
   &:hover,
   &.active {
-    border-color: #000000;
+    border-color: var(--primaryRed);
   }
 
   @media (max-width: 768px) {
@@ -414,6 +414,29 @@
   }
 }
 
+.weightInfo {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+  }
+}
+
+.weightLabel {
+  font-weight: 500;
+  color: #374151;
+}
+
+.weightValue {
+  color: #6b7280;
+}
+
 // ===== COLOR SELECTOR =====
 .colorSection {
   display: flex;
@@ -460,7 +483,7 @@
 
   &:hover,
   &.selected {
-    border-color: #000;
+    border-color: var(--primaryRed);
   }
 
   @media (max-width: 768px) {
@@ -510,12 +533,12 @@
   transition: all 0.2s ease;
 
   &:hover {
-    border-color: #000;
+    border-color: var(--primaryRed);
   }
 
   &.selected {
-    border-color: #000;
-    background-color: #000;
+    border-color: var(--primaryRed);
+    background-color: var(--primaryRed);
     color: #fff;
   }
 
@@ -565,7 +588,7 @@
 .currentPrice {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #000;
+  color: var(--primaryRed);
 
   @media (max-width: 768px) {
     font-size: 1.25rem;
@@ -688,7 +711,7 @@
 .buyNowButton {
   flex: 1;
   height: 48px;
-  background-color: #000;
+  background-color: var(--primaryRed);
   color: #fff;
   border: none;
   border-radius: 24px;
@@ -703,7 +726,7 @@
   justify-content: center;
 
   &:hover:not(:disabled) {
-    background-color: #333;
+    background-color: #cc0000;
   }
 
   &:disabled {
@@ -731,7 +754,7 @@
 .wishlistButton {
   width: 48px;
   height: 48px;
-  border: 1px solid #000;
+  border: 1px solid var(--primaryRed);
   border-radius: 50%;
   background: transparent;
   font-size: 1.4rem;
@@ -740,7 +763,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #000;
+  color: var(--primaryRed);
   flex-shrink: 0;
 
   &:hover {
@@ -749,8 +772,8 @@
 
   &.active {
     background-color: transparent;
-    color: #ff0000;
-    border-color: #000;
+    color: var(--primaryRed);
+    border-color: var(--primaryRed);
   }
 
   @media (max-width: 768px) {
@@ -764,7 +787,7 @@
   flex: 1;
   height: 48px;
   background: transparent;
-  border: 1px solid #000;
+  border: 1px solid var(--primaryRed);
   border-radius: 24px;
   font-size: 0.875rem;
   font-weight: 600;
@@ -776,8 +799,8 @@
   align-items: center;
   justify-content: center;
 
-  &:hover:not(:disabled) {
-    background-color: #000;
+  &:hover {
+    background-color: var(--primaryRed);
     color: #fff;
   }
 

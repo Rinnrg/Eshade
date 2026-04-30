@@ -30,18 +30,7 @@ const menuItems = [
   {
     label: 'Products',
     icon: Package,
-    submenu: [
-      {
-        label: 'All Products',
-        icon: List,
-        href: '/admin/produk',
-      },
-      {
-        label: 'Add Product',
-        icon: Plus,
-        href: '/admin/produk/create',
-      },
-    ],
+    href: '/admin/produk',
   },
   {
     label: 'Orders',
@@ -67,34 +56,12 @@ const menuItems = [
   {
     label: 'Home Sections',
     icon: ImageIcon,
-    submenu: [
-      {
-        label: 'All Sections',
-        icon: List,
-        href: '/admin/home-sections',
-      },
-      {
-        label: 'Add Section',
-        icon: Plus,
-        href: '/admin/home-sections/create',
-      },
-    ],
+    href: '/admin/home-sections',
   },
   {
     label: 'Promotions',
     icon: Tag,
-    submenu: [
-      {
-        label: 'All Vouchers',
-        icon: List,
-        href: '/admin/promotions',
-      },
-      {
-        label: 'Add Voucher',
-        icon: Plus,
-        href: '/admin/promotions/create',
-      },
-    ],
+    href: '/admin/promotions',
   },
   {
     label: 'Maintenance',
