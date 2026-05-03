@@ -10,30 +10,30 @@ import Maintenance from '@src/components/dom/Maintenance';
 
 const seo = {
   title: 'eshade',
-  description: 'Eshade adalah toko clothing online yang menyediakan berbagai produk fashion berkualitas tinggi. Temukan koleksi pakaian terbaru dengan desain menarik dan harga terjangkau.',
+  description: 'Eshade adalah toko gym online yang menyediakan berbagai produk gym berkualitas tinggi. Temukan koleksi gym terbaru dengan desain menarik dan harga terjangkau.',
   keywords: [
     'Eshade',
-    'Clothing Store',
-    'Fashion',
+    'Gym Store',
+    'Gym',
     'Online Shop',
-    'Toko Baju Online',
-    'Pakaian',
-    'Fashion Indonesia',
+    'Toko Gym Online',
+    'Gym',
+    'Gym Indonesia',
     'Streetwear',
     'kardio',
     'pilates',
     'multi rain',
     'Fitness Indonesia',
-    'Gym Clothing',
-    'Fashion Modern',
-    'Baju Keren',
-    'Toko Fashion',
+    'Gym Gear',
+    'Gym Modern',
+    'Gym Keren',
+    'Toko Gym',
     'E-commerce',
     'Belanja Online',
   ],
 };
 
-function Page({ produk, homeSections, maintenance }) {
+function Page({ produk, homeSections, paketPromo, maintenance }) {
   if (maintenance && maintenance.active) {
     return <Maintenance message={maintenance.message} />;
   }
@@ -45,7 +45,7 @@ function Page({ produk, homeSections, maintenance }) {
       <AboutPreview />
       <Quote />
       <HomeSections sections={homeSections} />
-      <Produk produk={produk} />
+      <Produk paketPromo={paketPromo} />
     </>
   );
 }
@@ -72,7 +72,7 @@ export async function getServerSideProps({ res }) {
     }
 
     // Fetch data using the helper to manage connections better
-    const [produk, homeSections] = await Promise.all([
+    const [produk, homeSections, paketPromo] = await Promise.all([
       // Fetch latest products for "Koleksi Terbaru" section
       executePrismaQuery((prisma) => prisma.produk.findMany({
         select: {
@@ -98,6 +98,11 @@ export async function getServerSideProps({ res }) {
           order: 'asc',
         },
       })),
+      // Fetch paket promo
+      executePrismaQuery((prisma) => prisma.paketPromo.findMany({
+        where: { isActive: true },
+        orderBy: { price: 'asc' },
+      })),
     ]);
 
     // Serialize dates for products
@@ -117,10 +122,18 @@ export async function getServerSideProps({ res }) {
       updatedAt: item.updatedAt ? item.updatedAt.toISOString() : null,
     }));
 
+    // Serialize dates for paket promo
+    const serializedPaketPromo = paketPromo.map((item) => ({
+      ...item,
+      createdAt: item.createdAt.toISOString(),
+      updatedAt: item.updatedAt.toISOString(),
+    }));
+
     return {
       props: {
         produk: serializedProduk,
         homeSections: serializedHomeSections,
+        paketPromo: serializedPaketPromo,
       },
     };
   } catch (error) {

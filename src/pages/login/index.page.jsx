@@ -331,7 +331,7 @@ function LoginPage() {
                   </label>
                   <label className={styles.checkboxLabel} htmlFor="newsletter">
                     <input type="checkbox" id="newsletter" checked={newsletterOptIn} onChange={(e) => setNewsletterOptIn(e.target.checked)} />
-                    <span>Saya ingin tips gaya, produk baru, dan semua yang terbaru dalam fashion dikirim ke kotak masuk saya!</span>
+                    <span>Saya ingin tips gaya, produk baru, dan semua yang terbaru dalam gym gear dikirim ke kotak masuk saya!</span>
                   </label>
                 </div>
 

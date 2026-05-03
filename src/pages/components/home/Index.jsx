@@ -13,10 +13,10 @@ function Home() {
       <div className={styles.container}>
         <div className={styles.leftCol}>
           <h1 className={styles.title}>
-            Train Harder To Gain A Healthy And Fit Body
+            Commit to your body & Care your Gym
           </h1>
           <p className={styles.subtitle}>
-            Koleksi fashion premium yang dirancang untuk mendukung gaya hidup modern Anda dengan kenyamanan maksimal.
+            Koleksi gym premium yang dirancang untuk mendukung gaya hidup sehat Anda dengan kenyamanan maksimal.
           </p>
           <button type="button" className={styles.primaryButton} onClick={() => router.push('/produk')}>
             SHOP NOW

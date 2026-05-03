@@ -42,7 +42,7 @@ function Hero() {
   return (
     <section ref={rootRef} className={clsx(styles.root, 'layout-block-inner')}>
       <header className={styles.titleContainer}>
-        <h2 className={clsx(styles.title, 'h2')}>Quality fashion and lifestyle products for modern living.</h2>
+        <h2 className={clsx(styles.title, 'h2')}>Quality gym and lifestyle products for modern living.</h2>
       </header>
       <div className={styles.wrapper}>
         <div ref={heroImageRef} className={styles.imageContainer}>

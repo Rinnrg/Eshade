@@ -217,7 +217,7 @@ function Footer() {
             <div className={clsx('p-x', styles.bottomText)}>
               Current Time: <Time />
             </div>
-            <div className="p-x">© {yearText} · Eshade.id · Mitra Alat Fitness Anda</div>
+            <div className="p-x">© {yearText} · Eshade · Mitra Alat Fitness Anda</div>
           </div>
         </AppearTitle>
       </div>

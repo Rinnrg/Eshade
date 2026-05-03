@@ -165,20 +165,31 @@ function ProdukGrid({ produk = [], kategori = null, error = null }) {
           </span>
         </div>
 
+        {/* Category Tabs */}
+        <div className={styles.categoryTabs}>
+          <button
+            type="button"
+            className={clsx(styles.tab, { [styles.active]: filterKategori === '' })}
+            onClick={() => setFilterKategori('')}
+          >
+            Semua
+          </button>
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              className={clsx(styles.tab, { [styles.active]: filterKategori === cat })}
+              onClick={() => setFilterKategori(cat)}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
         {/* Filters & Sort Bar */}
         <div className={styles.filterBar}>
           <div className={styles.filters}>
-            {/* Category Filter */}
-            <select
-              value={filterKategori}
-              onChange={(e) => setFilterKategori(e.target.value)}
-              className={styles.select}
-            >
-              <option value="">Semua Kategori</option>
-              {categories.map((cat) => (
-                <option key={cat} value={cat}>{cat}</option>
-              ))}
-            </select>
+            {/* Price range or other filters could go here */}
           </div>
 
           {/* Sort */}

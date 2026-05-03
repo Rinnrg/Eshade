@@ -13,7 +13,11 @@ html {
   font-family: var(--font-primary), sans-serif;
   background-color: var(--white); /* Prevent white flash */
   
-  scrollbar-width: thin;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   
   &.nav {
     overflow: hidden;

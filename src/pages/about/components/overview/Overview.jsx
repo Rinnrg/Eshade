@@ -47,9 +47,9 @@ function Overview() {
             <h6 className="h6">engineering to deepen my understanding of how to build sleek and </h6>
             <h6 className="h6">efficient websites and apps.</h6>
             <h6 className={clsx(styles.paddingTop, 'h6')}>When I&apos;m not busy coding, you&apos;ll often find me soaking up inspiration from</h6>
-            <h6 className="h6">fashion and lifestyle. We believe in quality craftsmanship and timeless</h6>
-            <h6 className="h6">design that enhances your everyday life.</h6>
-            <h6 className={clsx(styles.paddingTop, 'h6')}>From carefully curated clothing to lifestyle essentials, every product </h6>
+            <h6 className="h6">gym and lifestyle. We believe in quality craftsmanship and timeless</h6>
+            <h6 className="h6">design that enhances your workout journey.</h6>
+            <h6 className={clsx(styles.paddingTop, 'h6')}>From carefully curated gym gear to lifestyle essentials, every product </h6>
             <h6 className="h6">is selected with attention to detail and a commitment to excellence.</h6>
 
             <h6 className={clsx(styles.paddingTop, 'h6')}>We&apos;re excited to be part of your style journey!</h6>
@@ -61,12 +61,12 @@ function Overview() {
             <h6 className="h6">quality products that blend style and functionality. Our collection </h6>
             <h6 className="h6">is carefully curated to meet the needs of modern living while </h6>
             <h6 className="h6">maintaining timeless appeal.</h6>
-            <h6 className={clsx(styles.paddingTop, 'h6')}>We draw inspiration from contemporary fashion trends and </h6>
+            <h6 className={clsx(styles.paddingTop, 'h6')}>We draw inspiration from contemporary gym trends and </h6>
             <h6 className="h6">lifestyle needs. Whether it&apos;s exploring new designs or</h6>
             <h6 className="h6">perfecting the details, we love bringing quality and</h6>
             <h6 className="h6">creativity to every piece.</h6>
             <h6 className={clsx(styles.paddingTop, 'h6')}>Our mission is to provide products that enhance your lifestyle.</h6>
-            <h6 className="h6">From clothing to accessories, every item is chosen with care</h6>
+            <h6 className="h6">From gym gear to accessories, every item is chosen with care</h6>
             <h6 className="h6">and passion.</h6>
             <h6 className={clsx(styles.paddingTop, 'h6')}>We&apos;re looking forward to being part of your style journey!</h6>
             <h6 className={clsx(styles.paddingTop, 'h6')}>Eshade Team.</h6>

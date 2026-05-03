@@ -9,7 +9,7 @@ const getSchema = () => ({
   '@context': 'http://schema.org',
   '@type': 'Organization',
   name: 'Eshade',
-  description: 'Eshade - Fashion & Lifestyle Brand',
+  description: 'Eshade - Gym & Lifestyle Brand',
   url: SITE_URL,
   image: OG_IMAGE,
   email: 'mailto:info@eshade.com',

@@ -9,13 +9,13 @@ import Maintenance from '@src/components/dom/Maintenance';
 
 const seo = {
   title: 'Eshade - Produk',
-  description: 'Jelajahi koleksi produk clothing Eshade. Temukan berbagai pilihan pakaian berkualitas dengan desain menarik dan harga terjangkau.',
+  description: 'Jelajahi koleksi produk gym Eshade. Temukan berbagai pilihan gym gear berkualitas dengan desain menarik dan harga terjangkau.',
   keywords: [
     'Eshade Produk',
-    'Clothing Store',
-    'Fashion Store',
-    'Pakaian Pria',
-    'Pakaian Wanita',
+    'Gym Store',
+    'Gym Store',
+    'Gym Pria',
+    'Gym Wanita',
     'kardio',
     'pilates',
     'multi rain',
@@ -32,7 +32,7 @@ function Page({ produk = [], kategori = null, error = null, maintenance }) {
   const title = kategori ? `Eshade - ${kategori}` : 'Eshade - Produk';
   const description = kategori
     ? `Jelajahi koleksi ${kategori} Eshade. Temukan berbagai pilihan ${kategori} berkualitas dengan desain menarik dan harga terjangkau.`
-    : 'Jelajahi koleksi produk clothing Eshade. Temukan berbagai pilihan pakaian berkualitas dengan desain menarik dan harga terjangkau.';
+    : 'Jelajahi koleksi produk gym Eshade. Temukan berbagai pilihan gym gear berkualitas dengan desain menarik dan harga terjangkau.';
 
   return (
     <>

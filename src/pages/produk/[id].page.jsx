@@ -285,7 +285,7 @@ function ProdukDetailPage({ produk, error, maintenance }) {
     () => ({
       title: `${currentProduk?.nama || 'Produk'} - Eshade`,
       description: currentProduk?.deskripsi || `Beli ${currentProduk?.nama} di Eshade`,
-      keywords: [currentProduk?.nama, currentProduk?.kategori, 'Eshade', 'Fashion', 'Clothing'],
+      keywords: [currentProduk?.nama, currentProduk?.kategori, 'Eshade', 'Gym', 'Gym Gear'],
       image: allImages[0] || '/logo/logo 1 black.svg',
     }),
     [currentProduk, allImages]

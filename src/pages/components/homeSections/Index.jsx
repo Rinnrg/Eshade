@@ -10,7 +10,7 @@ function HomeSections({ sections }) {
     return null;
   }
 
-  // Generate generic trainer placeholders for gym theme regardless of clothing images
+  // Generate generic trainer placeholders for gym theme regardless of gym gear images
   const trainerImages = [
     "https://images.unsplash.com/photo-1567013127596-3e8e19e7a7da?q=80&w=600&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=600&auto=format&fit=crop",

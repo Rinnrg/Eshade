@@ -3,43 +3,38 @@ import { Check } from 'lucide-react';
 import clsx from 'clsx';
 import styles from '@src/pages/components/produk/styles/produk.module.scss';
 
-function Produk({ produk = [] }) {
+function Produk({ paketPromo = [] }) {
   const router = useRouter();
   
-  // Create 3 placeholder packages for the Gym theme
-  const packages = [
-    { id: 'daily', name: 'Daily Package', price: 10, period: 'day' },
-    { id: 'monthly', name: 'Monthly Package', price: 100, period: 'month' },
-    { id: 'annual', name: 'Annual Package', price: 1000, period: 'year' }
-  ];
+  if (!paketPromo || paketPromo.length === 0) {
+    return null;
+  }
   
   return (
     <section className={clsx(styles.root)}>
-      <h2 className={styles.sectionTitle}>Our Packages</h2>
+      <h2 className={styles.sectionTitle}>Paket Promo</h2>
       <div className={styles.productGrid}>
-        {packages.map((pkg, idx) => (
+        {paketPromo.map((pkg) => (
           <div key={pkg.id} className={styles.pricingCard}>
             <div className={styles.cardHeader}>
               <h3 className={styles.packageName}>{pkg.name}</h3>
-              <p className={styles.packageDesc}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.</p>
+              <p className={styles.packageDesc}>{pkg.description || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.'}</p>
             </div>
             
             <ul className={styles.featuresList}>
-              <li><div className={styles.iconBox}><Check size={14} /></div> All instrument access</li>
-              <li><div className={styles.iconBox}><Check size={14} /></div> Shower facility</li>
-              <li><div className={styles.iconBox}><Check size={14} /></div> Nutrition Plan</li>
-              <li><div className={styles.iconBox}><Check size={14} /></div> Personal locker</li>
-              <li><div className={styles.iconBox}><Check size={14} /></div> Personal trainer</li>
+              {pkg.features && pkg.features.map((feature, idx) => (
+                <li key={idx}><div className={styles.iconBox}><Check size={14} /></div> {feature}</li>
+              ))}
             </ul>
             
             <div className={styles.priceContainer}>
-              <span className={styles.currency}>$</span>
-              <span className={styles.price}>{pkg.price}</span>
-              <span className={styles.period}>/{pkg.period}</span>
+              <span className={styles.currency}>Rp</span>
+              <span className={styles.price}>{pkg.price.toLocaleString('id-ID')}</span>
+              <span className={styles.period}>{pkg.billingCycle}</span>
             </div>
-            <p className={styles.priceNote}>Bill will be charged {pkg.period}ly, taxes incl.</p>
+            <p className={styles.priceNote}>Bill will be charged {pkg.billingCycle === '/day' ? 'daily' : pkg.billingCycle === '/month' ? 'monthly' : 'yearly'}, taxes incl.</p>
             
-            <button className={styles.getStartedBtn} onClick={() => router.push('/produk')}>
+            <button className={styles.getStartedBtn} onClick={() => router.push(`/paket-promo/${pkg.id}`)}>
               GET STARTED
             </button>
           </div>

@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -62,6 +63,11 @@ const menuItems = [
     label: 'Promotions',
     icon: Tag,
     href: '/admin/promotions',
+  },
+  {
+    label: 'Paket Promo',
+    icon: Package, // Since Package is imported, we can reuse it or use List
+    href: '/admin/paket-promo',
   },
   {
     label: 'Maintenance',
@@ -144,14 +150,18 @@ export function Sidebar({ isOpen, setIsOpen }) {
       >
         {/* Header */}
         <div style={{
-          padding: '1.5rem',
+          padding: '1rem 1.5rem',
           borderBottom: '1px solid #e5e7eb',
         }}>
-          <h1 style={{
-            fontSize: '1.25rem',
-            fontWeight: '700',
-            color: '#111827',
-          }}>Eshade</h1>
+          <div style={{ position: 'relative', width: '130px', height: '45px' }}>
+            <Image 
+              src="/logo-eshade/logo eshade 2.svg" 
+              alt="Eshade" 
+              fill
+              priority
+              style={{ objectFit: 'contain', objectPosition: 'left' }}
+            />
+          </div>
         </div>
 
         {/* Navigation */}
