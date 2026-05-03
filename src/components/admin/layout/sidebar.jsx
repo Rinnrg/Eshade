@@ -9,7 +9,6 @@ import {
   Package,
   ShoppingCart,
   Users,
-  Star,
   BarChart3,
   Settings,
   ImageIcon,
@@ -17,10 +16,8 @@ import {
   LogOut,
   ChevronDown,
   ChevronRight,
-  Plus,
   List,
 } from 'lucide-react'
-import { Button } from '@src/components/ui/button'
 
 const menuItems = [
   {
@@ -99,6 +96,7 @@ export function Sidebar({ isOpen, setIsOpen }) {
   const handleMenuClick = (e, item) => {
     if (item.comingSoon) {
       e.preventDefault()
+      // eslint-disable-next-line no-alert
       alert('🚀 Coming Soon!\n\nThis feature is under development and will be available soon.')
     }
   }
@@ -119,6 +117,7 @@ export function Sidebar({ isOpen, setIsOpen }) {
       router.push('/admin/login?logout=true')
     } catch (error) {
       console.error('Logout error:', error)
+      // eslint-disable-next-line no-alert
       alert('Failed to logout. Please try again.')
     } finally {
       setIsLoggingOut(false)

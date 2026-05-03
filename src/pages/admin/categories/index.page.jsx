@@ -19,32 +19,32 @@ export default function AdminCategories() {
   const [showAlert] = useStore(useShallow((state) => [state.showAlert]));
 
   useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch('/api/admin/categories');
+        const data = await res.json();
+        if (data.success) {
+          setCategories(data.data);
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        showAlert({
+          type: 'error',
+          title: 'Error',
+          message: 'Failed to fetch categories.',
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
     if (status === 'unauthenticated') {
       router.push('/admin/login');
     } else if (status === 'authenticated') {
       fetchCategories();
     }
-  }, [status, router]);
-
-  const fetchCategories = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch('/api/admin/categories');
-      const data = await res.json();
-      if (data.success) {
-        setCategories(data.data);
-      }
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-      showAlert({
-        type: 'error',
-        title: 'Error',
-        message: 'Failed to fetch categories.',
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [status, router, showAlert]);
 
   const handleThumbnailUpload = async (e, categoryName) => {
     const file = e.target.files[0];
