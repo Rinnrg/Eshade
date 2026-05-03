@@ -2,7 +2,6 @@ import { useRef } from 'react';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import styles from '@src/pages/components/home/styles/home.module.scss';
-import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
 
 function Home() {
   const rootRef = useRef();
@@ -21,13 +20,6 @@ function Home() {
           <button type="button" className={styles.primaryButton} onClick={() => router.push('/produk')}>
             SHOP NOW
           </button>
-
-          {/* <div className={styles.sponsors}>
-            <div className={styles.sponsorItem}>ULTRA<br/>★★★★★</div>
-            <div className={styles.sponsorItem}>POWER<br/>MODULE</div>
-            <div className={styles.sponsorItem}>LOGO</div>
-            <div className={styles.sponsorItem}>logoIpsum</div>
-          </div> */}
         </div>
 
         <div className={styles.rightCol}>
@@ -37,12 +29,6 @@ function Home() {
               alt="Gym Man"
               className={styles.heroImage}
             />
-            {/* <div className={styles.playButtonWrapper}>
-              <div className={styles.circularText}></div>
-              <button className={styles.playButton} aria-label="Play Intro">
-                <span className={styles.playIcon}>▶</span>
-              </button>
-            </div> */}
           </div>
         </div>
       </div>

@@ -11,7 +11,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
 import CustomHead from '@src/components/dom/CustomHead';
 import Breadcrumb from '@src/components/dom/Breadcrumb';
-import ProductReviews from '@src/components/dom/ProductReviews';
+import ProductRecommendations from '@src/components/dom/ProductRecommendations';
 import Maintenance from '@src/components/dom/Maintenance';
 import styles from '@src/pages/produk/produkDetail.module.scss';
 import prisma from '@src/lib/db';
@@ -54,7 +54,7 @@ function ProdukDetailPage({ produk, error, maintenance }) {
     // Check if mobile
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    
+
     // Only force native scroll on mobile devices
     if (isMobile || isTouch) {
       document.body.style.overflow = 'auto';
@@ -400,9 +400,7 @@ function ProdukDetailPage({ produk, error, maintenance }) {
                     Rp {finalPrice.toLocaleString('id-ID')}
                   </span>
                 </div>
-                <div className={styles.rating}>
-                  ★★★★★ <span>4.8</span> (197)
-                </div>
+                {/* Rating removed */}
               </div>
 
               {/* Stock Info - Only show if low stock or out of stock */}
@@ -599,10 +597,13 @@ function ProdukDetailPage({ produk, error, maintenance }) {
             </div>
           </div>
 
-          {/* Product Reviews Section */}
+          {/* Product Recommendations Section */}
           {currentProduk && (
-            <div className={styles.reviewsSection}>
-              <ProductReviews produkId={currentProduk.id} />
+            <div className={styles.recommendationsSection}>
+              <ProductRecommendations
+                kategori={currentProduk.kategori}
+                currentProdukId={currentProduk.id}
+              />
             </div>
           )}
         </div>

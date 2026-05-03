@@ -193,9 +193,33 @@
   padding: 0.5rem 0;
   transition: color 0.3s ease;
   cursor: pointer;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primaryRed);
+    transition: width 0.3s ease;
+  }
   
   &:hover {
-    color: #666;
+    color: var(--primaryRed);
+    
+    &::after {
+      width: 100%;
+    }
+  }
+  
+  &.active {
+    color: var(--primaryRed);
+    
+    &::after {
+      width: 100%;
+    }
   }
 }
 
@@ -574,6 +598,7 @@
   position: relative;
   z-index: 1;
   line-height: 1.4;
+  border-left: 3px solid transparent;
 
   &:hover {
     background: rgba(0, 0, 0, 0.05);
@@ -582,6 +607,13 @@
 
   &:active {
     background: rgba(0, 0, 0, 0.1);
+  }
+  
+  &.active {
+    color: var(--primaryRed) !important;
+    border-left: 3px solid var(--primaryRed);
+    background: rgba(227, 30, 36, 0.04);
+    font-weight: 600;
   }
   
   @media (max-width: 480px) {

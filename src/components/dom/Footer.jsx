@@ -8,7 +8,7 @@ import gsap from 'gsap';
 import styles from '@src/components/dom/styles/footer.module.scss';
 import useIsMobile from '@src/hooks/useIsMobile';
 import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
 import { useWindowSize } from '@darkroom.engineering/hamo';
@@ -33,6 +33,41 @@ function Footer() {
   const START_YEAR = 2025;
   const currentYear = new Date().getFullYear();
   const yearText = currentYear > START_YEAR ? `${START_YEAR} - ${currentYear}` : `${START_YEAR}`;
+
+  const [activeUsers, setActiveUsers] = useState(1);
+
+  useEffect(() => {
+    // Generate or get session ID for this device/tab
+    let sessionId = sessionStorage.getItem('eshade_session_id');
+    if (!sessionId) {
+      sessionId = Math.random().toString(36).substring(2) + Date.now().toString(36);
+      sessionStorage.setItem('eshade_session_id', sessionId);
+    }
+
+    const fetchActiveUsers = async () => {
+      try {
+        const res = await fetch('/api/stats/active-users', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId }),
+        });
+        const data = await res.json();
+        if (data.count) {
+          setActiveUsers(data.count);
+        }
+      } catch (error) {
+        console.error('Error fetching active users:', error);
+      }
+    };
+
+    // Initial fetch
+    fetchActiveUsers();
+
+    // Ping every 20 seconds to stay "active"
+    const interval = setInterval(fetchActiveUsers, 20000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   useIsomorphicLayoutEffect(() => {
     if (!isLoading) {
@@ -74,16 +109,11 @@ function Footer() {
                 ESHADE | Mitra Alat Fitness Anda
               </p>
             </div>
-
-            <div className={styles.contactInfo}>
-              <p>E-mail: <a href="mailto:globalfitsby@gmail.com">globalfitsby@gmail.com</a></p>
-            </div>
           </div>
 
           <div className={styles.linksContainer}>
             <h6 className={clsx(styles.title, 'h6')}>CUSTOMER SERVICE</h6>
-            <p className={styles.waInfoText}>{footerLinks.customerService.onlineUsers}</p>
-            <p className={styles.waInfoText}>{footerLinks.customerService.visitors}</p>
+
             <div className={styles.waList}>
               {footerLinks.customerService.whatsapp.map((wa) => (
                 <a key={wa.number} href={wa.href} className={styles.waItem} target="_blank" rel="noopener noreferrer">
@@ -154,8 +184,7 @@ function Footer() {
             <AppearTitle isFooter>
               <h6 className={clsx(styles.title, 'h6')}>CUSTOMER SERVICE</h6>
               <div className={styles.csContent}>
-                <p className={styles.waInfoText}>{footerLinks.customerService.onlineUsers}</p>
-                <p className={styles.waInfoText}>{footerLinks.customerService.visitors}</p>
+
                 <div className={styles.waList}>
                   {footerLinks.customerService.whatsapp.map((wa) => (
                     <a key={wa.number} href={wa.href} className={styles.waItem} target="_blank" rel="noopener noreferrer">
@@ -212,7 +241,7 @@ function Footer() {
           <div className={styles.bottomInfo}>
             <div className={clsx('p-x', styles.bottomText)} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
               <span className={styles.pulseDot} />
-              Live Status: Active
+              Live Status: {activeUsers} Active Users
             </div>
             <div className={clsx('p-x', styles.bottomText)}>
               Current Time: <Time />

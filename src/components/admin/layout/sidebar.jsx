@@ -43,11 +43,7 @@ const menuItems = [
     icon: Users,
     href: '/admin/customers',
   },
-  {
-    label: 'Reviews',
-    icon: Star,
-    href: '/admin/reviews',
-  },
+
   {
     label: 'Analytics',
     icon: BarChart3,

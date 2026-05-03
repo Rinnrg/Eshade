@@ -147,14 +147,14 @@ function ProdukGrid({ produk = [], kategori = null, error = null }) {
       <div className={styles.container}>
         {/* Breadcrumb */}
         <Breadcrumb items={
-          filterKategori 
+          filterKategori
             ? [
-                { label: 'Produk', href: '/produk' },
-                { label: filterKategori, href: null }
-              ]
+              { label: 'Produk', href: '/produk' },
+              { label: filterKategori, href: null }
+            ]
             : [{ label: 'Produk', href: null }]
         } />
-        
+
         {/* Header */}
         <div className={styles.header}>
           <h1 className={styles.title}>
