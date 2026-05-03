@@ -61,6 +61,11 @@ const menuItems = [
     href: '/admin/promotions',
   },
   {
+    label: 'Kategori',
+    icon: List,
+    href: '/admin/categories',
+  },
+  {
     label: 'Paket Promo',
     icon: Package, // Since Package is imported, we can reuse it or use List
     href: '/admin/paket-promo',

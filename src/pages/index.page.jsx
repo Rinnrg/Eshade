@@ -3,6 +3,8 @@ import Home from '@src/pages/components/home/Index';
 import AboutPreview from '@src/pages/components/aboutPreview/Index';
 import HomeSections from '@src/pages/components/homeSections/Index';
 import Quote from '@src/pages/components/quote/Index';
+import ProdukTerbaru from '@src/pages/components/produkTerbaru/Index';
+import KategoriSection from '@src/pages/components/kategoriSection/Index';
 import Produk from '@src/pages/components/produk/Index';
 import CustomHead from '@src/components/dom/CustomHead';
 import { executePrismaQuery } from '@src/lib/prisma';
@@ -33,7 +35,7 @@ const seo = {
   ],
 };
 
-function Page({ produk, homeSections, paketPromo, maintenance }) {
+function Page({ produk, categories, homeSections, paketPromo, maintenance }) {
   if (maintenance && maintenance.active) {
     return <Maintenance message={maintenance.message} />;
   }
@@ -44,6 +46,8 @@ function Page({ produk, homeSections, paketPromo, maintenance }) {
       <Home />
       <AboutPreview />
       <Quote />
+      <ProdukTerbaru produk={produk} />
+      <KategoriSection categories={categories} />
       <HomeSections sections={homeSections} />
       <Produk paketPromo={paketPromo} />
     </>
@@ -72,7 +76,7 @@ export async function getServerSideProps({ res }) {
     }
 
     // Fetch data using the helper to manage connections better
-    const [produk, homeSections, paketPromo] = await Promise.all([
+    const [produk, homeSections, paketPromo, allProductsForCategories, dbCategories] = await Promise.all([
       // Fetch latest products for "Koleksi Terbaru" section
       executePrismaQuery((prisma) => prisma.produk.findMany({
         select: {
@@ -103,7 +107,32 @@ export async function getServerSideProps({ res }) {
         where: { isActive: true },
         orderBy: { price: 'asc' },
       })),
+      // Fetch all product categories for grouping
+      executePrismaQuery((prisma) => prisma.produk.findMany({
+        select: { kategori: true }
+      })),
+      // Fetch category thumbnails
+      executePrismaQuery((prisma) => prisma.category.findMany())
     ]);
+
+    // Aggregate categories that have products
+    const activeCategoryNames = new Set();
+    allProductsForCategories.forEach(p => {
+      if (p.kategori && p.kategori.trim() !== '') {
+        activeCategoryNames.add(p.kategori);
+      }
+    });
+
+    const activeCategoriesWithThumbnails = [];
+    activeCategoryNames.forEach(name => {
+      const dbCat = dbCategories.find(c => c.name === name);
+      if (dbCat && dbCat.thumbnail) {
+        activeCategoriesWithThumbnails.push({
+          name: dbCat.name,
+          thumbnail: dbCat.thumbnail
+        });
+      }
+    });
 
     // Serialize dates for products
     const serializedProduk = produk.map((item) => ({
@@ -132,6 +161,7 @@ export async function getServerSideProps({ res }) {
     return {
       props: {
         produk: serializedProduk,
+        categories: activeCategoriesWithThumbnails,
         homeSections: serializedHomeSections,
         paketPromo: serializedPaketPromo,
       },
@@ -142,6 +172,7 @@ export async function getServerSideProps({ res }) {
     return {
       props: {
         produk: [],
+        categories: [],
         homeSections: [],
       },
     };
