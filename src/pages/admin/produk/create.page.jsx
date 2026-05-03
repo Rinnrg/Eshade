@@ -86,9 +86,7 @@ export default function CreateProduk() {
     });
   };
 
-  const getRemainingStock = () => {
-    return 999999;
-  };
+
 
   const uploadImages = async () => {
     const newImages = productImages.allImages

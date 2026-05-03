@@ -111,9 +111,7 @@ export default function EditProduk() {
     }));
   };
 
-  const getRemainingStock = () => {
-    return 999999;
-  };
+
 
   const handleImagesChange = (imageData) => {
     setProductImages(imageData);

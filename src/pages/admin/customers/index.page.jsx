@@ -46,8 +46,8 @@ export default function CustomersPage() {
         search: searchQuery,
         sortBy,
         order: sortOrder,
-        page: currentPage,
-        limit,
+        page: currentPage.toString(),
+        limit: limit.toString(),
       });
 
       const response = await fetch(`/api/admin/customers?${params}`);
@@ -57,7 +57,6 @@ export default function CustomersPage() {
       }
 
       const data = await response.json();
-      console.log('Customers data:', data.users?.slice(0, 2)); // Log first 2 customers for debugging
       setCustomers(data.users || []);
       setTotalPages(data.pagination?.totalPages || 1);
       setTotal(data.pagination?.total || 0);
@@ -97,6 +96,7 @@ export default function CustomersPage() {
       },
     });
   };
+
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('id-ID', {
@@ -369,7 +369,7 @@ export default function CustomersPage() {
                                   objectFit: 'cover',
                                   flexShrink: 0,
                                 }}
-                                onError={(e) => {
+                                onError={() => {
                                   console.error('Image load error for user:', customer.id, customer.image);
                                   setImageErrors(prev => ({ ...prev, [customer.id]: true }));
                                 }}

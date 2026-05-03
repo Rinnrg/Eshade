@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { AdminLayout } from '@src/components/admin/layout/admin-layout'
-import { Eye, Search, Filter, Download, Package, Truck, CheckCircle, XCircle, Clock, Trash2, Edit2, Save, X } from 'lucide-react'
+import { Eye, Filter, Package, Truck, CheckCircle, XCircle, Clock, Trash2, Edit2, Save, X } from 'lucide-react'
 import Link from 'next/link'
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
@@ -17,11 +17,11 @@ const statusConfig = {
 
 export default function OrdersPage() {
   const router = useRouter()
-  const { data: session, status } = useSession()
+  const { status } = useSession()
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('all')
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery] = useState('')
   const [deleteLoading, setDeleteLoading] = useState(null)
   const [updateLoading, setUpdateLoading] = useState(null)
   const [editingOrder, setEditingOrder] = useState(null)

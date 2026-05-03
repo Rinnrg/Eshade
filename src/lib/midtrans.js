@@ -1,2 +1,3 @@
 // Midtrans integration removed as requested.
-export default {};
+const midtrans = {};
+export default midtrans;

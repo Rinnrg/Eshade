@@ -1,4 +1,4 @@
-let activeUsers = new Map();
+const activeUsers = new Map();
 
 export default function handler(req, res) {
   const now = Date.now();

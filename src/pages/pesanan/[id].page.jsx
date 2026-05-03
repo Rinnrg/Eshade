@@ -416,9 +416,7 @@ function OrderDetailPage() {
                 Beli Lagi
               </button>
             )}
-            {order.status === 'delivered' && (
 
-            )}
 
             {/* Show receipt button if we have payment info */}
             {(order.paymentType || order.snapToken || order.transactionId) && (

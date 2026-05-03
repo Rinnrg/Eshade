@@ -9,7 +9,7 @@ import { useStore } from '@src/store';
 
 export default function VouchersPage() {
   const router = useRouter()
-  const { data: session, status } = useSession()
+  const { status } = useSession()
   const [vouchers, setVouchers] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
@@ -22,7 +22,7 @@ export default function VouchersPage() {
     } else if (status === 'authenticated') {
       fetchVouchers()
     }
-  }, [status])
+  }, [status, router])
 
   const fetchVouchers = async () => {
     try {

@@ -436,16 +436,13 @@ function PesananPage() {
                           </button>
                         )}
                         {order.status === 'delivered' && (
-                          <>
-                            <button
-                              type="button"
-                              className={styles.btnPrimary}
-                              onClick={() => handleBuyAgain(order)}
-                            >
-                              Beli Lagi
-                            </button>
-
-                          </>
+                          <button
+                            type="button"
+                            className={styles.btnPrimary}
+                            onClick={() => handleBuyAgain(order)}
+                          >
+                            Beli Lagi
+                          </button>
                         )}
                         {order.status === 'cancelled' && (
                           <button
